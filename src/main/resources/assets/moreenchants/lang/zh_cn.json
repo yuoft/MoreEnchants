@@ -1,0 +1,45 @@
+{
+	#附魔
+	"enchantment.moreenchants.fire_immune": "火焰免疫",
+	"enchantment.moreenchants.war_to_war": "以战养战",
+	"enchantment.moreenchants.blast_arrow": "爆炸箭",
+	"enchantment.moreenchants.un_durable": "脆弱",
+	"enchantment.moreenchants.many_arrow": "万箭",
+	"enchantment.moreenchants.exp_corrode": "经验腐蚀",
+	"enchantment.moreenchants.insight": "洞察",
+	"enchantment.moreenchants.leech": "生命汲取",
+	"enchantment.moreenchants.lava_walker": "熔岩行者",
+	"enchantment.moreenchants.melting": "熔炼",
+	"enchantment.moreenchants.smash": "粉碎",
+	"enchantment.moreenchants.bad_luck_of_the_sea": "海之嫌弃",
+	"enchantment.moreenchants.last_stand": "屹立不倒",
+	"enchantment.moreenchants.slow": "拖拉",
+	"enchantment.moreenchants.lightning_damage": "雷击",
+	"enchantment.moreenchants.thorns": "真荆棘",
+	"enchantment.moreenchants.vorpal": "斩首",
+	"enchantment.moreenchants.rang_break": "范围挖掘",
+	#物品
+	"item.moreenchants.raw_iron": "粉碎铁",
+	"item.moreenchants.raw_gold": "粉碎金",
+	"item.moreenchants.bamboo_coal": "竹炭",
+	"item.moreenchants.broken_magic_pearl": "§5破魔宝珠",
+	"item.moreenchants.broken_magic_pearl_super": "§6高级破魔宝珠",
+	#方块
+	"block.moreenchants.nether_iron": "下届铁矿石",
+	"block.moreenchants.nether_gold": "下届金矿石",
+	"block.moreenchants.overworld_iron": "主世界铁矿石",
+	"block.moreenchants.overworld_gold": "主世界金矿石",
+	#快捷键
+	"key.message": "连锁挖掘",
+	"key.category.key_c": "启用连锁",
+	#物品信息
+	"enchantment.text.itemInfo.broken": "在铁砧使用消除一级附魔惩罚",
+	"enchantment.text.itemInfo.broken_super": "在铁砧使用消除全部附魔惩罚",
+	#进度
+	"advancements.moreenchants.enchants.title": "更多附魔",
+	"advancements.moreenchants.enchants.desc": "安装本模组",
+	"advancements.moreenchants.broken_magic_pearl.title": "随心所欲的附魔",
+	"advancements.moreenchants.broken_magic_pearl.desc": "和村民交易高级破魔宝珠",
+	#物品栏
+	"itemGroup.MoreEnchants": "更多附魔"
+}

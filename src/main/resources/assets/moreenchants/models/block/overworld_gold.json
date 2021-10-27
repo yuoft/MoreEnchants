@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "moreenchants:block/overworld_gold"
+  }
+}

@@ -1,0 +1,29 @@
+package com.yuo.enchants.Enchants;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentType;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
+
+public class Melting extends Enchantment {
+
+    public Melting(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+        super(rarityIn, typeIn, slots);
+    }
+
+    @Override
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 20;
+    }
+
+    @Override
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return this.getMinEnchantability(enchantmentLevel) + 50;
+    }
+
+    @Override
+    protected boolean canApplyTogether(Enchantment ench) {
+        return ench != Enchantments.SILK_TOUCH;//精准采集
+    }
+}
