@@ -154,7 +154,7 @@ public class EventHandler {
             ItemStack itemStack=player.getHeldItemMainhand();
             int blastArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.blastArrow.get(), itemStack);
             if (blastArrow > 0){ //产生爆炸
-                arrow.world.createExplosion(arrow, arrow.getPosX(), arrow.getPosY(), arrow.getPosZ(), blastArrow * 4.0f, true, Explosion.Mode.BREAK);
+                arrow.world.createExplosion(arrow, arrow.getPosX(), arrow.getPosY(), arrow.getPosZ(), blastArrow * 4.0f, true, Explosion.Mode.NONE);
                 arrow.remove(); //删除实体
             }
         }
