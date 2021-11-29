@@ -31,10 +31,6 @@ public class WarToWar extends Enchantment {
     @Override
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
-        return (item instanceof SwordItem || item instanceof AxeItem) && item.isEnchantable(stack);
-    }
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
+        return (item instanceof SwordItem || item instanceof AxeItem) && stack.isEnchantable();
     }
 }

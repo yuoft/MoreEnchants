@@ -28,7 +28,7 @@ public class UnDurable extends Enchantment {
         Item item = stack.getItem();
         return (item instanceof SwordItem || item instanceof ToolItem || item instanceof ArmorItem || item instanceof BowItem
                 || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ShieldItem || item instanceof HoeItem
-                || item instanceof ShearsItem || item instanceof FishingRodItem) && item.isEnchantable(stack);
+                || item instanceof ShearsItem || item instanceof FishingRodItem) && stack.isEnchantable();
     }
     //负面负面
     @Override
@@ -39,7 +39,7 @@ public class UnDurable extends Enchantment {
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
         //耐久
-        return ench != Enchantments.UNBREAKING;
+        return this != ench && ench != Enchantments.UNBREAKING;
     }
     //根据附魔等级 有60%概率额外消耗耐久对应耐久 盔甲
     public static boolean addDamage(ItemStack stack, int level, Random rand) {

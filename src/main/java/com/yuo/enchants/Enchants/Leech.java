@@ -24,11 +24,7 @@ public class Leech extends Enchantment {
     @Override
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
-        return (item instanceof SwordItem || item instanceof AxeItem ) && item.isEnchantable(stack);
+        return (item instanceof SwordItem || item instanceof AxeItem ) && stack.isEnchantable();
     }
 
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
-    }
 }

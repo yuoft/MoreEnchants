@@ -20,8 +20,4 @@ public class ManyArrow extends Enchantment {
         return this.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
-    }
 }

@@ -30,11 +30,6 @@ public class Insight extends Enchantment {
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
         return (item instanceof SwordItem || item instanceof BowItem || item instanceof CrossbowItem || item instanceof ToolItem ||
-                item instanceof TridentItem || item instanceof HoeItem || item instanceof FishingRodItem) && item.isEnchantable(stack);
-    }
-
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
+                item instanceof TridentItem || item instanceof HoeItem || item instanceof FishingRodItem) && stack.isEnchantable();
     }
 }

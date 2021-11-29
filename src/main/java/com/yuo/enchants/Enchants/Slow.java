@@ -29,6 +29,6 @@ public class Slow extends Enchantment {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return ench != Enchantments.EFFICIENCY;
+        return this != ench && ench != Enchantments.EFFICIENCY;
     } //效率
 }

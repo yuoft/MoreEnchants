@@ -32,7 +32,7 @@ public class LavaWalker extends Enchantment {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return ench != Enchantments.FROST_WALKER;
+        return this != ench && ench != Enchantments.FROST_WALKER;
     }
     //凝固岩浆
     public static void freezingNearby(LivingEntity living, World worldIn, BlockPos pos, int level) {

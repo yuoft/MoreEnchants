@@ -25,11 +25,12 @@ public class BlastArrow extends Enchantment {
     @Override
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
-        return (item instanceof BowItem || item instanceof CrossbowItem) && item.isEnchantable(stack);
+        return (item instanceof BowItem || item instanceof CrossbowItem) && stack.isEnchantable();
     }
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return true;
+        //火矢
+        return super.canApplyTogether(ench) && ench != Enchantments.FLAME;
     }
 }

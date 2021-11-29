@@ -19,6 +19,6 @@ public class FireImmune extends Enchantment {
     //附魔冲突
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return ench != Enchantments.FIRE_PROTECTION;
+        return this != ench && ench != Enchantments.FIRE_PROTECTION; //火焰保护
     }
 }

@@ -21,14 +21,4 @@ public class LastStand extends Enchantment {
         return this.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-//    @Override
-//    public boolean canApply(ItemStack stack) {
-//        EquipmentSlotType slot = stack.getEquipmentSlot();
-//        return slot == EquipmentSlotType.FEET && stack.isEnchantable();
-//    }
-
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
-    }
 }

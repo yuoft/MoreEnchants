@@ -35,8 +35,4 @@ public class Vorpal extends Enchantment {
         return (item instanceof SwordItem || item instanceof AxeItem) && stack.isEnchantable();
     }
 
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
-    }
 }

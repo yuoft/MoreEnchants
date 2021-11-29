@@ -32,11 +32,11 @@ public class ExpCorrode extends Enchantment {
         Item item = stack.getItem();
         return (item instanceof SwordItem || item instanceof ToolItem || item instanceof ArmorItem || item instanceof BowItem
         || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ShieldItem || item instanceof HoeItem
-        || item instanceof ShearsItem  || item instanceof FishingRodItem) && item.isEnchantable(stack);
+        || item instanceof ShearsItem  || item instanceof FishingRodItem) && stack.isEnchantable();
     }
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
         //经验修补
-        return ench != Enchantments.MENDING;
+        return this != ench && ench != Enchantments.MENDING;
     }
 }

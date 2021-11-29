@@ -24,6 +24,6 @@ public class Melting extends Enchantment {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return ench != Enchantments.SILK_TOUCH;//精准采集
+        return this != ench && ench != Enchantments.SILK_TOUCH;//精准采集
     }
 }

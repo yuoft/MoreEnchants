@@ -29,6 +29,6 @@ public class Thorns extends Enchantment {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return ench != Enchantments.THORNS; //荆棘
+        return this != ench && ench != Enchantments.THORNS; //荆棘
     }
 }

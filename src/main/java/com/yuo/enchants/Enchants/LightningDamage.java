@@ -26,8 +26,4 @@ public class LightningDamage extends Enchantment {
         return true;
     }
 
-    @Override
-    protected boolean canApplyTogether(Enchantment ench) {
-        return true;
-    }
 }
