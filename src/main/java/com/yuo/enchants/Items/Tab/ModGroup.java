@@ -9,7 +9,7 @@ public class ModGroup extends ItemGroup{
 	public static ItemGroup myGroup = new ModGroup();
 
 	public ModGroup() {
-		super(ItemGroup.GROUPS.length, "MoreEnchants");
+		super(ItemGroup.GROUPS.length, "YuoEnchants");
 	}
 	//图标
 	@Override

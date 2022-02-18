@@ -12,9 +12,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod("moreenchants")
+@Mod("yuoenchants")
 public class MoreEnchants {
-	public static final String MODID = "moreenchants";
+	public static final String MODID = "yuoenchants";
 	public MoreEnchants() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		//注册至mod总线

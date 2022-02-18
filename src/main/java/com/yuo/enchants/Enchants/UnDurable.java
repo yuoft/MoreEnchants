@@ -26,9 +26,9 @@ public class UnDurable extends Enchantment {
     @Override
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
-        return (item instanceof SwordItem || item instanceof ToolItem || item instanceof ArmorItem || item instanceof BowItem
-                || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ShieldItem || item instanceof HoeItem
-                || item instanceof ShearsItem || item instanceof FishingRodItem) && stack.isEnchantable();
+        return item instanceof SwordItem || item instanceof ToolItem || item instanceof ArmorItem || item instanceof BowItem
+                || item instanceof CrossbowItem || item instanceof TridentItem || item instanceof ShieldItem || item instanceof ShearsItem
+                || item instanceof FishingRodItem || stack.isEnchantable();
     }
     //负面负面
     @Override

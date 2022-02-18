@@ -33,6 +33,6 @@ public class RangBreak extends Enchantment {
     @Override
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
-        return (item instanceof ToolItem || item instanceof HoeItem) && stack.isEnchantable();
+        return item instanceof ToolItem || stack.isEnchantable();
     }
 }

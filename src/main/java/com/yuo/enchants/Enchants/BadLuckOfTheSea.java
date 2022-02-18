@@ -30,11 +30,6 @@ public class BadLuckOfTheSea extends Enchantment {
     }
 
     @Override
-    public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof FishingRodItem && stack.isEnchantable();
-    }
-
-    @Override
     protected boolean canApplyTogether(Enchantment ench) {
         //海之眷顾
         return this != ench && ench != Enchantments.LUCK_OF_THE_SEA;

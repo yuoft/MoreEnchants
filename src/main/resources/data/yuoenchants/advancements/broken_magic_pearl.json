@@ -1,0 +1,30 @@
+{
+  "parent": "yuoenchants:enchants",
+  "display": { 
+    "icon": { 
+      "item": "yuoenchants:broken_magic_pearl_super"
+    },
+    "title": {
+		"translate": "advancements.yuoenchants.broken_magic_pearl.title"
+	},
+    "description": {
+		"translate": "advancements.yuoenchants.broken_magic_pearl.desc"
+	},
+    "frame": "challenge"
+  },
+  "criteria": { 
+    "broken_magic_pearl": {
+      "trigger": "minecraft:inventory_changed", 
+      "conditions": { 
+		"items":[
+			{
+				"item": "yuoenchants:broken_magic_pearl_super"
+			}
+		]
+      }
+    }
+  },
+  "rewards": { 
+    "experience": 100
+  }
+}

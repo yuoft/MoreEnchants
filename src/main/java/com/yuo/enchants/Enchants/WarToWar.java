@@ -28,9 +28,10 @@ public class WarToWar extends Enchantment {
     public int getMinEnchantability(int enchantmentLevel) {
         return 1 + enchantmentLevel * 9;
     }
+
     @Override
     public boolean canApply(ItemStack stack) {
         Item item = stack.getItem();
-        return (item instanceof SwordItem || item instanceof AxeItem) && stack.isEnchantable();
+        return item instanceof SwordItem || item instanceof AxeItem || stack.isEnchantable();
     }
 }

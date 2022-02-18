@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "yuoenchants:overworld_iron"
+  },
+  "result": {
+    "item": "yuoenchants:raw_iron",
+    "count": 2
+  },
+  "experience": 0.2,
+  "cookingtime": 200
+}

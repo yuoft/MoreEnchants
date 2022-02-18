@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "minecraft:bamboo"
-  },
-  "result": "moreenchants:bamboo_coal",
-  "experience": 0.2,
-  "cookingtime": 200
-}

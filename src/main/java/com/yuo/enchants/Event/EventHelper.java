@@ -4,16 +4,24 @@ import com.yuo.enchants.Enchants.EnchantRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -21,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -154,5 +163,107 @@ public class EventHelper {
         //工具有一项工具属性可以挖掘就认为可以挖掘
         if (pickaxeLv >= level || axeLv >= level || hoeLv >= level || shovelLv >= level) return true;
         return false; //工具无法挖掘此块
+    }
+
+    /**
+     * 获取buff等级 保存buff数据
+     *
+     * @param player 玩家
+     * @param enchantment 附魔
+     * @param stack 物品
+     * @return buff等级
+     */
+    public static int setBuffLevel(PlayerEntity player, Enchantment enchantment, ItemStack stack) {
+        int level = EnchantmentHelper.getEnchantmentLevel(enchantment, stack); //获取附魔等级
+        CompoundNBT data = player.getPersistentData(); //玩家数据 存储状态id + 等级
+        ListNBT listNBT = new ListNBT();
+        CompoundNBT nbtId = new CompoundNBT();
+        CompoundNBT nbtLevel = new CompoundNBT();
+        nbtId.putString("id", enchantment.getName());
+        nbtLevel.putInt("level", level);
+        listNBT.add(0, nbtId);
+        listNBT.add(1, nbtLevel);
+        data.put(enchantment.getName(), listNBT);
+        return level;
+    }
+
+    /**
+     * 获取保存的buff信息
+     *
+     * @param player 玩家
+     * @return buff等级 为0则没有
+     */
+    public static int getBuffLevel(PlayerEntity player, Enchantment enchantment) {
+        CompoundNBT data = player.getPersistentData();
+        //根据buff等级改变属性
+        int level = 0;
+        ListNBT listNBT = (ListNBT) data.get(enchantment.getName());
+        if (listNBT == null || listNBT.isEmpty()) return level;
+        CompoundNBT nbtId = (CompoundNBT) listNBT.get(0);
+        CompoundNBT nbtLevel = (CompoundNBT) listNBT.get(1);
+        if ((nbtId == null || nbtLevel == null) || (nbtId.isEmpty() || nbtLevel.isEmpty())) return level;
+        //获取信息
+        String id = nbtId.getString("id");
+        if (id.equals(enchantment.getName())) level = nbtLevel.getInt("level");
+        return level;
+    }
+
+    /**
+     * 增加玩家属性 基于buff等级和变更系数决定
+     * @param player 玩家
+     * @param attr 需要变更的属性
+     * @param enchantment 生效附魔
+     * @param stack 物品
+     * @param value 变更系数
+     */
+    public static void upAttribute(PlayerEntity player, Attribute attr, Enchantment enchantment, ItemStack stack , float value){
+        ModifiableAttributeInstance attribute = player.getAttribute(attr);
+        if (attribute == null) return;
+        int level = EventHelper.setBuffLevel(player, enchantment, stack);
+        attribute.setBaseValue(attribute.getValue() + level * value);
+    }
+
+    /**
+     * 减少玩家属性 基于buff等级和变更系数决定
+     * @param player 玩家
+     * @param attr 需要变更的属性
+     * @param enchantment 生效buff
+     * @param value 变更系数
+     */
+    public static void downAttribute(PlayerEntity player, Attribute attr, Enchantment enchantment, float value){
+        ModifiableAttributeInstance attribute = player.getAttribute(attr);
+        if (attribute == null) return;
+        int level = EventHelper.getBuffLevel(player, enchantment);
+        attribute.setBaseValue(attribute.getValue() - level * value);
+    }
+
+    /**
+     * 更改玩家属性
+     * @param player 玩家
+     */
+    public static void changeAttribute(PlayerEntity player){
+        boolean health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST)) > 0;
+        boolean handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand()) > 0;
+        String key = player.getGameProfile().getName()+":"+player.world.isRemote;
+        //生机
+        if (!EventHandler.playerHealth.contains(key)){
+            if (health){
+                EventHelper.upAttribute(player, Attributes.MAX_HEALTH, EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST), EventHandler.attrHealth);
+                EventHandler.playerHealth.add(key);
+            }
+        }else if (!health){
+            EventHelper.downAttribute(player, Attributes.MAX_HEALTH, EnchantRegistry.health.get(), EventHandler.attrHealth);
+            EventHandler.playerHealth.remove(key);
+        }
+        //手的距离
+        if (!EventHandler.playerHandRange.contains(key)){
+            if (handRange){
+                EventHelper.upAttribute(player, ForgeMod.REACH_DISTANCE.get(), EnchantRegistry.handRange.get(), player.getHeldItemMainhand(), EventHandler.attrHandRange);
+                EventHandler.playerHandRange.add(key);
+            }
+        }else if (!handRange){
+            EventHelper.downAttribute(player, ForgeMod.REACH_DISTANCE.get(), EnchantRegistry.handRange.get(), EventHandler.attrHandRange);
+            EventHandler.playerHandRange.remove(key);
+        }
     }
 }

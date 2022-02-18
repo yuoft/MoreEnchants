@@ -13,9 +13,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.2.3'
-group = 'com.yuo.moreenchants' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'MoreEnchants'
+version = '1.2.4'
+group = 'com.yuo.yuoenchants' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'YuoEnchants'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 

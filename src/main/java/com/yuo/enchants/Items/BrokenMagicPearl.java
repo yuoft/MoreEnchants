@@ -21,10 +21,10 @@ public class BrokenMagicPearl extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         Item item = stack.getItem();
         if (item.equals(ItemRegistry.BrokenMagicPearl)){
-            tooltip.add(new TranslationTextComponent("enchantment.text.itemInfo.broken"));
+            tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.broken"));
         }
         if (item.equals(ItemRegistry.BrokenMagicPearlSuper)){
-            tooltip.add(new TranslationTextComponent("enchantment.text.itemInfo.broken_super"));
+            tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.broken_super"));
         }
     }
 }

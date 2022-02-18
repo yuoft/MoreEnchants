@@ -8,11 +8,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.GrindstoneBlock;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -21,6 +25,7 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -39,11 +44,16 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -54,11 +64,9 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.lwjgl.glfw.GLFW;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 事件处理类 附魔实现
@@ -68,6 +76,11 @@ public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
     private static int LIGHTNING_DAMAGE_TICK = 0; //雷击计时器
     private static int THORNS_TICK = 0; //真荆棘计时器
+    public static List<String> playerHealth = new ArrayList<>();
+    public static List<String> playerHandRange = new ArrayList<>();
+
+    public static final float attrHealth = 2.0f; //属性变更基础系数
+    public static final float attrHandRange = 0.5f; //属性变更基础系数
     //附魔，火焰免疫 屹立不倒 受到伤害
     @SubscribeEvent
     public static void fireImmune(LivingHurtEvent event) {
@@ -154,7 +167,7 @@ public class EventHandler {
             ItemStack itemStack=player.getHeldItemMainhand();
             int blastArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.blastArrow.get(), itemStack);
             if (blastArrow > 0){ //产生爆炸
-                arrow.world.createExplosion(arrow, arrow.getPosX(), arrow.getPosY(), arrow.getPosZ(), blastArrow * 4.0f, true, Explosion.Mode.NONE);
+                arrow.world.createExplosion(arrow, arrow.getPosX(), arrow.getPosY(), arrow.getPosZ(), blastArrow * 4.0f, false, Explosion.Mode.NONE);
                 arrow.remove(); //删除实体
             }
         }
@@ -168,16 +181,17 @@ public class EventHandler {
         if (stack.isEmpty()) return;
         Item item = stack.getItem();
         if (item instanceof ToolItem || item instanceof ShearsItem || item instanceof HoeItem){
-            int level = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
-            if (level > 0){
-                stack.damageItem(RANDOM.nextInt(level) + 1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND)); //破坏方块时消耗更多耐久
+            int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
+            if (unDurable > 0){
+                stack.damageItem(RANDOM.nextInt(unDurable) + 1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND)); //破坏方块时消耗更多耐久
             }
         }
         if (event.getExpToDrop() > 0){
-            int level = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), stack);
-            if (level > 0){
-                //额外获取 lv + ranmod（lv*3 + 1）经验值
-                event.setExpToDrop(event.getExpToDrop() + level + RANDOM.nextInt(3 * level + 1));
+            int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), stack);
+            if (insight > 0){
+                //额外获取 原本经验值 * （1 + insight * 30%）经验值
+                double exp = event.getExpToDrop() + (100 + insight * 30) / 100.0;
+                event.setExpToDrop((int) Math.ceil(exp));
             }
         }
         World world = (World) event.getWorld();
@@ -356,20 +370,48 @@ public class EventHandler {
             player.giveExperiencePoints(xpValue); //玩家获取经验
         }
     }
-    //岩浆行者 实体更新
+    //岩浆行者 生机 距离提升 实体更新
     @SubscribeEvent
     public static void lavaWalker(LivingEvent.LivingUpdateEvent event){
         LivingEntity entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof PlayerEntity){
+        if (entityLiving instanceof PlayerEntity && !entityLiving.world.isRemote){
             PlayerEntity player = (PlayerEntity) entityLiving;
-            if (!player.world.isRemote){
-                int lavaWalker = EnchantmentHelper.getMaxEnchantmentLevel(EnchantRegistry.lavaWalker.get(), player);
-                if (lavaWalker > 0){
-                    LavaWalker.freezingNearby(player, player.world, player.getPosition(), lavaWalker);
-                }
-
+            int lavaWalker = EnchantmentHelper.getMaxEnchantmentLevel(EnchantRegistry.lavaWalker.get(), player);
+            if (lavaWalker > 0){
+                LavaWalker.freezingNearby(player, player.world, player.getPosition(), lavaWalker);
             }
+            EventHelper.changeAttribute(player);
         }
+    }
+    //玩家重生
+    @SubscribeEvent
+    public static void playerRespawn(PlayerEvent.Clone event){
+        PlayerEntity player = event.getPlayer();
+        if (event.isWasDeath()){ //玩家死亡时重生 从变量中清key
+            String key = player.getGameProfile().getName()+":"+player.world.isRemote;
+            playerHealth.remove(key);
+            playerHandRange.remove(key);
+            EventHelper.changeAttribute(player);
+        }
+    }
+    //玩家登入
+    @SubscribeEvent
+    public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event){
+        PlayerEntity player = event.getPlayer();
+        //重置玩家属性 防止属性叠加
+        String key = player.getGameProfile().getName()+":"+player.world.isRemote;
+        if (!playerHealth.contains(key)){ //变量中不含key：重启游戏，需要重置属性； 含有key：重进游戏，不需要重置
+            boolean health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST)) > 0;
+            if (health) EventHelper.downAttribute(player, Attributes.MAX_HEALTH, EnchantRegistry.health.get(), attrHealth);
+        }
+        if (!playerHandRange.contains(key)){
+            boolean handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand()) > 0;
+            if (handRange) EventHelper.downAttribute(player, ForgeMod.REACH_DISTANCE.get(), EnchantRegistry.handRange.get(), attrHandRange);
+        }
+        //发送消息
+        player.sendMessage(new TranslationTextComponent("yuoenchants.message.login")
+                .setStyle(Style.EMPTY.setHoverEvent(HoverEvent.Action.SHOW_TEXT.deserialize(new TranslationTextComponent("yuoenchants.message.login0")))
+                        .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://space.bilibili.com/21854371"))), UUID.randomUUID());
     }
     //雷击
     @SubscribeEvent
@@ -406,19 +448,25 @@ public class EventHandler {
             stackChest.damageItem(2, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
         }
     }
-    //洞察 生命汲取 生物死亡
+    //洞察 生物掉落经验
+    @SubscribeEvent
+    public static void expDrops(LivingExperienceDropEvent event){
+        PlayerEntity player = event.getAttackingPlayer();
+        if (player != null){
+            int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), player.getHeldItemMainhand());
+            if (insight > 0){
+                double exp = event.getOriginalExperience() * (100 + insight * 30) / 100.0;
+                event.setDroppedExperience((int) Math.ceil(exp));
+            }
+        }
+    }
+    //生命汲取 生物死亡
     @SubscribeEvent
     public static void insightLiving(LivingDeathEvent event){
         Entity trueSource = event.getSource().getTrueSource(); //伤害来源
         if (trueSource instanceof PlayerEntity){
             PlayerEntity player = (PlayerEntity) trueSource;
-            int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), player.getHeldItemMainhand());
             int leech = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.leech.get(), player.getHeldItemMainhand());
-            if (insight > 0){
-                ExperienceOrbEntity experienceOrbEntity = new ExperienceOrbEntity(player.world, player.getPosX(), player.getPosY() + 0.5f,
-                        player.getPosZ(), insight + RANDOM.nextInt(insight * 3 + 1));
-                player.world.addEntity(experienceOrbEntity);
-            }
             if (leech > 0){
                 player.heal(leech / 2.0f); //回血
             }
@@ -442,20 +490,30 @@ public class EventHandler {
                     CompoundNBT nbt = new CompoundNBT();
                     nbt.putString("playerName", entityLiving.getName().getString());
                     skull.setTag(nbt);
-                }else if (entityLiving instanceof SkeletonEntity){
-                    skull = new ItemStack(Items.SKELETON_SKULL, 1);
                 }else if (entityLiving instanceof WitherSkeletonEntity){
                     skull = new ItemStack(Items.WITHER_SKELETON_SKULL, 1);
-                }else if (entityLiving instanceof ZombieEntity){
-                    skull = new ItemStack(Items.ZOMBIE_HEAD, 1);
-                }else if (entityLiving instanceof CreeperEntity){
-                    skull = new ItemStack(Items.CREEPER_HEAD, 1);
                 }
+//                else if (entityLiving instanceof SkeletonEntity){
+//                    skull = new ItemStack(Items.SKELETON_SKULL, 1);
+//                } else if (entityLiving instanceof ZombieEntity){
+//                    skull = new ItemStack(Items.ZOMBIE_HEAD, 1);
+//                }else if (entityLiving instanceof CreeperEntity){
+//                    skull = new ItemStack(Items.CREEPER_HEAD, 1);
+//                }
                 if (skull.isEmpty()) return;
                 ItemEntity itemEntity = new ItemEntity(living.world, living.getPosX(), living.getPosY(), living.getPosZ(), skull);
                 event.getDrops().add(itemEntity);
             }
         }
     }
+    //多段跳 玩家掉落
+    @SubscribeEvent
+    public static void playerFall(LivingFallEvent event){
+        LivingEntity entityLiving = event.getEntityLiving();
+        if (entityLiving instanceof PlayerEntity){
+            PlayerEntity player = (PlayerEntity) entityLiving;
+        }
+    }
+
 }
 

@@ -69,7 +69,7 @@ public class EnchantRegistry {
     });
     //真荆棘
     public static RegistryObject<Enchantment> thorns = ENCHANTMENTS.register("thorns", () ->{
-        return new Thorns(Enchantment.Rarity.COMMON, EnchantmentType.ARMOR_CHEST, EquipmentSlotType.values());
+        return new Thorns(Enchantment.Rarity.COMMON, EnchantmentType.ARMOR, EquipmentSlotType.values());
     });
     //拖拉
     public static RegistryObject<Enchantment> slow = ENCHANTMENTS.register("slow", () ->{
@@ -82,5 +82,13 @@ public class EnchantRegistry {
     //范围挖掘
     public static RegistryObject<Enchantment> rangBreak = ENCHANTMENTS.register("rang_break", () ->{
         return new RangBreak(Enchantment.Rarity.VERY_RARE, EnchantmentType.DIGGER, EquipmentSlotType.values());
+    });
+    //生机
+    public static RegistryObject<Enchantment> health = ENCHANTMENTS.register("health", () ->{
+        return new Health(Enchantment.Rarity.VERY_RARE, EnchantmentType.ARMOR_CHEST, EquipmentSlotType.values());
+    });
+    //距离提升
+    public static RegistryObject<Enchantment> handRange = ENCHANTMENTS.register("hand_range", () ->{
+        return new HandRange(Enchantment.Rarity.VERY_RARE, EnchantmentType.DIGGER, EquipmentSlotType.values());
     });
 }

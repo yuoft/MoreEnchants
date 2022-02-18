@@ -1,0 +1,49 @@
+{
+	#附魔
+	"enchantment.yuoenchants.fire_immune": "§5火焰免疫",
+	"enchantment.yuoenchants.war_to_war": "以战养战",
+	"enchantment.yuoenchants.blast_arrow": "爆炸箭",
+	"enchantment.yuoenchants.un_durable": "脆弱",
+	"enchantment.yuoenchants.many_arrow": "万箭",
+	"enchantment.yuoenchants.exp_corrode": "经验腐蚀",
+	"enchantment.yuoenchants.insight": "洞察",
+	"enchantment.yuoenchants.leech": "生命汲取",
+	"enchantment.yuoenchants.lava_walker": "§5熔岩行者",
+	"enchantment.yuoenchants.melting": "熔炼",
+	"enchantment.yuoenchants.smash": "粉碎",
+	"enchantment.yuoenchants.bad_luck_of_the_sea": "海之嫌弃",
+	"enchantment.yuoenchants.last_stand": "§5屹立不倒",
+	"enchantment.yuoenchants.slow": "拖拉",
+	"enchantment.yuoenchants.lightning_damage": "雷击",
+	"enchantment.yuoenchants.thorns": "真荆棘",
+	"enchantment.yuoenchants.vorpal": "斩首",
+	"enchantment.yuoenchants.rang_break": "§5范围挖掘",
+	"enchantment.yuoenchants.health": "§5生机",
+	"enchantment.yuoenchants.hand_range": "§5距离提升",
+	#物品
+	"item.yuoenchants.raw_iron": "粉碎铁",
+	"item.yuoenchants.raw_gold": "粉碎金",
+	"item.yuoenchants.bamboo_coal": "竹炭",
+	"item.yuoenchants.broken_magic_pearl": "§5破魔宝珠",
+	"item.yuoenchants.broken_magic_pearl_super": "§6高级破魔宝珠",
+	#方块
+	"block.yuoenchants.nether_iron": "下届铁矿石",
+	"block.yuoenchants.nether_gold": "下届金矿石",
+	"block.yuoenchants.overworld_iron": "主世界铁矿石",
+	"block.yuoenchants.overworld_gold": "主世界金矿石",
+	#快捷键
+	"key.message": "连锁挖掘",
+	"key.category.key_c": "启用连锁",
+	#物品信息
+	"yuoenchants.text.itemInfo.broken": "在铁砧使用消除一级附魔惩罚",
+	"yuoenchants.text.itemInfo.broken_super": "在铁砧使用消除全部附魔惩罚",
+	#进度
+	"advancements.yuoenchants.enchants.title": "更多附魔",
+	"advancements.yuoenchants.enchants.desc": "安装本模组",
+	"advancements.yuoenchants.broken_magic_pearl.title": "随心所欲的附魔",
+	"advancements.yuoenchants.broken_magic_pearl.desc": "和村民交易高级破魔宝珠",
+	"yuoenchants.message.login"="§b欢迎游玩本模组[Yuo的更多附魔]，问题反馈§a点击此处!",
+	"yuoenchants.message.login0"="§ahttps://space.bilibili.com/21854371",
+	#物品栏
+	"itemGroup.YuoEnchants": "Yuo的更多附魔"
+}

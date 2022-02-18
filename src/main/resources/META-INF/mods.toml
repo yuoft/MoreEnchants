@@ -2,7 +2,7 @@ modLoader="javafml"
 loaderVersion="[35,)"
 license="All rights reserved"
 [[mods]] #mandatory
-modId="moreenchants"
+modId="yuoenchants"
 version="1.2.2"
 displayName="MoreEnchants"
 authors="yuo" 
