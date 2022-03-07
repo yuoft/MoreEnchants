@@ -6,9 +6,9 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 
-public class ExpCorrode extends Enchantment {
+public class ExpCorrode extends ModEnchantBase {
 
-    public ExpCorrode(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public ExpCorrode(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
@@ -26,10 +26,6 @@ public class ExpCorrode extends Enchantment {
     @Override
     public int getMaxEnchantability(int enchantmentLevel) {
         return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-    @Override
-    public boolean canApply(ItemStack stack) {
-        return stack.isDamageable() || stack.isEnchantable();
     }
     @Override
     protected boolean canApplyTogether(Enchantment ench) {

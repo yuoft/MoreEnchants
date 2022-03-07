@@ -5,9 +5,9 @@ import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
 
-public class Slow extends Enchantment {
+public class Slow extends ModEnchantBase {
 
-    public Slow(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public Slow(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

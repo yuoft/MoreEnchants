@@ -1,0 +1,30 @@
+{
+  "parent": "yuoenchants:mod_enchant_book",
+  "display": { 
+    "icon": { 
+      "item": "yuoenchants:diamond_anvil"
+    },
+    "title": {
+		"translate": "advancements.yuoenchants.diamond_anvil.title"
+	},
+    "description": {
+		"translate": "advancements.yuoenchants.diamond_anvil.desc"
+	},
+    "frame": "goal"
+  },
+  "criteria": { 
+    "broken_magic_pearl": {
+      "trigger": "minecraft:inventory_changed", 
+      "conditions": { 
+		"items":[
+			{
+				"item": "yuoenchants:diamond_anvil"
+			}
+		]
+      }
+    }
+  },
+  "rewards": { 
+    "experience": 100
+  }
+}

@@ -5,9 +5,9 @@ import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 
-public class Leech extends Enchantment {
+public class Leech extends ModEnchantBase {
 
-    public Leech(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public Leech(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
@@ -19,12 +19,6 @@ public class Leech extends Enchantment {
     @Override
     public int getMaxEnchantability(int enchantmentLevel) {
         return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-
-    @Override
-    public boolean canApply(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof SwordItem || item instanceof AxeItem || stack.isEnchantable();
     }
 
 }

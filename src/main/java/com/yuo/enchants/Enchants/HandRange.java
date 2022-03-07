@@ -5,9 +5,9 @@ import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 
-public class HandRange extends Enchantment {
+public class HandRange extends ModEnchantBase {
 
-    public HandRange(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public HandRange(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
@@ -26,9 +26,4 @@ public class HandRange extends Enchantment {
         return this.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-    @Override
-    public boolean canApply(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof SwordItem  || item instanceof ToolItem || item instanceof TridentItem || stack.isEnchantable();
-    }
 }

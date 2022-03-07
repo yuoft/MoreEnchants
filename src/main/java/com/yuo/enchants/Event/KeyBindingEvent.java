@@ -1,8 +1,13 @@
 package com.yuo.enchants.Event;
 
+import com.yuo.enchants.Enchants.DoubleJump;
+import com.yuo.enchants.Enchants.EnchantRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -19,27 +24,32 @@ public class KeyBindingEvent {
 
     private static boolean IS_KEY_C = false; //是否按住快捷键
 
-    public static final KeyBinding MESSAGE_KEY = new KeyBinding("key.message", //分类
-            KeyConflictContext.IN_GAME, KeyModifier.CONTROL, InputMappings.Type.KEYSYM,
-            GLFW.GLFW_KEY_C, //按键C
-            "key.category.key_c"); //按键描述
+    public static final KeyBinding ENCHANT_KEY_C = new KeyBinding("key.yuoenchants.key_c", //分类
+            KeyConflictContext.IN_GAME, KeyModifier.CONTROL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_C, "key.yuoenchants"); //按键C 按键描述
 
     @SubscribeEvent
     public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
-        if (MESSAGE_KEY.isPressed()) {
-            if (Minecraft.getInstance().player != null){
-                IS_KEY_C = true;
-                return;
-            }
+        if (ENCHANT_KEY_C.isPressed()) {
+            setKeyC(true);
+        }else setKeyC(false);
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player == null) return;
+        int doubleJump = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.doubleJump.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
+        if (doubleJump > 0){
+            DoubleJump.jump(player, doubleJump);
         }
-        IS_KEY_C = false;
     }
 
     public static boolean isIsKeyC() {
         return IS_KEY_C;
     }
 
-    public static void setIsKeyC(boolean isKeyC) {
-        IS_KEY_C = isKeyC;
+    public static void setKeyC(boolean flag){
+        IS_KEY_C = flag;
+    }
+
+    public static void changeIsKeyC(){
+        if (IS_KEY_C == false) IS_KEY_C = true;
+        else IS_KEY_C = false;
     }
 }

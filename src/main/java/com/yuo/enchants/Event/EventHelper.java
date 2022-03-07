@@ -1,13 +1,13 @@
 package com.yuo.enchants.Event;
 
 import com.yuo.enchants.Enchants.EnchantRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -16,8 +16,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.loot.LootContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.particles.ParticleTypes;
@@ -25,7 +27,10 @@ import net.minecraft.potion.Effect;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -125,7 +130,7 @@ public class EventHelper {
      */
     private static ArrayList<BlockPos> getPoints(BlockPos origin, int lv) {
         ArrayList<BlockPos> points = new ArrayList<>();
-        int dimRange[][] = {
+        int[][] dimRange = {
                 {-1, 0, 1},
                 {-2, -1, 0, 1, 2},
                 {-3, -2, -1, 0, 1, 2, 3},
@@ -148,7 +153,7 @@ public class EventHelper {
     }
 
     /**
-     * 返回工具是否能够挖决方块
+     * 返回工具是否能够挖掘方块
      * @param tool 工具
      * @param state 方块
      * @param player 玩家
@@ -166,104 +171,91 @@ public class EventHelper {
     }
 
     /**
-     * 获取buff等级 保存buff数据
-     *
-     * @param player 玩家
-     * @param enchantment 附魔
-     * @param stack 物品
-     * @return buff等级
-     */
-    public static int setBuffLevel(PlayerEntity player, Enchantment enchantment, ItemStack stack) {
-        int level = EnchantmentHelper.getEnchantmentLevel(enchantment, stack); //获取附魔等级
-        CompoundNBT data = player.getPersistentData(); //玩家数据 存储状态id + 等级
-        ListNBT listNBT = new ListNBT();
-        CompoundNBT nbtId = new CompoundNBT();
-        CompoundNBT nbtLevel = new CompoundNBT();
-        nbtId.putString("id", enchantment.getName());
-        nbtLevel.putInt("level", level);
-        listNBT.add(0, nbtId);
-        listNBT.add(1, nbtLevel);
-        data.put(enchantment.getName(), listNBT);
-        return level;
-    }
-
-    /**
-     * 获取保存的buff信息
-     *
-     * @param player 玩家
-     * @return buff等级 为0则没有
-     */
-    public static int getBuffLevel(PlayerEntity player, Enchantment enchantment) {
-        CompoundNBT data = player.getPersistentData();
-        //根据buff等级改变属性
-        int level = 0;
-        ListNBT listNBT = (ListNBT) data.get(enchantment.getName());
-        if (listNBT == null || listNBT.isEmpty()) return level;
-        CompoundNBT nbtId = (CompoundNBT) listNBT.get(0);
-        CompoundNBT nbtLevel = (CompoundNBT) listNBT.get(1);
-        if ((nbtId == null || nbtLevel == null) || (nbtId.isEmpty() || nbtLevel.isEmpty())) return level;
-        //获取信息
-        String id = nbtId.getString("id");
-        if (id.equals(enchantment.getName())) level = nbtLevel.getInt("level");
-        return level;
-    }
-
-    /**
-     * 增加玩家属性 基于buff等级和变更系数决定
-     * @param player 玩家
-     * @param attr 需要变更的属性
-     * @param enchantment 生效附魔
-     * @param stack 物品
-     * @param value 变更系数
-     */
-    public static void upAttribute(PlayerEntity player, Attribute attr, Enchantment enchantment, ItemStack stack , float value){
-        ModifiableAttributeInstance attribute = player.getAttribute(attr);
-        if (attribute == null) return;
-        int level = EventHelper.setBuffLevel(player, enchantment, stack);
-        attribute.setBaseValue(attribute.getValue() + level * value);
-    }
-
-    /**
-     * 减少玩家属性 基于buff等级和变更系数决定
-     * @param player 玩家
-     * @param attr 需要变更的属性
-     * @param enchantment 生效buff
-     * @param value 变更系数
-     */
-    public static void downAttribute(PlayerEntity player, Attribute attr, Enchantment enchantment, float value){
-        ModifiableAttributeInstance attribute = player.getAttribute(attr);
-        if (attribute == null) return;
-        int level = EventHelper.getBuffLevel(player, enchantment);
-        attribute.setBaseValue(attribute.getValue() - level * value);
-    }
-
-    /**
      * 更改玩家属性
      * @param player 玩家
      */
     public static void changeAttribute(PlayerEntity player){
-        boolean health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST)) > 0;
-        boolean handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand()) > 0;
+        int health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
+        int handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand());
         String key = player.getGameProfile().getName()+":"+player.world.isRemote;
-        //生机
-        if (!EventHandler.playerHealth.contains(key)){
-            if (health){
-                EventHelper.upAttribute(player, Attributes.MAX_HEALTH, EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST), EventHandler.attrHealth);
+        ModifiableAttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
+        ModifiableAttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+        if (health > 0){
+            int lv = player.getPersistentData().getInt("yuo:health_level");
+            if (lv != health && maxHealth != null){ //换了工具
+                maxHealth.applyPersistentModifier(EventHelper.getModifier(ATTR_TYPE.HEALTH, -lv * EventHandler.attrHealth));
+                player.getPersistentData().putInt("yuo:health_level", health);
+                EventHandler.playerHealth.remove(key);
+            }
+            if (!EventHandler.playerHealth.contains(key) && maxHealth != null){ //未添加属性
+                maxHealth.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.HEALTH, health * EventHandler.attrHealth));
+                player.getPersistentData().putInt("yuo:health_level", health);
                 EventHandler.playerHealth.add(key);
             }
-        }else if (!health){
-            EventHelper.downAttribute(player, Attributes.MAX_HEALTH, EnchantRegistry.health.get(), EventHandler.attrHealth);
-            EventHandler.playerHealth.remove(key);
+        }else {
+            if (EventHandler.playerHealth.contains(key) && maxHealth != null){ //已添加属性
+                int level = player.getPersistentData().getInt("yuo:health_level");
+                maxHealth.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.HEALTH, -level * EventHandler.attrHealth));
+                EventHandler.playerHealth.remove(key);
+            }
         }
-        //手的距离
-        if (!EventHandler.playerHandRange.contains(key)){
-            if (handRange){
-                EventHelper.upAttribute(player, ForgeMod.REACH_DISTANCE.get(), EnchantRegistry.handRange.get(), player.getHeldItemMainhand(), EventHandler.attrHandRange);
+        if (handRange > 0){
+            int lv = player.getPersistentData().getInt("yuo:handRange_level");
+            if (lv != handRange && reachDistance != null){ //换了工具
+                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, -lv * EventHandler.attrHandRange));
+                player.getPersistentData().putInt("yuo:handRange_level", handRange);
+                EventHandler.playerHandRange.remove(key);
+            }
+            if (!EventHandler.playerHandRange.contains(key) && reachDistance != null){
+                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, handRange * EventHandler.attrHandRange));
+                player.getPersistentData().putInt("yuo:handRange_level", handRange);
                 EventHandler.playerHandRange.add(key);
             }
-        }else if (!handRange){
-            EventHelper.downAttribute(player, ForgeMod.REACH_DISTANCE.get(), EnchantRegistry.handRange.get(), EventHandler.attrHandRange);
-            EventHandler.playerHandRange.remove(key);
+        }else {
+            if (EventHandler.playerHandRange.contains(key) && reachDistance != null){
+                int level = player.getPersistentData().getInt("yuo:handRange_level");
+                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, -level * EventHandler.attrHandRange));
+                EventHandler.playerHandRange.remove(key);
+            }
         }
     }
+
+    public static final UUID HEALTH_UUID = UUID.fromString("91d60b13-c2a9-4883-9b3f-5b0c0bf09c0e");
+    public static final UUID RANGE_UUID = UUID.fromString("aa8d5d13-f55e-4216-b1c9-724156377743");
+    //获取属性修饰器
+    public static AttributeModifier getModifier(ATTR_TYPE type, float value){
+        return new AttributeModifier(type.getName(), value, AttributeModifier.Operation.ADDITION);
+    }
+
+    enum ATTR_TYPE{
+        HEALTH("generic.maxHealth", HEALTH_UUID, AttributeModifier.Operation.ADDITION),
+//        KNOCK("generic.knockbackResistance",AttributeModifier.Operation.ADDITION),
+//        MOVE_SPEED("generic.movementSpeed",AttributeModifier.Operation.ADDITION),
+//        DAMAGE("generic.attackDamage",AttributeModifier.Operation.ADDITION),
+//        ATTACK_SPEED("generic.attackSpeed",AttributeModifier.Operation.ADDITION),
+        REACH_DISTANCE("forge.reach_distance", RANGE_UUID, AttributeModifier.Operation.ADDITION);
+//        ARMOR("generic.armor",AttributeModifier.Operation.ADDITION),
+
+        private final String name;
+        private final UUID uuid;
+        private final AttributeModifier.Operation type;
+        ATTR_TYPE(String attrName, UUID uuidIn, AttributeModifier.Operation operation){
+            this.name = attrName;
+            this.type = operation;
+            this.uuid = uuidIn;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public AttributeModifier.Operation getType() {
+            return type;
+        }
+
+        public UUID getUuid() {
+            return uuid;
+        }
+    }
+
 }

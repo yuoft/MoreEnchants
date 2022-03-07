@@ -14,9 +14,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 
-public class LavaWalker extends Enchantment {
+public class LavaWalker extends ModEnchantBase {
 
-    public LavaWalker(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public LavaWalker(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

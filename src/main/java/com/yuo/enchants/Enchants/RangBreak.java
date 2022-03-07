@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 
-public class RangBreak extends Enchantment {
+public class RangBreak extends ModEnchantBase {
 
-    public RangBreak(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public RangBreak(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
@@ -30,9 +30,4 @@ public class RangBreak extends Enchantment {
         return this.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-    @Override
-    public boolean canApply(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof ToolItem || stack.isEnchantable();
-    }
 }

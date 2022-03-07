@@ -5,9 +5,9 @@ import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 
-public class Health extends Enchantment {
+public class Health extends ModEnchantBase {
 
-    public Health(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public Health(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

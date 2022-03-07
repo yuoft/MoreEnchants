@@ -38,13 +38,13 @@ public class RawOre extends Item {
 //        return result;
 //    }
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (!worldIn.isRemote){
-            double value = playerIn.getAttribute(Attributes.MAX_HEALTH).getValue();
-            double value1 = playerIn.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
-            playerIn.sendMessage(new StringTextComponent("血量：" + value + " 距离：" + value1), UUID.randomUUID());
-        }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
-    }
+//    @Override
+//    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+//        if (!worldIn.isRemote){
+//            double value = playerIn.getAttribute(Attributes.MAX_HEALTH).getValue();
+//            double value1 = playerIn.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+//            playerIn.sendMessage(new StringTextComponent("血量：" + value + " 距离：" + value1), UUID.randomUUID());
+//        }
+//        return super.onItemRightClick(worldIn, playerIn, handIn);
+//    }
 }

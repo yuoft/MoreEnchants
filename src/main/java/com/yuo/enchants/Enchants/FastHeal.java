@@ -3,25 +3,21 @@ package com.yuo.enchants.Enchants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 
-public class Vorpal extends Enchantment {
+public class FastHeal extends ModEnchantBase {
 
-    public Vorpal(Rarity rarityIn, EnchantmentType typeIn, EquipmentSlotType[] slots) {
+    public FastHeal(Rarity rarityIn, EnchantType typeIn, EquipmentSlotType[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return 5;
     }
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 25;
+        return 30;
     }
 
     @Override
@@ -29,10 +25,8 @@ public class Vorpal extends Enchantment {
         return this.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-    @Override
-    public boolean canApply(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof SwordItem || item instanceof AxeItem || stack.isEnchantable();
+    //额外恢复值
+    public static float fastHeal(int fastHeal, float amount){
+        return amount + (float) Math.ceil(amount * fastHeal * 0.25);
     }
-
 }
