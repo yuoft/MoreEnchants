@@ -1,0 +1,6 @@
+{
+  "parent": "yuoenchants:block/template_diamond_anvil",
+  "textures": {
+    "top": "yuoenchants:block/damaged_diamond_anvil_top"
+  }
+}

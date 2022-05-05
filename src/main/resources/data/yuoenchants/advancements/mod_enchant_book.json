@@ -1,0 +1,30 @@
+{
+  "parent": "yuoenchants:enchants",
+  "display": { 
+    "icon": { 
+      "item": "yuoenchants:mod_enchant_book"
+    },
+    "title": {
+		"translate": "advancements.yuoenchants.mod_enchant_book.title"
+	},
+    "description": {
+		"translate": "advancements.yuoenchants.mod_enchant_book.desc"
+	},
+    "frame": "task"
+  },
+  "criteria": { 
+    "broken_magic_pearl": {
+      "trigger": "minecraft:inventory_changed", 
+      "conditions": { 
+		"items":[
+			{
+				"item": "yuoenchants:mod_enchant_book"
+			}
+		]
+      }
+    }
+  },
+  "rewards": { 
+    "experience": 100
+  }
+}
