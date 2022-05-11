@@ -1,10 +1,10 @@
-package com.yuo.enchants.Event;
+package com.yuo.yuoenchants.Event;
 
-import com.yuo.enchants.Enchants.*;
+import com.yuo.yuoenchants.Enchants.*;
 import com.yuo.enchants.Items.ItemRegistry;
 import com.yuo.enchants.Items.ModEnchantBook;
 import com.yuo.enchants.Items.OldBook;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.yuoenchants.MoreEnchants;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;

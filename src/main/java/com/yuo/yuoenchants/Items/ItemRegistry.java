@@ -1,8 +1,8 @@
-package com.yuo.enchants.Items;
+package com.yuo.yuoenchants.Items;
 
-import com.yuo.enchants.Blocks.BlockRegistry;
+import com.yuo.yuoenchants.Blocks.BlockRegistry;
 import com.yuo.enchants.Items.Tab.ModGroup;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.yuoenchants.MoreEnchants;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;

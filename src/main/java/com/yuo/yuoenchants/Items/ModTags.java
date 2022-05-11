@@ -1,7 +1,7 @@
-package com.yuo.enchants.Items;
+package com.yuo.yuoenchants.Items;
 
-import com.yuo.enchants.Enchants.ModEnchantBase;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.yuoenchants.Enchants.ModEnchantBase;
+import com.yuo.yuoenchants.MoreEnchants;
 import net.minecraft.util.ResourceLocation;
 
 public class ModTags {

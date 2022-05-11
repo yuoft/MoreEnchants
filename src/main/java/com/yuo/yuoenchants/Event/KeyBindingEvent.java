@@ -1,7 +1,7 @@
-package com.yuo.enchants.Event;
+package com.yuo.yuoenchants.Event;
 
-import com.yuo.enchants.Enchants.DoubleJump;
-import com.yuo.enchants.Enchants.EnchantRegistry;
+import com.yuo.yuoenchants.Enchants.DoubleJump;
+import com.yuo.yuoenchants.Enchants.EnchantRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;

@@ -1,4 +1,4 @@
-package com.yuo.enchants.Enchants;
+package com.yuo.yuoenchants.Enchants;
 
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.CreatureAttribute;

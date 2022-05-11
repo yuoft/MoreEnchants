@@ -1,6 +1,6 @@
-package com.yuo.enchants.Blocks;
+package com.yuo.yuoenchants.Blocks;
 
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.yuoenchants.MoreEnchants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

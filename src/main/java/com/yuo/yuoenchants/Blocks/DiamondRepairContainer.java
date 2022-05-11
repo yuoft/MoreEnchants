@@ -1,4 +1,4 @@
-package com.yuo.enchants.Blocks;
+package com.yuo.yuoenchants.Blocks;
 
 import com.yuo.enchants.Items.ItemRegistry;
 import com.yuo.enchants.Items.ModEnchantBook;

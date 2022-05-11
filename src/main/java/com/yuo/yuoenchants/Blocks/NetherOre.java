@@ -1,4 +1,4 @@
-package com.yuo.enchants.Blocks;
+package com.yuo.yuoenchants.Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

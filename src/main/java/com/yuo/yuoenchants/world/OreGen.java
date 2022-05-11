@@ -1,6 +1,6 @@
-package com.yuo.enchants.world;
+package com.yuo.yuoenchants.world;
 
-import com.yuo.enchants.Blocks.BlockRegistry;
+import com.yuo.yuoenchants.Blocks.BlockRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biome;

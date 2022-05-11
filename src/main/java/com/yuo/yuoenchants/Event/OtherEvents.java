@@ -1,8 +1,8 @@
-package com.yuo.enchants.Event;
+package com.yuo.yuoenchants.Event;
 
 import com.yuo.enchants.Items.ItemRegistry;
 import com.yuo.enchants.Items.OldBook;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.yuoenchants.MoreEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;

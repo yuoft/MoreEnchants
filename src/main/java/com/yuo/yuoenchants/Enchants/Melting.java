@@ -1,4 +1,4 @@
-package com.yuo.enchants.Enchants;
+package com.yuo.yuoenchants.Enchants;
 
 import com.yuo.enchants.Event.EventHelper;
 import net.minecraft.block.Block;

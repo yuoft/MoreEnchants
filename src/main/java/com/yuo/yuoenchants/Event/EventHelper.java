@@ -1,6 +1,6 @@
-package com.yuo.enchants.Event;
+package com.yuo.yuoenchants.Event;
 
-import com.yuo.enchants.Enchants.EnchantRegistry;
+import com.yuo.yuoenchants.Enchants.EnchantRegistry;
 import net.minecraft.block.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;

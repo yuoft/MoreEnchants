@@ -1,6 +1,6 @@
-package com.yuo.enchants.Items.Tab;
+package com.yuo.yuoenchants.Items.Tab;
 
-import com.yuo.enchants.Items.ItemRegistry;
+import com.yuo.yuoenchants.Items.ItemRegistry;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

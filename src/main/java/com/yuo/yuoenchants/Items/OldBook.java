@@ -1,7 +1,7 @@
-package com.yuo.enchants.Items;
+package com.yuo.yuoenchants.Items;
 
-import com.yuo.enchants.Enchants.EnchantRegistry;
-import com.yuo.enchants.Enchants.ModEnchantBase;
+import com.yuo.yuoenchants.Enchants.EnchantRegistry;
+import com.yuo.yuoenchants.Enchants.ModEnchantBase;
 import com.yuo.enchants.Items.Tab.ModGroup;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;

@@ -1,6 +1,6 @@
-package com.yuo.enchants.Enchants;
+package com.yuo.yuoenchants.Enchants;
 
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.yuoenchants.MoreEnchants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.enchantment.Enchantments;

@@ -1,12 +1,12 @@
-package com.yuo.enchants;
+package com.yuo.yuoenchants;
 
-import com.yuo.enchants.Blocks.BlockRegistry;
-import com.yuo.enchants.Blocks.ContainerRegister;
-import com.yuo.enchants.Blocks.DiamondAnvilScreen;
-import com.yuo.enchants.Enchants.EnchantRegistry;
-import com.yuo.enchants.Event.KeyBindingEvent;
-import com.yuo.enchants.Items.ItemRegistry;
-import com.yuo.enchants.world.OreGen;
+import com.yuo.yuoenchants.Blocks.BlockRegistry;
+import com.yuo.yuoenchants.Blocks.ContainerRegister;
+import com.yuo.yuoenchants.Blocks.DiamondAnvilScreen;
+import com.yuo.yuoenchants.Enchants.EnchantRegistry;
+import com.yuo.yuoenchants.Event.KeyBindingEvent;
+import com.yuo.yuoenchants.Items.ItemRegistry;
+import com.yuo.yuoenchants.world.OreGen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;

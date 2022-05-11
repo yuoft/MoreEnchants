@@ -1,6 +1,6 @@
-package com.yuo.enchants.Items;
+package com.yuo.yuoenchants.Items;
 
-import com.yuo.enchants.Enchants.WaterWalk;
+import com.yuo.yuoenchants.Enchants.WaterWalk;
 import com.yuo.enchants.Items.Tab.ModGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
