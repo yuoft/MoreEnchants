@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -31,7 +30,7 @@ import java.util.Optional;
 public class ModEnchantBook extends Item {
 
     public ModEnchantBook() {
-        super(new Properties().group(ModGroup.myGroup).maxStackSize(1));
+        super(new Properties().group(ModGroup.youEnchants).maxStackSize(1));
     }
 
     @Override
@@ -45,7 +44,7 @@ public class ModEnchantBook extends Item {
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (group == ModGroup.myGroup) {
+        if (group == ModGroup.youEnchants) {
             for(RegistryObject<Enchantment> obj : EnchantRegistry.ENCHANTMENTS.getEntries()) {
                 Enchantment enchantment = obj.get();
                 for(int i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); ++i) {

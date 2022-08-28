@@ -14,7 +14,7 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw .GLFW;
 
 /**
  * 用户输入/快捷键
@@ -29,9 +29,7 @@ public class KeyBindingEvent {
 
     @SubscribeEvent
     public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
-        if (ENCHANT_KEY_C.isPressed()) {
-            setKeyC(true);
-        }else setKeyC(false);
+        setKeyC(ENCHANT_KEY_C.isPressed());
         ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player == null) return;
         int doubleJump = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.doubleJump.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
@@ -48,8 +46,4 @@ public class KeyBindingEvent {
         IS_KEY_C = flag;
     }
 
-    public static void changeIsKeyC(){
-        if (IS_KEY_C == false) IS_KEY_C = true;
-        else IS_KEY_C = false;
-    }
 }

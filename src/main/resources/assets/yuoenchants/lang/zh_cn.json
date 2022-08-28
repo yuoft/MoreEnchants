@@ -1,5 +1,4 @@
 {
-	#附魔
 	"enchantment.yuoenchants.fire_immune": "§5火焰免疫",
 	"enchantment.yuoenchants.war_to_war": "§5以战养战",
 	"enchantment.yuoenchants.blast_arrow": "§5爆炸箭",
@@ -38,7 +37,17 @@
 	"enchantment.yuoenchants.super_power": "§5超级力量",
 	"enchantment.yuoenchants.fire_shield": "§5火焰盾",
 	"enchantment.yuoenchants.rebound": "§5弹反",
-	#附魔描述
+	"enchantment.yuoenchants.health_to_sacrifice": "§5生命献祭",
+	"enchantment.yuoenchants.strength_luck": "§5强运",
+	"enchantment.yuoenchants.robbery": "§5掠夺",
+	"enchantment.yuoenchants.super_thorns": "§5高级荆棘",
+	"enchantment.yuoenchants.fire_thorns": "§5火焰荆棘",
+	"enchantment.yuoenchants.diamond_drop": "§5分子重构",
+	"enchantment.yuoenchants.instability": "§a失稳",
+	"enchantment.yuoenchants.deep_fear": "§a深海恐惧",
+	"enchantment.yuoenchants.un_looting": "§a抢夺不到",
+	"enchantment.yuoenchants.un_luck": "§a霉运",
+
 	"enchantType.yuoenchants.type": "适用类型：",
 	"enchantType.yuoenchants.armor": "盔甲",
 	"enchantType.yuoenchants.armor_head": "头盔",
@@ -77,7 +86,7 @@
 	"enchantInfo.yuoenchants:hand_range": "提升玩家触及距离",
 	"enchantInfo.yuoenchants:double_jump": "可以额外跳几次（由附魔等级决定），落地后重置。达到最大跳跃次数时进入冷却",
 	"enchantInfo.yuoenchants:magnet": "可以吸引一定范围内的物品和经验到玩家脚下",
-	"enchantInfo.yuoenchants:water_walk": "可以在水（或岩浆，但是不建议）上行走（骑乘坐骑也行），",
+	"enchantInfo.yuoenchants:water_walk": "可以在水（或岩浆，但是不建议）上行走（骑乘坐骑也行）",
 	"enchantInfo.yuoenchants:fast_bow": "加快拉弓速度",
 	"enchantInfo.yuoenchants:farmer": "右键作物方块时收获一定范围内已成熟作物，并催熟作物",
 	"enchantInfo.yuoenchants:super_sharp": "更强的锋利",
@@ -92,8 +101,18 @@
 	"enchantInfo.yuoenchants:repulsion": "拉弓时排斥周围一定范围内的实体",
 	"enchantInfo.yuoenchants:super_power": "更强大的力量",
 	"enchantInfo.yuoenchants:rebound": "当持盾防御时，会击退攻击者并反弹一定伤害。有概率完全防御此次攻击（消耗耐久）",
-	"enchantInfo.yuoenchants:fire_shield": "当持盾防御时，点燃攻击者。",
-	#物品
+	"enchantInfo.yuoenchants:fire_shield": "当持盾防御时，点燃攻击者",
+	"enchantInfo.yuoenchants:health_to_sacrifice": "击杀生物时有概率掉落经验液滴",
+	"enchantInfo.yuoenchants:strength_luck": "强化时运",
+	"enchantInfo.yuoenchants:robbery": "强化抢夺",
+	"enchantInfo.yuoenchants:super_thorns": "高级荆棘",
+	"enchantInfo.yuoenchants:fire_thorns": "反伤并且点燃攻击者",
+	"enchantInfo.yuoenchants:diamond_drop": "挖掘煤矿时有概率掉落钻石",
+	"enchantInfo.yuoenchants:instability": "攻击，挖掘，使用物品时有概率将物品丢出(幸运可降低概率)",
+	"enchantInfo.yuoenchants:deep_fear": "降低游泳速度",
+	"enchantInfo.yuoenchants:un_looting": "击败生物后有概率不掉落经验和物品",
+	"enchantInfo.yuoenchants:un_luck": "挖掘方块后有概率不掉落经验和物品",
+
 	"item.yuoenchants.raw_iron": "粉碎铁",
 	"item.yuoenchants.raw_gold": "粉碎金",
 	"item.yuoenchants.bamboo_coal": "竹炭",
@@ -101,7 +120,9 @@
 	"item.yuoenchants.broken_magic_pearl_super": "§6高级破魔宝珠",
 	"item.yuoenchants.mod_enchant_book": "高级附魔书",
 	"item.yuoenchants.old_book": "§b古卷",
-	#方块
+	"item.yuoenchants.small_exp_drip": "经验液滴·小",
+	"item.yuoenchants.big_exp_drip": "经验液滴·大",
+
 	"block.yuoenchants.nether_iron": "下届铁矿石",
 	"block.yuoenchants.nether_gold": "下届金矿石",
 	"block.yuoenchants.overworld_iron": "主世界铁矿石",
@@ -109,17 +130,19 @@
 	"block.yuoenchants.diamond_anvil": "钻石砧",
 	"block.yuoenchants.chipped_diamond_anvil": "轻微损坏的钻石砧",
 	"block.yuoenchants.damaged_diamond_anvil": "严重损坏的钻石砧",
-	#快捷键
+
 	"key.yuoenchants": "Yuo的更多附魔",
 	"key.yuoenchants.key_c": "启用范围挖掘",
-	#物品信息
+
 	"yuoenchants.text.itemInfo.broken": "在铁砧使用消除一级附魔惩罚",
 	"yuoenchants.text.itemInfo.broken_super": "在铁砧使用消除全部附魔惩罚",
+	"yuoenchants.text.itemInfo.small_exp_drip": "使用获取10点经验",
+	"yuoenchants.text.itemInfo.big_exp_drip": "使用获取100点经验",
 	"yuoenchants.text.blockInfo.diamond_anvil": "本模组附魔需使用此铁砧附到物品上，附魔上限为256级",
 	"yuoenchants.message.old_book.fail": "§c无法使用",
 	"yuoenchants.message.old_book.success": "§a使用成功",
 	"yuoenchants.container.repair": "§b钻石砧",
-	#进度
+
 	"advancements.yuoenchants.enchants.title": "Yuo的更多附魔",
 	"advancements.yuoenchants.enchants.desc": "安装本模组",
 	"advancements.yuoenchants.mod_enchant_book.title": "这是附魔书？",
@@ -130,8 +153,8 @@
 	"advancements.yuoenchants.old_book.desc": "获取古卷",
 	"advancements.yuoenchants.broken_magic_pearl.title": "随心所欲的附魔",
 	"advancements.yuoenchants.broken_magic_pearl.desc": "和村民交易高级破魔宝珠",
-	"yuoenchants.message.login"="§b欢迎游玩本模组[Yuo的更多附魔]，问题反馈§a点击此处!",
-	"yuoenchants.message.login0"="§ahttps://space.bilibili.com/21854371",
-	#物品栏
+	"yuoenchants.message.login":"§b欢迎游玩本模组[Yuo的更多附魔]，问题反馈§a点击此处!",
+	"yuoenchants.message.login0":"§ahttps://space.bilibili.com/21854371",
+
 	"itemGroup.YuoEnchants": "Yuo的更多附魔"
 }

@@ -19,9 +19,11 @@ public class ItemRegistry {
     public static RegistryObject<Item> BrokenMagicPearlSuper = ITEMS.register("broken_magic_pearl_super", BrokenMagicPearl::new);
     public static RegistryObject<Item> modEnchantBook = ITEMS.register("mod_enchant_book", ModEnchantBook::new);
     public static RegistryObject<Item> oldBook = ITEMS.register("old_book", OldBook::new);
+    public static RegistryObject<Item> smallExpDrip = ITEMS.register("small_exp_drip", ExpDrip::new);
+    public static RegistryObject<Item> bigExpDrip = ITEMS.register("big_exp_drip", ExpDrip::new);
 
     //方块
-    private static final Item.Properties GROUP = new Item.Properties().group(ModGroup.myGroup);
+    private static final Item.Properties GROUP = new Item.Properties().group(ModGroup.youEnchants);
     public static RegistryObject<Item> netherIron = ITEMS.register("nether_iron",
             () -> new BlockItem(BlockRegistry.netherIron.get(), GROUP));
     public static RegistryObject<Item> netherGold = ITEMS.register("nether_gold",

@@ -1,14 +1,10 @@
 package com.yuo.enchants.Items;
 
-import com.yuo.enchants.Enchants.EnchantRegistry;
-import com.yuo.enchants.Enchants.ModEnchantBase;
 import com.yuo.enchants.Items.Tab.ModGroup;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
@@ -20,7 +16,6 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -28,7 +23,7 @@ import java.util.*;
 public class OldBook extends Item {
 
     public OldBook() {
-        super(new Properties().group(ModGroup.myGroup).maxStackSize(1).rarity(Rarity.EPIC));
+        super(new Properties().group(ModGroup.youEnchants).maxStackSize(1).rarity(Rarity.EPIC));
     }
 
     @Override
@@ -115,7 +110,7 @@ public class OldBook extends Item {
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (group == ModGroup.myGroup) {
+        if (group == ModGroup.youEnchants) {
             for(Enchantment enchantment : Registry.ENCHANTMENT) {
                 if (enchantment.getMaxLevel() != 1 && enchantment.type != null)
                     items.add(getStack(new EnchantmentData(enchantment, enchantment.getMaxLevel())));

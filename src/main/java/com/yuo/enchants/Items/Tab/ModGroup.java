@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 //创造模式物品栏 实例化
 public class ModGroup extends ItemGroup{
-	public static ItemGroup myGroup = new ModGroup();
+	public static ItemGroup youEnchants = new ModGroup();
 
 	public ModGroup() {
 		super(ItemGroup.GROUPS.length, "YuoEnchants");

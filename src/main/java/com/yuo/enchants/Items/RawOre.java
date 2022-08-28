@@ -1,26 +1,13 @@
 package com.yuo.enchants.Items;
 
 import com.yuo.enchants.Items.Tab.ModGroup;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeMod;
-
-import java.util.UUID;
 
 //破碎矿物
 public class RawOre extends Item {
 
     public RawOre() {
-        super(new Properties().group(ModGroup.myGroup));
+        super(new Properties().group(ModGroup.youEnchants));
     }
 
 //    @Override

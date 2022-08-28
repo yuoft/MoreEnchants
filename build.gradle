@@ -1,19 +1,25 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
+        maven {
+            url 'https://maven.aliyun.com/repository/public/' //阿里云仓库
+        }
+        maven { url 'https://maven.aliyun.com/repository/central'}
+        maven {
+            name = 'Forge'
+            url = 'https://maven.minecraftforge.net'
+        }
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.4-1.3.0'
+version = '1.16.4-1.3.3'
 group = 'com.yuo.yuoenchants' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'YuoEnchants'
 

@@ -24,6 +24,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -43,6 +45,36 @@ import java.util.*;
 
 public class EventHelper {
     private static final Random RANDOM = new Random();
+
+    /**
+     * 将玩家主手物品丢出
+     * @param player 玩家
+     * @param instability 附魔等级
+     */
+    public static void dropItem(PlayerEntity player, int instability) {
+        if (instability > 0 && !player.world.isRemote && !player.isCreative()){ //挖掘时
+            EffectInstance instance = player.getActivePotionEffect(Effects.LUCK);
+            int luck = -1;
+            if (instance != null)
+                luck =- instance.getAmplifier();
+            if (RANDOM.nextDouble() < 0.15 * instability - (luck + 1) * 0.1){
+                player.drop(true);
+            }
+        }
+    }
+
+    /**
+     * 获取玩家使用的物品
+     * @param player 玩家
+     * @return 物品
+     */
+    public static ItemStack getUseItem(PlayerEntity player){
+        ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
+        if (!heldItem.isEmpty()) return heldItem;
+        ItemStack offHand = player.getHeldItem(Hand.OFF_HAND);
+        if (!offHand.isEmpty()) return offHand;
+        return ItemStack.EMPTY;
+    }
 
     /**
      * 熔炼附魔的伪实现 通过取消方块破坏事件，同时生成掉落物
@@ -177,9 +209,11 @@ public class EventHelper {
     public static void changeAttribute(PlayerEntity player){
         int health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
         int handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand());
+        int deepFear = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.deepFear.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
         String key = player.getGameProfile().getName()+":"+player.world.isRemote;
         ModifiableAttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
         ModifiableAttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+        ModifiableAttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
         if (health > 0){
             int lv = player.getPersistentData().getInt("yuo:health_level");
             if (lv != health && maxHealth != null){ //换了工具
@@ -218,13 +252,33 @@ public class EventHelper {
                 EventHandler.playerHandRange.remove(key);
             }
         }
+        if (deepFear > 0){
+            int lv = player.getPersistentData().getInt("yuo:deepFear_level");
+            if (lv != deepFear && swimSpeed != null){
+                swimSpeed.applyPersistentModifier(EventHelper.getModifier(ATTR_TYPE.SWIM_SPEED, lv * EventHandler.attrSwimSpeed));
+                player.getPersistentData().putInt("yuo:deepFear_level", deepFear);
+                EventHandler.playerSwimSpeed.remove(key);
+            }
+            if (!EventHandler.playerSwimSpeed.contains(key) && swimSpeed != null){
+                swimSpeed.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.SWIM_SPEED, -deepFear * EventHandler.attrSwimSpeed));
+                player.getPersistentData().putInt("yuo:deepFear_level", deepFear);
+                EventHandler.playerSwimSpeed.add(key);
+            }
+        }else {
+            if (EventHandler.playerSwimSpeed.contains(key) && swimSpeed != null){
+                int level = player.getPersistentData().getInt("yuo:deepFear_level");
+                swimSpeed.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.SWIM_SPEED, level * EventHandler.attrSwimSpeed));
+                EventHandler.playerSwimSpeed.remove(key);
+            }
+        }
     }
 
     public static final UUID HEALTH_UUID = UUID.fromString("91d60b13-c2a9-4883-9b3f-5b0c0bf09c0e");
     public static final UUID RANGE_UUID = UUID.fromString("aa8d5d13-f55e-4216-b1c9-724156377743");
+    public static final UUID SWIM_UUID = UUID.fromString("39535dd0-fd27-430b-86ad-c12dd985529f");
     //获取属性修饰器
     public static AttributeModifier getModifier(ATTR_TYPE type, float value){
-        return new AttributeModifier(type.getName(), value, AttributeModifier.Operation.ADDITION);
+        return new AttributeModifier(type.getName(), value, type.getType());
     }
 
     enum ATTR_TYPE{
@@ -233,7 +287,8 @@ public class EventHelper {
 //        MOVE_SPEED("generic.movementSpeed",AttributeModifier.Operation.ADDITION),
 //        DAMAGE("generic.attackDamage",AttributeModifier.Operation.ADDITION),
 //        ATTACK_SPEED("generic.attackSpeed",AttributeModifier.Operation.ADDITION),
-        REACH_DISTANCE("forge.reach_distance", RANGE_UUID, AttributeModifier.Operation.ADDITION);
+        REACH_DISTANCE("forge.reach_distance", RANGE_UUID, AttributeModifier.Operation.ADDITION),
+        SWIM_SPEED("forge.swim_speed", SWIM_UUID, AttributeModifier.Operation.MULTIPLY_BASE);
 //        ARMOR("generic.armor",AttributeModifier.Operation.ADDITION),
 
         private final String name;
