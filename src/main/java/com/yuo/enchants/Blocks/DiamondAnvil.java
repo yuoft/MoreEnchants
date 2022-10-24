@@ -7,7 +7,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.RepairContainer;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -100,10 +99,10 @@ public class DiamondAnvil extends FallingBlock {
 
     @Nullable
     public static BlockState damage(BlockState state) {
-        if (state.isIn(BlockRegistry.diamondAnvil.get())) {
-            return BlockRegistry.chippedDiamondAnvil.get().getDefaultState().with(FACING, state.get(FACING));
+        if (state.matchesBlock(YEBlocks.diamondAnvil.get())) {
+            return YEBlocks.chippedDiamondAnvil.get().getDefaultState().with(FACING, state.get(FACING));
         } else {
-            return state.isIn(BlockRegistry.chippedDiamondAnvil.get()) ? BlockRegistry.damagedDiamondAnvil.get().getDefaultState().with(FACING, state.get(FACING)) : null;
+            return state.matchesBlock(YEBlocks.chippedDiamondAnvil.get()) ? YEBlocks.damagedDiamondAnvil.get().getDefaultState().with(FACING, state.get(FACING)) : null;
         }
     }
 

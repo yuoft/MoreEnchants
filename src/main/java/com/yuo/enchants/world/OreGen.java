@@ -1,6 +1,6 @@
 package com.yuo.enchants.world;
 
-import com.yuo.enchants.Blocks.BlockRegistry;
+import com.yuo.enchants.Blocks.YEBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biome;
@@ -19,27 +19,27 @@ import net.minecraftforge.fml.common.Mod;
  */
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OreGen {
-	private static int topOffset = 0;
+	private static final int topOffset = 0;
 
 	public static void generateOres(final BiomeLoadingEvent event) {
 		BiomeGenerationSettingsBuilder generation = event.getGeneration();
 		//主世界
 		if (!(event.getCategory().equals(Biome.Category.THEEND) || event.getCategory().equals(Biome.Category.NETHER))){
-			addFeatureOverWorld(generation, BlockRegistry.overworldIron.get().getDefaultState(),
+			addFeatureOverWorld(generation, YEBlocks.overworldIron.get().getDefaultState(),
 					12, 0, 128, 10);
-			addFeatureOverWorld(generation, BlockRegistry.overworldGold.get().getDefaultState(),
+			addFeatureOverWorld(generation, YEBlocks.overworldGold.get().getDefaultState(),
 					8, 0, 128, 8);
 		}
 		//下届
 		if (event.getCategory().equals(Biome.Category.NETHER)){
-			addFeatureNether(generation, BlockRegistry.netherIron.get().getDefaultState(),
+			addFeatureNether(generation, YEBlocks.netherIron.get().getDefaultState(),
 					12, 30, 128, 30);
-			addFeatureNether(generation, BlockRegistry.netherGold.get().getDefaultState(),
+			addFeatureNether(generation, YEBlocks.netherGold.get().getDefaultState(),
 					8, 0, 96, 25);
 		}
 		//末地
-		if (event.getCategory().equals(Biome.Category.THEEND)){
-		}
+//		if (event.getCategory().equals(Biome.Category.THEEND)){
+//		}
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class OreGen {
 		builder.withFeature(Decoration.UNDERGROUND_ORES,
 				Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, state, maxSize)) // 替换方块, 生成矿物， 最大生成数量
 						.withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(minHeight, topOffset , maxHeight))) //最低高度, 0,最高高度
-						.square().func_242731_b(genCount)); //生成次数
+						.square().count(genCount)); //生成次数
 	}
 	/**
 	 * 下届矿物生成规则
@@ -60,7 +60,7 @@ public class OreGen {
 		builder.withFeature(Decoration.UNDERGROUND_DECORATION,
 				Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NETHERRACK, state, maxSize))
 						.withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(minHeight, topOffset , maxHeight)))
-						.square().func_242731_b(genCount));
+						.square().count(genCount));
 	}
 	/**
 	 * 末地矿物生成规则
@@ -70,6 +70,6 @@ public class OreGen {
 		builder.withFeature(Decoration.UNDERGROUND_STRUCTURES,
 				Feature.ORE.withConfiguration(new OreFeatureConfig(new BlockMatchRuleTest(Blocks.END_STONE), state, maxSize))
 						.withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(minHeight, topOffset , maxHeight)))
-						.square().func_242731_b(genCount));
+						.square().count(genCount));
 	}
 }

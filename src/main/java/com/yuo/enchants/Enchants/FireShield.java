@@ -5,10 +5,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-
-import java.util.Random;
 
 public class FireShield extends ModEnchantBase {
 

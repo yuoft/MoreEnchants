@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screen.inventory.AbstractRepairScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.RepairContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CRenameItemPacket;
@@ -34,18 +33,20 @@ public class DiamondAnvilScreen extends AbstractRepairScreen<DiamondRepairContai
     }
 
     protected void initFields() {
-        this.minecraft.keyboardListener.enableRepeatEvents(true);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
-        this.nameField = new TextFieldWidget(this.font, i + 62, j + 24, 103, 12, new TranslationTextComponent("container.repair"));
-        this.nameField.setCanLoseFocus(false);
-        this.nameField.setTextColor(-1);
-        this.nameField.setDisabledTextColour(-1);
-        this.nameField.setEnableBackgroundDrawing(false);
-        this.nameField.setMaxStringLength(35);
-        this.nameField.setResponder(this::renameItem);
-        this.children.add(this.nameField);
-        this.setFocusedDefault(this.nameField);
+        if (this.minecraft != null){
+            this.minecraft.keyboardListener.enableRepeatEvents(true);
+            int i = (this.width - this.xSize) / 2;
+            int j = (this.height - this.ySize) / 2;
+            this.nameField = new TextFieldWidget(this.font, i + 62, j + 24, 103, 12, new TranslationTextComponent("container.repair"));
+            this.nameField.setCanLoseFocus(false);
+            this.nameField.setTextColor(-1);
+            this.nameField.setDisabledTextColour(-1);
+            this.nameField.setEnableBackgroundDrawing(false);
+            this.nameField.setMaxStringLength(35);
+            this.nameField.setResponder(this::renameItem);
+            this.children.add(this.nameField);
+            this.setFocusedDefault(this.nameField);
+        }
     }
 
     public void resize(Minecraft minecraft, int width, int height) {
@@ -56,12 +57,14 @@ public class DiamondAnvilScreen extends AbstractRepairScreen<DiamondRepairContai
 
     public void onClose() {
         super.onClose();
-        this.minecraft.keyboardListener.enableRepeatEvents(false);
+        if (this.minecraft != null)
+            this.minecraft.keyboardListener.enableRepeatEvents(false);
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 256) {
-            this.minecraft.player.closeScreen();
+        if (keyCode == 256 && this.minecraft != null) {
+            if (this.minecraft.player != null)
+                this.minecraft.player.closeScreen();
         }
 
         return this.nameField.keyPressed(keyCode, scanCode, modifiers) || this.nameField.canWrite() || super.keyPressed(keyCode, scanCode, modifiers);
@@ -71,12 +74,13 @@ public class DiamondAnvilScreen extends AbstractRepairScreen<DiamondRepairContai
         if (!name.isEmpty()) {
             String s = name;
             Slot slot = this.container.getSlot(0);
-            if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && name.equals(slot.getStack().getDisplayName().getString())) {
+            if (slot.getHasStack() && !slot.getStack().hasDisplayName() && name.equals(slot.getStack().getDisplayName().getString())) {
                 s = "";
             }
 
             this.container.updateItemName(s);
-            this.minecraft.player.connection.sendPacket(new CRenameItemPacket(s));
+            if (this.minecraft != null && this.minecraft.player != null)
+                this.minecraft.player.connection.sendPacket(new CRenameItemPacket(s));
         }
     }
 
@@ -87,7 +91,8 @@ public class DiamondAnvilScreen extends AbstractRepairScreen<DiamondRepairContai
         if (i > 0) {
             int j = 8453920;
             ITextComponent itextcomponent;
-            if (i >= 256 && !this.minecraft.player.abilities.isCreativeMode) {
+            if (i >= 256 && this.minecraft != null && this.minecraft.player != null &&
+                    !this.minecraft.player.abilities.isCreativeMode) {
                 itextcomponent = field_243333_B;
                 j = 16736352;
             } else if (!this.container.getSlot(2).getHasStack()) {
@@ -103,7 +108,7 @@ public class DiamondAnvilScreen extends AbstractRepairScreen<DiamondRepairContai
                 int k = this.xSize - 8 - this.font.getStringPropertyWidth(itextcomponent) - 2;
                 int l = 69;
                 fill(matrixStack, k - 2, 67, this.xSize - 8, 79, 1325400064);
-                this.font.func_243246_a(matrixStack, itextcomponent, (float)k, 69.0F, j);
+                this.font.drawText(matrixStack, itextcomponent, (float)k, 69.0F, j);
             }
         }
 

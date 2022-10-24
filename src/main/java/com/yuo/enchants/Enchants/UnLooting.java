@@ -4,8 +4,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
 
-import java.awt.geom.Rectangle2D;
-
 public class UnLooting extends ModEnchantBase{
     protected UnLooting(Rarity rarityIn, EnchantType type, EquipmentSlotType[] slots) {
         super(rarityIn, type, slots);

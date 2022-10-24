@@ -1,9 +1,7 @@
 package com.yuo.enchants.Blocks;
 
 import com.yuo.enchants.MoreEnchants;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.extensions.IForgeContainerType;

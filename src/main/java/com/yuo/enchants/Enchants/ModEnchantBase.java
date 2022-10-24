@@ -31,7 +31,7 @@ public class ModEnchantBase extends Enchantment {
         IFormattableTextComponent iformattabletextcomponent = new TranslationTextComponent(this.getName());
 
         if (level != 1 || this.getMaxLevel() != 1) {
-            iformattabletextcomponent.appendString(" ").append(new TranslationTextComponent("enchantment.level." + level));
+            iformattabletextcomponent.appendString(" ").appendSibling(new TranslationTextComponent("enchantment.level." + level));
         }
         if (this.isCurse()) {
             iformattabletextcomponent.mergeStyle(TextFormatting.GREEN);
@@ -42,7 +42,7 @@ public class ModEnchantBase extends Enchantment {
         return iformattabletextcomponent;
     }
 
-    enum EnchantType{
+    enum EnchantType {
         ARMOR{ //盔甲
             @Override
             public boolean canEnchantItem(Item itemIn) {

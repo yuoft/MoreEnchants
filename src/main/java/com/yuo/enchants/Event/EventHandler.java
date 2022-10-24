@@ -19,15 +19,12 @@ import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -43,7 +40,7 @@ import java.util.*;
 /**
  * 事件处理类 附魔实现
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = MoreEnchants.MODID)
+@Mod.EventBusSubscriber(modid = MoreEnchants.MODID)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
     public static List<String> playerHealth = new ArrayList<>();
@@ -129,8 +126,8 @@ public class EventHandler {
     @SubscribeEvent
     public static void blastArrow(ProjectileImpactEvent.Arrow event) {
         AbstractArrowEntity arrow = event.getArrow();
-        if (arrow.func_234616_v_() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) arrow.func_234616_v_();
+        if (arrow.getShooter() instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) arrow.getShooter();
             if (player != null) {
                 ItemStack itemStack = EventHelper.getUseItem(player);
                 int blastArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.blastArrow.get(), itemStack);
@@ -448,7 +445,7 @@ public class EventHandler {
                 LivingEntity entityLiving = event.getEntityLiving();
                 World world = entityLiving.world;
                 int looting = EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, mainHand);
-                HealthToSacrifice.dropExpDrip(world, healthToS, looting, entityLiving.getPosition(), !entityLiving.isNonBoss());
+                HealthToSacrifice.dropExpDrip(world, healthToS, looting, entityLiving.getPosition(), entityLiving.getMaxHealth());
             }
         }
     }
@@ -520,9 +517,9 @@ public class EventHandler {
         Entity entity = event.getEntity();
         if (entity instanceof ArrowEntity) {
             ArrowEntity arrow = (ArrowEntity) entity;
-            Entity entity1 = arrow.func_234616_v_();
-            if (entity1 instanceof LivingEntity) {
-                LivingEntity living = (LivingEntity) entity1;
+            Entity shooter = arrow.getShooter();
+            if (shooter instanceof LivingEntity) {
+                LivingEntity living = (LivingEntity) shooter;
                 ItemStack bow = living.getActiveItemStack();
                 if (!bow.isEmpty() && bow.getItem() instanceof BowItem) {
                     int superPower = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.superPower.get(), bow);

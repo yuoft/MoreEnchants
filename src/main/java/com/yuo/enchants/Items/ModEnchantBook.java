@@ -55,7 +55,7 @@ public class ModEnchantBook extends Item {
     }
 
     public static ItemStack getStack(EnchantmentData enchantData) {
-        ItemStack itemstack = new ItemStack(ItemRegistry.modEnchantBook.get());
+        ItemStack itemstack = new ItemStack(YEItems.modEnchantBook.get());
         EnchantedBookItem.addEnchantment(itemstack, enchantData);
         return itemstack;
     }
@@ -87,7 +87,7 @@ public class ModEnchantBook extends Item {
                     if (Screen.hasShiftDown()){
                         ModEnchantBase base = (ModEnchantBase) enchantment; //适用类型
                         tooltip.add(new TranslationTextComponent("enchantType.yuoenchants.type")
-                                .append(new TranslationTextComponent("enchantType.yuoenchants." + base.getTypeName())));
+                                .appendSibling(new TranslationTextComponent("enchantType.yuoenchants." + base.getTypeName())));
                         //附魔描述
                         tooltip.add(new TranslationTextComponent("enchantInfo." + compoundnbt.getString("id")));
                     } else tooltip.add(new TranslationTextComponent("enchantInfo.yuoenchants:info"));
@@ -98,8 +98,8 @@ public class ModEnchantBook extends Item {
 
     //获取物品附魔map
     public static Map<Enchantment, Integer> getEnchantments(ItemStack stack) {
-        ListNBT listnbt = stack.getItem() == Items.ENCHANTED_BOOK || stack.getItem() == ItemRegistry.modEnchantBook.get()
-                || stack.getItem() == ItemRegistry.oldBook.get() ? EnchantedBookItem.getEnchantments(stack) : stack.getEnchantmentTagList();
+        ListNBT listnbt = stack.getItem() == Items.ENCHANTED_BOOK || stack.getItem() == YEItems.modEnchantBook.get()
+                || stack.getItem() == YEItems.oldBook.get() ? EnchantedBookItem.getEnchantments(stack) : stack.getEnchantmentTagList();
         return deserializeEnchantments(listnbt);
     }
 
@@ -128,7 +128,7 @@ public class ModEnchantBook extends Item {
                 compoundnbt.putString("id", String.valueOf((Object)Registry.ENCHANTMENT.getKey(enchantment)));
                 compoundnbt.putShort("lvl", (short)i);
                 listnbt.add(compoundnbt);
-                if (stack.getItem() == Items.ENCHANTED_BOOK || stack.getItem() == ItemRegistry.modEnchantBook.get()) {
+                if (stack.getItem() == Items.ENCHANTED_BOOK || stack.getItem() == YEItems.modEnchantBook.get()) {
                     EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment, i));
                 }
             }
@@ -136,7 +136,7 @@ public class ModEnchantBook extends Item {
 
         if (listnbt.isEmpty()) {
             stack.removeChildTag("Enchantments");
-        } else if (stack.getItem() != Items.ENCHANTED_BOOK && stack.getItem() != ItemRegistry.modEnchantBook.get()) {
+        } else if (stack.getItem() != Items.ENCHANTED_BOOK && stack.getItem() != YEItems.modEnchantBook.get()) {
             stack.setTagInfo("Enchantments", listnbt);
         }
 

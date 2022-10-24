@@ -1,13 +1,8 @@
 package com.yuo.enchants.Enchants;
 
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 

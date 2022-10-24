@@ -1,6 +1,6 @@
 package com.yuo.enchants.Event;
 
-import com.yuo.enchants.Items.ItemRegistry;
+import com.yuo.enchants.Items.YEItems;
 import com.yuo.enchants.Items.OldBook;
 import com.yuo.enchants.MoreEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -38,7 +38,7 @@ public class OtherEvents {
     @SubscribeEvent
     public static void smeltingItem(FurnaceFuelBurnTimeEvent event) {
         ItemStack stack = event.getItemStack();
-        if (stack.getItem().equals(ItemRegistry.bambooCoal.get())) {
+        if (stack.getItem().equals(YEItems.bambooCoal.get())) {
             event.setBurnTime(200);
         }
     }
@@ -48,19 +48,19 @@ public class OtherEvents {
     public static void brokenMagicPearl(AnvilUpdateEvent event) {
         ItemStack left = event.getLeft();
         ItemStack right = event.getRight();
-        if (right.getItem().equals(ItemRegistry.BrokenMagicPearl.get()) && left.getRepairCost() > 0) { //物品附魔惩罚大于0
+        if (right.getItem().equals(YEItems.BrokenMagicPearl.get()) && left.getRepairCost() > 0) { //物品附魔惩罚大于0
             ItemStack copy = left.copy();
             copy.setRepairCost(((copy.getRepairCost() + 1) / 2 + 1) / 2); //降低一级物品附魔惩罚
             event.setCost(5);
             event.setOutput(copy);
         }
-        if (right.getItem().equals(ItemRegistry.BrokenMagicPearlSuper.get()) && left.getRepairCost() > 0) {
+        if (right.getItem().equals(YEItems.BrokenMagicPearlSuper.get()) && left.getRepairCost() > 0) {
             ItemStack copy = left.copy();
             copy.setRepairCost(0); //清除物品附魔惩罚
             event.setCost(10);
             event.setOutput(copy);
         }
-        if (left.getItem() == ItemRegistry.oldBook.get() && right.getItem() == ItemRegistry.oldBook.get()) {
+        if (left.getItem() == YEItems.oldBook.get() && right.getItem() == YEItems.oldBook.get()) {
             OldBook.OldBookEnchant enchLeft = OldBook.getEnch(left);
             OldBook.OldBookEnchant enchRight = OldBook.getEnch(right);
             if (!enchLeft.isEmpty() && !enchRight.isEmpty()) {
@@ -70,7 +70,7 @@ public class OtherEvents {
                 int level1 = enchRight.getLevel();
                 if (enchantment0 == enchantment1 && level0 == level1) {
                     if (level0 >= 9) return;
-                    ItemStack stack = new ItemStack(ItemRegistry.oldBook.get());
+                    ItemStack stack = new ItemStack(YEItems.oldBook.get());
                     EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment0, level0 + 1));
                     event.setOutput(stack);
                     event.setCost(30);
@@ -119,7 +119,7 @@ public class OtherEvents {
      * @return 奖池项目
      */
     private static StandaloneLootEntry.Builder<?> getEntry(){
-        return ItemLootEntry.builder(ItemRegistry.oldBook.get()).quality(10).weight(5)//物品 幸运影响 权重
+        return ItemLootEntry.builder(YEItems.oldBook.get()).quality(10).weight(5)//物品 幸运影响 权重
                 .acceptFunction(SetNBT.builder(getCompoundNbt(getRandomOldBook()))); //添加nbt数据
     }
 
@@ -151,7 +151,7 @@ public class OtherEvents {
      * @return 物品
      */
     private static ItemStack getRandomOldBook(){
-        ItemStack stack = new ItemStack(ItemRegistry.oldBook.get());
+        ItemStack stack = new ItemStack(YEItems.oldBook.get());
         Enchantment enchantment = ENCHANTS.get(new Random().nextInt(ENCHANTS.size()));
         EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment, enchantment.getMaxLevel()));
         return stack;
@@ -163,7 +163,7 @@ public class OtherEvents {
         VillagerProfession type = event.getType();
         if (VillagerProfession.LIBRARIAN.equals(type)) {
             Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
-            trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, ItemRegistry.BrokenMagicPearl.get(), 1, ItemRegistry.BrokenMagicPearlSuper.get(), 1, 5, 8));
+            trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, YEItems.BrokenMagicPearl.get(), 1, YEItems.BrokenMagicPearlSuper.get(), 1, 5, 8));
             trades.get(4).add(new EnchantedBookForEmeraldsTrade(getRandomOldBook(),  6));
             trades.get(5).add(new EnchantedBookForEmeraldsTrade(getRandomOldBook(), 8));
         }

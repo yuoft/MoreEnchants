@@ -23,10 +23,10 @@ public class ExpDrip extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         Item item = stack.getItem();
-        if (item == ItemRegistry.smallExpDrip.get()){
+        if (item == YEItems.smallExpDrip.get()){
             tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.small_exp_drip"));
         }
-        if (item == ItemRegistry.bigExpDrip.get()){
+        if (item == YEItems.bigExpDrip.get()){
             tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.big_exp_drip"));
         }
     }
@@ -34,7 +34,7 @@ public class ExpDrip extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
-        int expValue = heldItem.getItem() == ItemRegistry.smallExpDrip.get() ? 10 : 100;
+        int expValue = heldItem.getItem() == YEItems.smallExpDrip.get() ? 10 : 100;
         if (playerIn.isSneaking()){
             int count = heldItem.getCount();
             playerIn.giveExperiencePoints(count * expValue);

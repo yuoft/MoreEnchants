@@ -1,26 +1,19 @@
 package com.yuo.enchants.Blocks;
 
-import com.yuo.enchants.Items.ItemRegistry;
+import com.yuo.enchants.Items.YEItems;
 import com.yuo.enchants.Items.ModEnchantBook;
-import com.yuo.enchants.Items.ModTags;
-import com.yuo.enchants.Items.OldBook;
-import net.minecraft.block.AnvilBlock;
+import com.yuo.enchants.Items.YETags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.screen.inventory.AnvilScreen;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.AbstractRepairContainer;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.RepairContainer;
-import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.text.StringTextComponent;
@@ -34,7 +27,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class DiamondRepairContainer extends AbstractRepairContainer {
@@ -42,7 +34,7 @@ public class DiamondRepairContainer extends AbstractRepairContainer {
     public int materialCost;
     private String repairedItemName;
     private final IntReferenceHolder maximumCost = IntReferenceHolder.single();
-    private final ITag<Block> DIAMOND_ANVIL_TAG = BlockTags.getCollection().get(ModTags.DIAMOND_ANVIL);
+    private final ITag<Block> DIAMOND_ANVIL_TAG = BlockTags.getCollection().get(YETags.DIAMOND_ANVIL);
 
     public DiamondRepairContainer(int id, PlayerInventory playerInventory) {
         this(id, playerInventory, IWorldPosCallable.DUMMY);
@@ -123,7 +115,7 @@ public class DiamondRepairContainer extends AbstractRepairContainer {
 
             if (!itemstack2.isEmpty()) {
                 if (!onAnvilChange(this, itemstack, itemstack2, field_234642_c_, repairedItemName, j, this.field_234645_f_)) return;
-                flag = (itemstack2.getItem() == Items.ENCHANTED_BOOK || itemstack2.getItem() == ItemRegistry.modEnchantBook.get())
+                flag = (itemstack2.getItem() == Items.ENCHANTED_BOOK || itemstack2.getItem() == YEItems.modEnchantBook.get())
                         && !ModEnchantBook.getEnchantments(itemstack2).isEmpty();
                 if (itemstack1.isDamageable() && itemstack1.getItem().getIsRepairable(itemstack, itemstack2)) { //修复
                     int l2 = Math.min(itemstack1.getDamage(), itemstack1.getMaxDamage() / 4);
@@ -176,7 +168,7 @@ public class DiamondRepairContainer extends AbstractRepairContainer {
                             int j2 = map1.get(enchantment1);
                             j2 = i2 == j2 ? j2 + 1 : Math.max(j2, i2);
                             boolean flag1 = enchantment1.canApply(itemstack);
-                            if (this.field_234645_f_.abilities.isCreativeMode || itemstack.getItem() == ItemRegistry.modEnchantBook.get()
+                            if (this.field_234645_f_.abilities.isCreativeMode || itemstack.getItem() == YEItems.modEnchantBook.get()
                                     || itemstack.getItem() == Items.ENCHANTED_BOOK) {
                                 flag1 = true;
                             }

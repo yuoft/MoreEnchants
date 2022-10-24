@@ -1,12 +1,11 @@
 package com.yuo.enchants.Event;
 
 import com.yuo.enchants.Enchants.EnchantRegistry;
-import net.minecraft.block.*;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
@@ -16,23 +15,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -101,12 +92,12 @@ public class EventHelper {
 
     /**
      * 范围挖掘 破坏方块
-     * @param tool
-     * @param world
-     * @param pos
-     * @param state
-     * @param player
-     * @param lv
+     * @param tool 工具
+     * @param world 世界
+     * @param pos 坐标
+     * @param state 方块
+     * @param player 玩家
+     * @param lv 范围
      */
     private static void breakBlock(ItemStack tool, World world, BlockPos pos, BlockState state, PlayerEntity player, int lv){
         if (!canHarvestBlock(tool, state, player)) return; //工具能够收获方块
@@ -198,8 +189,7 @@ public class EventHelper {
         int shovelLv = tool.getHarvestLevel(ToolType.SHOVEL, player, state);
         int level = state.getHarvestLevel();
         //工具有一项工具属性可以挖掘就认为可以挖掘
-        if (pickaxeLv >= level || axeLv >= level || hoeLv >= level || shovelLv >= level) return true;
-        return false; //工具无法挖掘此块
+        return pickaxeLv >= level || axeLv >= level || hoeLv >= level || shovelLv >= level;//工具无法挖掘此块
     }
 
     /**

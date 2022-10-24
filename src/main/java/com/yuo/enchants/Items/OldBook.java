@@ -119,7 +119,7 @@ public class OldBook extends Item {
     }
 
     public static ItemStack getStack(EnchantmentData enchantData) {
-        ItemStack itemstack = new ItemStack(ItemRegistry.oldBook.get());
+        ItemStack itemstack = new ItemStack(YEItems.oldBook.get());
         EnchantedBookItem.addEnchantment(itemstack, enchantData);
         return itemstack;
     }
