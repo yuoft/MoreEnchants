@@ -1,5 +1,6 @@
 package com.yuo.enchants.Blocks;
 
+import com.yuo.enchants.Items.YEItems;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -51,7 +52,8 @@ public class DiamondAnvil extends FallingBlock {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("yuoenchants.text.blockInfo.diamond_anvil"));
+        if (stack.getItem() == YEItems.diamondAnvil.get())
+            tooltip.add(new TranslationTextComponent("yuoenchants.text.blockInfo.diamond_anvil"));
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {

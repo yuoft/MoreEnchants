@@ -22,4 +22,5 @@ public class YEBlocks {
     public static RegistryObject<Block> diamondAnvil = BLOCKS.register("diamond_anvil", DiamondAnvil::new);
     public static RegistryObject<Block> chippedDiamondAnvil = BLOCKS.register("chipped_diamond_anvil", DiamondAnvil::new);
     public static RegistryObject<Block> damagedDiamondAnvil = BLOCKS.register("damaged_diamond_anvil", DiamondAnvil::new);
+    public static RegistryObject<Block> coolingLava = BLOCKS.register("cooling_lava", CoolingLava::new);
 }

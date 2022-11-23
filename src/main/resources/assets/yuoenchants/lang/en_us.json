@@ -130,6 +130,7 @@
 	"block.yuoenchants.diamond_anvil": "Diamond Anvil",
 	"block.yuoenchants.chipped_diamond_anvil": "Chipped Diamond Anvil",
 	"block.yuoenchants.damaged_diamond_anvil": "Damaged Diamond Anvil",
+	"block.yuoenchants.cooling_lava": "Cooling Lava",
 
 	"key.yuoenchants": "More enchantments of yuo",
 	"key.yuoenchants.key_c": "Enable range mining",

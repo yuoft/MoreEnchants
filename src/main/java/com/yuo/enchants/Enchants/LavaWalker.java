@@ -1,5 +1,7 @@
 package com.yuo.enchants.Enchants;
 
+import com.yuo.enchants.Blocks.CoolingLava;
+import com.yuo.enchants.Blocks.YEBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
@@ -9,7 +11,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 
@@ -36,8 +37,8 @@ public class LavaWalker extends ModEnchantBase {
     //凝固岩浆
     public static void freezingNearby(LivingEntity living, World worldIn, BlockPos pos, int level) {
         if (living.isOnGround()) {
-            BlockState blockstate = Blocks.OBSIDIAN.getDefaultState();
-            float f = (float)Math.min(16, 1 + level);
+            BlockState blockstate = YEBlocks.coolingLava.get().getDefaultState().with(CoolingLava.AGE, Math.max(25 - level * 10, 0));
+            float f = (float)Math.min(16, 2 + level);
             BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
             for(BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-f, -1.0D, -f), pos.add(f, -1.0D, f))) {
@@ -53,7 +54,6 @@ public class LavaWalker extends ModEnchantBase {
                                 net.minecraftforge.common.util.BlockSnapshot.create(worldIn.getDimensionKey(), worldIn, blockpos),
                                 net.minecraft.util.Direction.UP)) {
                             worldIn.setBlockState(blockpos, blockstate);
-                            worldIn.getPendingBlockTicks().scheduleTick(blockpos, Blocks.BASALT, MathHelper.nextInt(living.getRNG(), 60, 120));
                         }
                     }
                 }

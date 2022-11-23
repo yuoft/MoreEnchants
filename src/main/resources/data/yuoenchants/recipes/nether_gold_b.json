@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "yuoenchants:nether_gold"
+  },
+  "result": {
+    "item": "yuoenchants:raw_gold",
+    "count": 3
+  },
+  "experience": 0.2
+}

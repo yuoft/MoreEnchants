@@ -18,6 +18,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
@@ -59,6 +60,10 @@ public class EventHandler {
             PlayerEntity player = (PlayerEntity) entityLiving;
             ItemStack stackLegs = player.getItemStackFromSlot(EquipmentSlotType.LEGS);
             ItemStack stackFeet = player.getItemStackFromSlot(EquipmentSlotType.FEET);
+            int lavaWalker = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.lavaWalker.get(), stackFeet);
+            if (lavaWalker > 0 && event.getSource() == DamageSource.HOT_FLOOR){
+                event.setCanceled(true);
+            }
             int fireImmune_legs = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fireImmune.get(), stackLegs);
             if (fireImmune_legs > 0) {
                 FireImmune.fireImmune(event, stackLegs, player);
@@ -166,7 +171,8 @@ public class EventHandler {
         int strengthLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.strengthLuck.get(), stack);
         int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), stack);
         if (strengthLuck > 0) {
-            StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck);
+            StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, stack, player);
+            return;
         }
         if (unLuck > 0 &&  RANDOM.nextDouble() < unLuck * 0.2){
             if (event.getExpToDrop() > 0){

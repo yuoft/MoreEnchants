@@ -26,7 +26,7 @@ public class Robbery extends ModEnchantBase {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return this != ench && ench != Enchantments.LOOTING;
+        return this != ench && (ench != Enchantments.LOOTING || ench != EnchantRegistry.unLooting.get());
     }
 
     /**

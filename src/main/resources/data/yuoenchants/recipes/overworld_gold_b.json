@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "yuoenchants:overworld_gold"
+  },
+  "result": {
+    "item": "yuoenchants:raw_gold",
+    "count": 2
+  },
+  "experience": 0.2
+}

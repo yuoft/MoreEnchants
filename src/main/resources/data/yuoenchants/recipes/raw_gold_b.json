@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "yuoenchants:raw_gold"
+  },
+  "result": "minecraft:gold_ingot",
+  "experience": 0.2
+}

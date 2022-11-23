@@ -38,4 +38,6 @@ public class YEItems {
             () -> new BlockItem(YEBlocks.chippedDiamondAnvil.get(), GROUP));
     public static RegistryObject<Item> damagedDiamondAnvil = ITEMS.register("damaged_diamond_anvil",
             () -> new BlockItem(YEBlocks.damagedDiamondAnvil.get(), GROUP));
+    public static RegistryObject<Item> coolingLava = ITEMS.register("cooling_lava",
+            () -> new BlockItem(YEBlocks.coolingLava.get(), GROUP));
 }

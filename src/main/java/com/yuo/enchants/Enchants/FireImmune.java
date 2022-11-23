@@ -22,15 +22,15 @@ public class FireImmune extends ModEnchantBase {
     //附魔冲突
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return this != ench && ench != Enchantments.FIRE_PROTECTION; //火焰保护
+        return this != ench && (ench != Enchantments.FIRE_PROTECTION || ench != EnchantRegistry.superFire.get()); //火焰保护 高级火焰保护
     }
 
     //免疫火焰伤害
     public static void fireImmune(LivingHurtEvent event, ItemStack stackLegs, PlayerEntity player){
         //伤害来源：火焰，岩浆，熔岩石，燃烧
         if(event.getSource().isFireDamage()) {
-            event.setAmount(0);
             stackLegs.damageItem(1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
+            event.setCanceled(true);
         }
     }
 }
