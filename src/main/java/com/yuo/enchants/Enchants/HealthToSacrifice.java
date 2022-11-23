@@ -37,7 +37,7 @@ public class HealthToSacrifice extends ModEnchantBase {
      * @param maxHealth 被攻击生物坐标
      */
     public static void dropExpDrip(World world, int level, int looting, BlockPos pos, float maxHealth){
-        if (world.rand.nextDouble() < 0.05 + level * 0.05){ //每级增加10%掉率
+        if (world.rand.nextDouble() < 0.05 + level * 0.05){ //每级增加5%掉率
             ItemStack smallExp = new ItemStack(YEItems.smallExpDrip.get());
             smallExp.setCount(world.rand.nextInt(level) + looting);
             if (level > 3 && maxHealth >= 300){

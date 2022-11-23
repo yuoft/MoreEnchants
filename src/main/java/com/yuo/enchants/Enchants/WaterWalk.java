@@ -28,7 +28,7 @@ public class WaterWalk extends ModEnchantBase {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return this != ench && ench != Enchantments.FROST_WALKER && ench != EnchantRegistry.lavaWalker.get();
+        return this != ench && (ench != Enchantments.FROST_WALKER || ench != EnchantRegistry.lavaWalker.get());
     }
 
     /**

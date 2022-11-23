@@ -41,7 +41,7 @@ public class Rebound extends ModEnchantBase {
         if (new Random().nextDouble() < 0.5 + 0.05 * rebound){ //概率完全防御 但是消耗耐久
             if (player.getCooldownTracker().hasCooldown(shield.getItem()))
                 player.getCooldownTracker().removeCooldown(shield.getItem());
-            shield.damageItem(1, player, e -> e.sendBreakAnimation(Hand.OFF_HAND));
+            shield.damageItem(2, player, e -> e.sendBreakAnimation(Hand.OFF_HAND));
             event.setCanceled(true);
         }
         if (immediateSource instanceof LivingEntity) {//击退生命实体

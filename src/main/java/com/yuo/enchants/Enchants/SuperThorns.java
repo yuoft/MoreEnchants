@@ -34,7 +34,8 @@ public class SuperThorns extends ModEnchantBase{
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return this != ench && ench != Enchantments.THORNS;
+        return this != ench && (ench != Enchantments.THORNS || ench != EnchantRegistry.thorns.get()
+            || ench != EnchantRegistry.fireThorns.get());
     }
 
     @Override
