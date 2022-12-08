@@ -1,6 +1,6 @@
 package com.yuo.enchants.Enchants;
 
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.enchants.YuoEnchants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.fml.RegistryObject;
@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class EnchantRegistry {
-    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MoreEnchants.MODID);
+    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, YuoEnchants.MOD_ID);
     //火焰免疫
     public static RegistryObject<Enchantment> fireImmune = ENCHANTMENTS.register("fire_immune",
             () -> new FireImmune(Enchantment.Rarity.VERY_RARE, ModEnchantBase.EnchantType.ARMOR_LEGS, EquipmentSlotType.values()));

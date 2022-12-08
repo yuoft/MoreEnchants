@@ -2,9 +2,11 @@ package com.yuo.enchants.Proxy;
 
 import com.yuo.enchants.Blocks.ContainerRegister;
 import com.yuo.enchants.Blocks.DiamondAnvilScreen;
+import com.yuo.enchants.Event.KeyBindingEvent;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -19,6 +21,7 @@ public class ClientProxy implements IProxy {
         event.enqueueWork(() -> {
             ScreenManager.registerFactory(ContainerRegister.diamondAnvil.get(), DiamondAnvilScreen::new);
         });
+        ClientRegistry.registerKeyBinding(KeyBindingEvent.ENCHANT_KEY_C); //快捷键注册
     }
 
 

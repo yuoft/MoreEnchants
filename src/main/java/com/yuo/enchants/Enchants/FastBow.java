@@ -25,6 +25,6 @@ public class FastBow extends ModEnchantBase {
 
     //增加使用时间
     public static int fastDraw(int fastBow, int charge){
-        return charge + (int) Math.ceil(charge * fastBow * 0.25);
+        return (int) Math.ceil(charge *(1+ (fastBow * 0.25)));
     }
 }

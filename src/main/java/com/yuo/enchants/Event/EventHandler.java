@@ -1,7 +1,8 @@
 package com.yuo.enchants.Event;
 
 import com.yuo.enchants.Enchants.*;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.enchants.Proxy.CommonProxy;
+import com.yuo.enchants.YuoEnchants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,7 +42,7 @@ import java.util.*;
 /**
  * 事件处理类 附魔实现
  */
-@Mod.EventBusSubscriber(modid = MoreEnchants.MODID)
+@Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
     public static List<String> playerHealth = new ArrayList<>();
@@ -181,7 +182,8 @@ public class EventHandler {
             world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
         }
         int rangBreak = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.rangBreak.get(), stack);
-        if (KeyBindingEvent.isIsKeyC() && rangBreak > 0) {
+
+        if (CommonProxy.isIsKeyC() && rangBreak > 0) {
             EventHelper.breakBlocks(stack, world, pos, state, player, Math.min(rangBreak, 5)); //最大等级5
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;

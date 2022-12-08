@@ -2,7 +2,7 @@ package com.yuo.enchants.Items;
 
 import com.yuo.enchants.Blocks.YEBlocks;
 import com.yuo.enchants.Items.Tab.ModGroup;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.enchants.YuoEnchants;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
@@ -10,7 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class YEItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MoreEnchants.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YuoEnchants.MOD_ID);
 
     public static RegistryObject<Item> rawIron = ITEMS.register("raw_iron", RawOre::new);
     public static RegistryObject<Item> rawGold = ITEMS.register("raw_gold", RawOre::new);

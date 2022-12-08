@@ -2,7 +2,7 @@ package com.yuo.enchants.Event;
 
 import com.yuo.enchants.Items.YEItems;
 import com.yuo.enchants.Items.OldBook;
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.enchants.YuoEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -32,7 +32,7 @@ import java.util.*;
 /**
  * 处理其它功能事件
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = MoreEnchants.MODID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = YuoEnchants.MOD_ID)
 public class OtherEvents {
     //燃烧时间 竹炭
     @SubscribeEvent

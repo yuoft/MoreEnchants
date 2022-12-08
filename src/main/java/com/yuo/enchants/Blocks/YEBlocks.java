@@ -1,6 +1,6 @@
 package com.yuo.enchants.Blocks;
 
-import com.yuo.enchants.MoreEnchants;
+import com.yuo.enchants.YuoEnchants;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.common.ToolType;
@@ -9,7 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class YEBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MoreEnchants.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YuoEnchants.MOD_ID);
 
     public static RegistryObject<Block> netherIron = BLOCKS.register("nether_iron",
             () -> new NetherOre(Material.ROCK, 1, ToolType.PICKAXE, 4, 8));
