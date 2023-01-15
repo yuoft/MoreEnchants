@@ -172,7 +172,7 @@ public class EventHandler {
         int strengthLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.strengthLuck.get(), stack);
         int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), stack);
         if (strengthLuck > 0) {
-            StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, stack, player);
+            StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, player);
             return;
         }
         if (unLuck > 0 &&  RANDOM.nextDouble() < unLuck * 0.2){

@@ -226,7 +226,10 @@ public class EventHelper {
         if (handRange > 0){
             int lv = player.getPersistentData().getInt("yuo:handRange_level");
             if (lv != handRange && reachDistance != null){ //换了工具
-                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, -lv * EventHandler.attrHandRange));
+                float v = lv * EventHandler.attrHandRange; //减少值
+                float value = v;
+                if (reachDistance.getValue() - v < 5) value = (float) (reachDistance.getValue() - 5);
+                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, value));
                 player.getPersistentData().putInt("yuo:handRange_level", handRange);
                 EventHandler.playerHandRange.remove(key);
             }

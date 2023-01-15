@@ -113,6 +113,27 @@ public class ModEnchantBase extends Enchantment {
                 return "breakable";
             }
         },
+        TOOLS { //工具
+            @Override
+            public boolean canEnchantItem(Item itemIn) {
+                return itemIn instanceof ToolItem || itemIn instanceof FishingRodItem;
+            }
+            @Override
+            public String getName() {
+                return "tools";
+            }
+        },
+        HAND { //在手上使用
+            @Override
+            public boolean canEnchantItem(Item itemIn) {
+                return itemIn instanceof ToolItem || itemIn instanceof FishingRodItem || itemIn instanceof TridentItem || itemIn instanceof ShootableItem
+                        || itemIn instanceof ShieldItem;
+            }
+            @Override
+            public String getName() {
+                return "hand";
+            }
+        },
         FISHING_ROD { //钓鱼竿
             @Override
             public boolean canEnchantItem(Item itemIn) {
@@ -141,6 +162,16 @@ public class ModEnchantBase extends Enchantment {
             @Override
             public String getName() {
                 return "digger";
+            }
+        },
+        PICKAXE { //镐
+            @Override
+            public boolean canEnchantItem(Item itemIn) {
+                return itemIn instanceof PickaxeItem;
+            }
+            @Override
+            public String getName() {
+                return "pickaxe";
             }
         },
         FARMER { //锄
