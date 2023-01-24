@@ -16,7 +16,7 @@ public class Insight extends ModEnchantBase {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return 5;
     }
 
     @Override

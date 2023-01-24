@@ -80,6 +80,7 @@ public class Farmer extends ModEnchantBase {
                         ((IGrowable) block).grow((ServerWorld) worldIn, worldIn.rand, pos, state);
                 }
             }
+            heldItem.damageItem(1, playerIn, e -> e.sendBreakAnimation(handIn));
             playerIn.getCooldownTracker().setCooldown(heldItem.getItem(), 20); //冷却
         }
     }

@@ -253,7 +253,10 @@ public class EventHelper {
                 EventHandler.playerSwimSpeed.remove(key);
             }
             if (!EventHandler.playerSwimSpeed.contains(key) && swimSpeed != null){
-                swimSpeed.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.SWIM_SPEED, -deepFear * EventHandler.attrSwimSpeed));
+                float v = deepFear * EventHandler.attrSwimSpeed;
+                float value = v;
+                if (swimSpeed.getValue() - v < 0.05) value = (float) (swimSpeed.getValue() - 0.05);
+                swimSpeed.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.SWIM_SPEED, -value));
                 player.getPersistentData().putInt("yuo:deepFear_level", deepFear);
                 EventHandler.playerSwimSpeed.add(key);
             }

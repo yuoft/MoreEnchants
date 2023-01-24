@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 
 public class Thorns extends ModEnchantBase {
 
@@ -41,7 +40,7 @@ public class Thorns extends ModEnchantBase {
         long dayTime = player.world.getDayTime();
         if (dayTime % 40 == 0){
             player.attackEntityFrom(DamageSource.GENERIC, thorns / 2.0f);
-            stackChest.damageItem(2, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
+            stackChest.damageItem(2, player, e -> e.sendBreakAnimation(EquipmentSlotType.CHEST));
         }
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -50,7 +49,7 @@ public class LightningDamage extends ModEnchantBase {
                     lightningBoltEntity.setCaster(entity instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity : null);
                     player.world.addEntity(lightningBoltEntity);
                 }
-                stackLegs.damageItem(1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
+                stackLegs.damageItem(1, player, e -> e.sendBreakAnimation(EquipmentSlotType.LEGS));
             }
         }
     }

@@ -3,7 +3,6 @@ package com.yuo.enchants.Enchants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
@@ -34,7 +33,7 @@ public class LastStand extends ModEnchantBase {
                 player.giveExperiencePoints(-ceil); //扣除经验值
                 player.setHealth(1);
                 event.setAmount(0);
-                stackFeet.damageItem(1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
+                stackFeet.damageItem(1, player, e -> e.sendBreakAnimation(EquipmentSlotType.FEET));
             }
 
         }
