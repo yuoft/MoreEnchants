@@ -15,12 +15,14 @@ public class YEItems {
     public static RegistryObject<Item> rawIron = ITEMS.register("raw_iron", RawOre::new);
     public static RegistryObject<Item> rawGold = ITEMS.register("raw_gold", RawOre::new);
     public static RegistryObject<Item> bambooCoal = ITEMS.register("bamboo_coal", RawOre::new);
-    public static RegistryObject<Item> BrokenMagicPearl = ITEMS.register("broken_magic_pearl", BrokenMagicPearl::new);
-    public static RegistryObject<Item> BrokenMagicPearlSuper = ITEMS.register("broken_magic_pearl_super", BrokenMagicPearl::new);
+    public static RegistryObject<Item> BrokenMagicPearl = ITEMS.register("broken_magic_pearl", ModPearl::new);
+    public static RegistryObject<Item> SuperBrokenMagicPearl = ITEMS.register("broken_magic_pearl_super", ModPearl::new);
     public static RegistryObject<Item> modEnchantBook = ITEMS.register("mod_enchant_book", ModEnchantBook::new);
     public static RegistryObject<Item> oldBook = ITEMS.register("old_book", OldBook::new);
     public static RegistryObject<Item> smallExpDrip = ITEMS.register("small_exp_drip", ExpDrip::new);
     public static RegistryObject<Item> bigExpDrip = ITEMS.register("big_exp_drip", ExpDrip::new);
+    public static RegistryObject<Item> CuresPearl = ITEMS.register("remove_cures_pearl", ModPearl::new);
+    public static RegistryObject<Item> SuperCuresPearl = ITEMS.register("remove_cures_pearl_super", ModPearl::new);
 
     //方块
     private static final Item.Properties GROUP = new Item.Properties().group(ModGroup.youEnchants);

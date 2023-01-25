@@ -10,8 +10,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -27,7 +25,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -45,13 +42,6 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
-    public static List<String> playerHealth = new ArrayList<>();
-    public static List<String> playerHandRange = new ArrayList<>();
-    public static List<String> playerSwimSpeed = new ArrayList<>();
-
-    public static final float attrHealth = 2.0f; //属性变更基础系数
-    public static final float attrHandRange = 0.5f;
-    public static final float attrSwimSpeed = 0.25f;
 
     //附魔，火焰免疫 屹立不倒 受到伤害
     @SubscribeEvent
@@ -366,8 +356,11 @@ public class EventHandler {
             if (waterWalk > 0) {
                 WaterWalk.walk(player);
             }
-            if (!player.world.isRemote)
-                EventHelper.changeAttribute(player);
+            if (!player.world.isRemote){
+                EventHelper.changeMaxHealth(player);
+                EventHelper.changeHandRange(player);
+                EventHelper.changeSwimSpeed(player);
+            }
         }
     }
 
@@ -375,22 +368,6 @@ public class EventHandler {
     @SubscribeEvent
     public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
-        //重启游戏时添加key 防止属性叠加
-        String key = player.getGameProfile().getName() + ":" + player.world.isRemote;
-        if (!playerHealth.contains(key) && !player.world.isRemote) {
-            int health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
-            ModifiableAttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
-            if (health > 0 && attribute != null) {
-                playerHealth.add(key);
-            }
-        }
-        if (!playerHandRange.contains(key) && !player.world.isRemote) {
-            int handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), EventHelper.getUseItem(player));
-            ModifiableAttributeInstance attribute = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
-            if (handRange > 0 && attribute != null) {
-                playerHandRange.add(key);
-            }
-        }
         //发送消息
         player.sendMessage(new TranslationTextComponent("yuoenchants.message.login")
                 .setStyle(Style.EMPTY.setHoverEvent(HoverEvent.Action.SHOW_TEXT.deserialize(new TranslationTextComponent("yuoenchants.message.login0")))

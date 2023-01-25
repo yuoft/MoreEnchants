@@ -1,11 +1,15 @@
 package com.yuo.enchants.Event;
 
-import com.yuo.enchants.Items.YEItems;
+import com.yuo.enchants.Enchants.EnchantRegistry;
+import com.yuo.enchants.Enchants.ModEnchantBase;
 import com.yuo.enchants.Items.OldBook;
+import com.yuo.enchants.Items.YEItems;
 import com.yuo.enchants.YuoEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -24,6 +28,7 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
@@ -54,12 +59,13 @@ public class OtherEvents {
             event.setCost(5);
             event.setOutput(copy);
         }
-        if (right.getItem().equals(YEItems.BrokenMagicPearlSuper.get()) && left.getRepairCost() > 0) {
+        if (right.getItem().equals(YEItems.SuperBrokenMagicPearl.get()) && left.getRepairCost() > 0) {
             ItemStack copy = left.copy();
             copy.setRepairCost(0); //清除物品附魔惩罚
             event.setCost(10);
             event.setOutput(copy);
         }
+        //古卷升级
         if (left.getItem() == YEItems.oldBook.get() && right.getItem() == YEItems.oldBook.get()) {
             OldBook.OldBookEnchant enchLeft = OldBook.getEnch(left);
             OldBook.OldBookEnchant enchRight = OldBook.getEnch(right);
@@ -73,10 +79,48 @@ public class OtherEvents {
                     ItemStack stack = new ItemStack(YEItems.oldBook.get());
                     EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment0, level0 + 1));
                     event.setOutput(stack);
-                    event.setCost(30);
+                    event.setCost(15);
                 }
             }
         }
+        //必灭宝珠
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(left);
+        if (enchantments.size() > 0 && isCures(enchantments)){
+            if (right.getItem() == YEItems.CuresPearl.get()){
+                Iterator<Enchantment> iterator = enchantments.keySet().iterator();
+                while (iterator.hasNext()){
+                    Enchantment enchantment = iterator.next();
+                    if (enchantment.isCurse()){
+                        iterator.remove();
+                        break;
+                    }
+                }
+                ItemStack stack = new ItemStack(left.getItem());
+                EnchantmentHelper.setEnchantments(enchantments, stack);
+                event.setOutput(stack);
+                event.setCost(5);
+            }
+
+            if (right.getItem() == YEItems.SuperCuresPearl.get()){
+                enchantments.keySet().removeIf(Enchantment::isCurse);
+                ItemStack stack = new ItemStack(left.getItem());
+                EnchantmentHelper.setEnchantments(enchantments, stack);
+                event.setOutput(stack);
+                event.setCost(10);
+            }
+        }
+    }
+
+    /**
+     * 判断附魔集合中是否有负面附魔
+     * @param map 集合
+     * @return 是 true
+     */
+    private static boolean isCures(Map<Enchantment, Integer> map){
+        for (Enchantment enchantment : map.keySet()) {
+            if (enchantment.isCurse()) return true;
+        }
+        return false;
     }
 
     private static final ResourceLocation[] RS = { //将要追加的战利品表 列表
@@ -97,7 +141,8 @@ public class OtherEvents {
         for (ResourceLocation r : RS) {
             if (r.equals(name)) {
                 LootTable table = event.getTable();
-                table.addPool(getPool());
+                table.addPool(getPoolOldBook());
+                table.addPool(getPoolSuperBook());
             }
         }
     }
@@ -106,11 +151,19 @@ public class OtherEvents {
      * 获取一个战利品奖池
      * @return 含有5个项的奖池
      */
-    private static LootPool getPool(){
+    private static LootPool getPoolOldBook(){
         LootPool.Builder builder = new LootPool.Builder().name("old_book")
-                .addEntry(getEntry()).addEntry(getEntry()).addEntry(getEntry()).addEntry(getEntry()).addEntry(getEntry())
-                .acceptCondition(RandomChance.builder(0.35f)) //通过概率
-                .rolls(new RandomValueRange(1, 3)).bonusRolls(0, 2); //抽取次数：1~4 幸运增加的抽取次数
+                .addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook())
+                .acceptCondition(RandomChance.builder(0.1f)) //通过概率
+                .rolls(new RandomValueRange(1, 2)).bonusRolls(0, 1); //抽取次数：1~4 幸运增加的抽取次数
+        return builder.build();
+    }
+
+    private static LootPool getPoolSuperBook(){
+        LootPool.Builder builder = new LootPool.Builder().name("super_enchant_book")
+                .addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook())
+                .acceptCondition(RandomChance.builder(0.15f))
+                .rolls(new RandomValueRange(1, 3)).bonusRolls(0, 2);
         return builder.build();
     }
 
@@ -118,9 +171,14 @@ public class OtherEvents {
      * 构造一个奖池项目
      * @return 奖池项目
      */
-    private static StandaloneLootEntry.Builder<?> getEntry(){
-        return ItemLootEntry.builder(YEItems.oldBook.get()).quality(10).weight(5)//物品 幸运影响 权重
+    private static StandaloneLootEntry.Builder<?> getEntryOldBook(){
+        return ItemLootEntry.builder(YEItems.oldBook.get()).quality(8).weight(4)//物品 幸运影响 权重
                 .acceptFunction(SetNBT.builder(getCompoundNbt(getRandomOldBook()))); //添加nbt数据
+    }
+
+    private static StandaloneLootEntry.Builder<?> getEntrySuperBook(){
+        return ItemLootEntry.builder(YEItems.modEnchantBook.get()).quality(10).weight(5)
+                .acceptFunction(SetNBT.builder(getCompoundNbt(getRandomSuperBook())));
     }
 
     /**
@@ -145,7 +203,6 @@ public class OtherEvents {
         }
     }
 
-
     /**
      * 获取一个含有随机附魔的古卷
      * @return 物品
@@ -153,7 +210,25 @@ public class OtherEvents {
     private static ItemStack getRandomOldBook(){
         ItemStack stack = new ItemStack(YEItems.oldBook.get());
         Enchantment enchantment = ENCHANTS.get(new Random().nextInt(ENCHANTS.size()));
-        EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment, enchantment.getMaxLevel()));
+        if (enchantment != null)
+            EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment, enchantment.getMaxLevel()));
+        else EnchantedBookItem.addEnchantment(stack, new EnchantmentData(Enchantments.EFFICIENCY, 5));
+        return stack;
+    }
+
+    private static ItemStack getRandomSuperBook(){
+        ItemStack stack = new ItemStack(YEItems.modEnchantBook.get());
+        ArrayList<Enchantment> SUPER_ENCHANTS = new ArrayList<>();
+        for (RegistryObject<Enchantment> entry : EnchantRegistry.ENCHANTMENTS.getEntries()) {
+            Enchantment enchantment = entry.get();
+            if (enchantment instanceof ModEnchantBase){
+                SUPER_ENCHANTS.add(enchantment);
+            }
+        }
+        Enchantment enchantment = SUPER_ENCHANTS.get(new Random().nextInt(ENCHANTS.size()));
+        if (enchantment != null)
+            EnchantedBookItem.addEnchantment(stack, new EnchantmentData(enchantment, enchantment.getMaxLevel()));
+        else EnchantedBookItem.addEnchantment(stack, new EnchantmentData(Enchantments.EFFICIENCY, 5));
         return stack;
     }
 
@@ -163,7 +238,8 @@ public class OtherEvents {
         VillagerProfession type = event.getType();
         if (VillagerProfession.LIBRARIAN.equals(type)) {
             Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
-            trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, YEItems.BrokenMagicPearl.get(), 1, YEItems.BrokenMagicPearlSuper.get(), 1, 5, 8));
+            trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, YEItems.BrokenMagicPearl.get(), 1, YEItems.SuperBrokenMagicPearl.get(), 1, 5, 8));
+            trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, YEItems.CuresPearl.get(), 1, YEItems.SuperCuresPearl.get(), 1, 5, 8));
             trades.get(4).add(new EnchantedBookForEmeraldsTrade(getRandomOldBook(),  6));
             trades.get(5).add(new EnchantedBookForEmeraldsTrade(getRandomOldBook(), 8));
         }

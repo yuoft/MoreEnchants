@@ -37,6 +37,9 @@ import java.util.*;
 public class EventHelper {
     private static final Random RANDOM = new Random();
 
+    public static final float attrHealth = 2.0f; //属性变更基础系数
+    public static final float attrHandRange = 0.5f;
+    public static final float attrSwimSpeed = -0.25f;
     /**
      * 将玩家主手物品丢出
      * @param player 玩家
@@ -196,87 +199,84 @@ public class EventHelper {
      * 更改玩家属性
      * @param player 玩家
      */
-    public static void changeAttribute(PlayerEntity player){
+    public static void changeMaxHealth(PlayerEntity player){
         int health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
-        int handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand());
-        int deepFear = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.deepFear.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
-        String key = player.getGameProfile().getName()+":"+player.world.isRemote;
         ModifiableAttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
+        if (maxHealth != null){
+            if (health <= 0){
+                RemoveModifier(maxHealth, ATTR_TYPE.HEALTH, health, attrHealth);
+                return;
+            }
+            AddModifier(maxHealth, ATTR_TYPE.HEALTH, health, attrHealth);
+        }
+    }
+
+    public static void changeHandRange(PlayerEntity player){
+        int handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand());
         ModifiableAttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+        if (reachDistance != null){
+            if (handRange <= 0){
+                RemoveModifier(reachDistance, ATTR_TYPE.REACH_DISTANCE, handRange, attrHandRange);
+                return;
+            }
+            AddModifier(reachDistance, ATTR_TYPE.REACH_DISTANCE, handRange, attrHandRange);
+        }
+    }
+
+    public static void changeSwimSpeed(PlayerEntity player){
+        int deepFear = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.deepFear.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
         ModifiableAttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-        if (health > 0){
-            int lv = player.getPersistentData().getInt("yuo:health_level");
-            if (lv != health && maxHealth != null){ //换了工具
-                maxHealth.applyPersistentModifier(EventHelper.getModifier(ATTR_TYPE.HEALTH, -lv * EventHandler.attrHealth));
-                player.getPersistentData().putInt("yuo:health_level", health);
-                EventHandler.playerHealth.remove(key);
+        if (swimSpeed != null){
+            if (deepFear <= 0){
+                RemoveModifier(swimSpeed, ATTR_TYPE.SWIM_SPEED, deepFear, attrSwimSpeed);
+                return;
             }
-            if (!EventHandler.playerHealth.contains(key) && maxHealth != null){ //未添加属性
-                maxHealth.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.HEALTH, health * EventHandler.attrHealth));
-                player.getPersistentData().putInt("yuo:health_level", health);
-                EventHandler.playerHealth.add(key);
-            }
-        }else {
-            if (EventHandler.playerHealth.contains(key) && maxHealth != null){ //已添加属性
-                int level = player.getPersistentData().getInt("yuo:health_level");
-                maxHealth.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.HEALTH, -level * EventHandler.attrHealth));
-                EventHandler.playerHealth.remove(key);
-            }
+            AddModifier(swimSpeed, ATTR_TYPE.SWIM_SPEED, deepFear, attrSwimSpeed);
         }
-        if (handRange > 0){
-            int lv = player.getPersistentData().getInt("yuo:handRange_level");
-            if (lv != handRange && reachDistance != null){ //换了工具
-                float v = lv * EventHandler.attrHandRange; //减少值
-                float value = v;
-                if (reachDistance.getValue() - v < 5) value = (float) (reachDistance.getValue() - 5);
-                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, value));
-                player.getPersistentData().putInt("yuo:handRange_level", handRange);
-                EventHandler.playerHandRange.remove(key);
-            }
-            if (!EventHandler.playerHandRange.contains(key) && reachDistance != null){
-                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, handRange * EventHandler.attrHandRange));
-                player.getPersistentData().putInt("yuo:handRange_level", handRange);
-                EventHandler.playerHandRange.add(key);
-            }
-        }else {
-            if (EventHandler.playerHandRange.contains(key) && reachDistance != null){
-                int level = player.getPersistentData().getInt("yuo:handRange_level");
-                reachDistance.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.REACH_DISTANCE, -level * EventHandler.attrHandRange));
-                EventHandler.playerHandRange.remove(key);
-            }
-        }
-        if (deepFear > 0){
-            int lv = player.getPersistentData().getInt("yuo:deepFear_level");
-            if (lv != deepFear && swimSpeed != null){
-                swimSpeed.applyPersistentModifier(EventHelper.getModifier(ATTR_TYPE.SWIM_SPEED, lv * EventHandler.attrSwimSpeed));
-                player.getPersistentData().putInt("yuo:deepFear_level", deepFear);
-                EventHandler.playerSwimSpeed.remove(key);
-            }
-            if (!EventHandler.playerSwimSpeed.contains(key) && swimSpeed != null){
-                float v = deepFear * EventHandler.attrSwimSpeed;
-                float value = v;
-                if (swimSpeed.getValue() - v < 0.05) value = (float) (swimSpeed.getValue() - 0.05);
-                swimSpeed.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.SWIM_SPEED, -value));
-                player.getPersistentData().putInt("yuo:deepFear_level", deepFear);
-                EventHandler.playerSwimSpeed.add(key);
-            }
-        }else {
-            if (EventHandler.playerSwimSpeed.contains(key) && swimSpeed != null){
-                int level = player.getPersistentData().getInt("yuo:deepFear_level");
-                swimSpeed.applyPersistentModifier(EventHelper.getModifier(EventHelper.ATTR_TYPE.SWIM_SPEED, level * EventHandler.attrSwimSpeed));
-                EventHandler.playerSwimSpeed.remove(key);
-            }
-        }
+    }
+    /**
+     * 添加属性修饰器
+     * @param attr 属性实例
+     * @param type  属性类型
+     * @param value 附魔等级
+     * @param attrValue 修改基础数值
+     */
+    private static void AddModifier(ModifiableAttributeInstance attr, ATTR_TYPE type, int value, float attrValue){
+        AttributeModifier modifier = EventHelper.getModifier(type, value * attrValue);
+        attr.removeModifier(modifier.getID());
+        attr.applyPersistentModifier(modifier);
+    }
+
+    /**
+     * 清除属性修饰器
+     * @param attr 属性实例
+     * @param type  属性类型
+     * @param value 附魔等级
+     * @param attrValue 修改基础数值
+     */
+    private static void RemoveModifier(ModifiableAttributeInstance attr, ATTR_TYPE type, int value, float attrValue){
+        AttributeModifier modifier = EventHelper.getModifier(type, -value * attrValue);
+        if (attr.getModifier(modifier.getID()) == null) return;
+        attr.removeModifier(modifier.getID());
     }
 
     public static final UUID HEALTH_UUID = UUID.fromString("91d60b13-c2a9-4883-9b3f-5b0c0bf09c0e");
     public static final UUID RANGE_UUID = UUID.fromString("aa8d5d13-f55e-4216-b1c9-724156377743");
     public static final UUID SWIM_UUID = UUID.fromString("39535dd0-fd27-430b-86ad-c12dd985529f");
-    //获取属性修饰器
+
+    /**
+     * 获取属性修饰器
+     * @param type 属性
+     * @param value 修改值
+     * @return 修饰器
+     */
     public static AttributeModifier getModifier(ATTR_TYPE type, float value){
-        return new AttributeModifier(type.getName(), value, type.getType());
+        return new AttributeModifier(type.getUuid(), type.getName(), value, type.getType());
     }
 
+    /**
+     * 属性修饰器基础数据枚举
+     */
     enum ATTR_TYPE{
         HEALTH("generic.maxHealth", HEALTH_UUID, AttributeModifier.Operation.ADDITION),
 //        KNOCK("generic.knockbackResistance",AttributeModifier.Operation.ADDITION),
@@ -289,7 +289,7 @@ public class EventHelper {
 
         private final String name;
         private final UUID uuid;
-        private final AttributeModifier.Operation type;
+        private final AttributeModifier.Operation type; //修改类型
         ATTR_TYPE(String attrName, UUID uuidIn, AttributeModifier.Operation operation){
             this.name = attrName;
             this.type = operation;

@@ -121,6 +121,8 @@
 	"item.yuoenchants.bamboo_coal": "竹炭",
 	"item.yuoenchants.broken_magic_pearl": "§5破魔宝珠",
 	"item.yuoenchants.broken_magic_pearl_super": "§6高级破魔宝珠",
+	"item.yuoenchants.remove_cures_pearl": "§5必灭宝珠",
+	"item.yuoenchants.remove_cures_pearl_super": "§6高级必灭宝珠",
 	"item.yuoenchants.mod_enchant_book": "高级附魔书",
 	"item.yuoenchants.old_book": "§b古卷",
 	"item.yuoenchants.small_exp_drip": "经验液滴·小",
@@ -140,6 +142,8 @@
 
 	"yuoenchants.text.itemInfo.broken": "在铁砧使用消除一级附魔惩罚",
 	"yuoenchants.text.itemInfo.broken_super": "在铁砧使用消除全部附魔惩罚",
+	"yuoenchants.text.itemInfo.clear": "在铁砧使用清除一个负面附魔",
+	"yuoenchants.text.itemInfo.clear_super": "在铁砧使用清除全部负面附魔",
 	"yuoenchants.text.itemInfo.small_exp_drip": "使用获取10点经验",
 	"yuoenchants.text.itemInfo.big_exp_drip": "使用获取100点经验",
 	"yuoenchants.text.blockInfo.diamond_anvil": "本模组附魔需用，附魔上限为256级",

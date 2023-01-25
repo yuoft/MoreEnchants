@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BrokenMagicPearl extends Item {
+public class ModPearl extends Item {
 
-    public BrokenMagicPearl() {
+    public ModPearl() {
         super(new Properties().maxStackSize(1).group(ModGroup.youEnchants));
     }
 
@@ -23,15 +23,14 @@ public class BrokenMagicPearl extends Item {
         if (item == YEItems.BrokenMagicPearl.get()){
             tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.broken"));
         }
-        if (item == YEItems.BrokenMagicPearlSuper.get()){
+        if (item == YEItems.SuperBrokenMagicPearl.get()){
             tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.broken_super"));
         }
+        if (item == YEItems.CuresPearl.get()){
+            tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.clear"));
+        }
+        if (item == YEItems.SuperCuresPearl.get()){
+            tooltip.add(new TranslationTextComponent("yuoenchants.text.itemInfo.clear_super"));
+        }
     }
-
-//    @Override
-//    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-//        if (itemSlot >= PlayerInventory.getHotbarSize() || !(entityIn instanceof PlayerEntity)) return; //快捷栏
-//        PlayerEntity player = (PlayerEntity) entityIn;
-//        WaterWalk.waterWalk(player, worldIn);
-//    }
 }

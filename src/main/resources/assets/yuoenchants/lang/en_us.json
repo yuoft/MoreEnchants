@@ -121,6 +121,8 @@
 	"item.yuoenchants.bamboo_coal": "Bamboo charcoal",
 	"item.yuoenchants.broken_magic_pearl": "§5Broken magic jewel",
 	"item.yuoenchants.broken_magic_pearl_super": "§6Advanced magic breaking jewel",
+	"item.yuoenchants.remove_cures_pearl": "§5Curse clearing jewel",
+	"item.yuoenchants.remove_cures_pearl_super": "§6Advanced curse clearing jewel",
 	"item.yuoenchants.mod_enchant_book": "Advanced enchantment book",
 	"item.yuoenchants.old_book": "§bAncient scrolls",
 	"item.yuoenchants.small_exp_drip": "Empirical droplet·small",
@@ -140,6 +142,8 @@
 
 	"yuoenchants.text.itemInfo.broken": "Use on the anvil to eliminate level 1 enchantment penalty",
 	"yuoenchants.text.itemInfo.broken_super": "Use on the anvil to eliminate all enchantment penalties",
+	"yuoenchants.text.itemInfo.clear": "Use to remove a negative enchantment on the anvil",
+	"yuoenchants.text.itemInfo.clear_super": "Use it on the Anvil to remove all negative enchantments",
 	"yuoenchants.text.itemInfo.small_exp_drip": "Use to gain 5 points of experience",
 	"yuoenchants.text.itemInfo.big_exp_drip": "Use to gain 10 points of experience",
 	"yuoenchants.text.blockInfo.diamond_anvil": "This anvil is required to attach this module to the item. The maximum enchantment level is 256",

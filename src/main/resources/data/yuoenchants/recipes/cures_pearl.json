@@ -10,13 +10,13 @@
       "item": "minecraft:gold_block"
     },
     "y": {
-      "item": "minecraft:lapis_block"
+      "item": "minecraft:redstone_block"
     },
     "z": {
       "item": "minecraft:enchanted_book"
     }
   },
   "result": {
-    "item": "yuoenchants:broken_magic_pearl"
+    "item": "yuoenchants:remove_cures_pearl"
   }
 }
