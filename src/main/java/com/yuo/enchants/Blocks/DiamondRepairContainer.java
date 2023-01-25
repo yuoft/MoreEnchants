@@ -320,7 +320,7 @@ public class DiamondRepairContainer extends AbstractRepairContainer {
     {
         AnvilRepairEvent e = new AnvilRepairEvent(player, left, right, output);
         MinecraftForge.EVENT_BUS.post(e);
-        e.setBreakChance(0.1f);
+        e.setBreakChance(0.08f); //损坏概率
         return e.getBreakChance();
     }
 }
