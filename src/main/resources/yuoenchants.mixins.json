@@ -5,8 +5,7 @@
   "refmap": "yuoenchants.refmap.json",
   "plugin": "com.yuo.enchants.mixin.MixinPlugin",
   "mixins": [
-    "BowItemMixin",
-    "ItemStackMixin"
+    "BowItemMixin"
   ],
   "client": [
   ],
