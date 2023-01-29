@@ -17,6 +17,6 @@ public class BowItemMixin {
     @Overwrite
     public int getUseDuration(ItemStack stack) {
         int fastBow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fastBow.get(), stack);
-        return fastBow > 0 ? Math.max(72000 - 18000 * fastBow, 9000) : 72000;
+        return fastBow > 0 ? Math.max(72000 - 12000 * fastBow, 12000) : 72000;
     }
 }
