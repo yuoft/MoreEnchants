@@ -299,11 +299,6 @@ public class EventHandler {
     public static void manyArrow(ArrowLooseEvent event) {
         World world = event.getWorld();
         ItemStack bow = event.getBow();
-        int charge = event.getCharge();
-        int fastBow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fastBow.get(), bow);
-        if (fastBow > 0) {
-            event.setCharge(FastBow.fastDraw(fastBow, charge));
-        }
         int manyArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.manyArrow.get(), bow);
         if (manyArrow > 0) {
             ManyArrow.manyArrow(event.getCharge(), event.getPlayer(), bow, manyArrow, world);

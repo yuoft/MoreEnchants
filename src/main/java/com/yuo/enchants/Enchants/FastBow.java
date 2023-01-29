@@ -22,9 +22,4 @@ public class FastBow extends ModEnchantBase {
     public int getMaxEnchantability(int enchantmentLevel) {
         return this.getMinEnchantability(enchantmentLevel) + 50;
     }
-
-    //增加使用时间
-    public static int fastDraw(int fastBow, int charge){
-        return (int) Math.ceil(charge *(1+ (fastBow * 0.25)));
-    }
 }

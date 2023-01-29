@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.yuo.enchants.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "yuoenchants.refmap.json",
+  "plugin": "com.yuo.enchants.mixin.MixinPlugin",
+  "mixins": [
+    "BowItemMixin",
+    "ItemStackMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
