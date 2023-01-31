@@ -363,10 +363,13 @@ public class EventHandler {
     @SubscribeEvent
     public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
-        //发送消息
-        player.sendMessage(new TranslationTextComponent("yuoenchants.message.login")
-                .setStyle(Style.EMPTY.setHoverEvent(HoverEvent.Action.SHOW_TEXT.deserialize(new TranslationTextComponent("yuoenchants.message.login0")))
-                        .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://space.bilibili.com/21854371"))), UUID.randomUUID());
+        if (!player.getPersistentData().getBoolean("yuoenchants:login")){
+            player.getPersistentData().putBoolean("yuoenchants:login", true);
+            //发送消息
+            player.sendMessage(new TranslationTextComponent("yuoenchants.message.login")
+                    .setStyle(Style.EMPTY.setHoverEvent(HoverEvent.Action.SHOW_TEXT.deserialize(new TranslationTextComponent("yuoenchants.message.login0")))
+                            .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://space.bilibili.com/21854371"))), UUID.randomUUID());
+        }
     }
 
     //雷击 真荆棘
