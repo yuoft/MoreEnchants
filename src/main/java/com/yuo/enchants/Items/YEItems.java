@@ -12,9 +12,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class YEItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YuoEnchants.MOD_ID);
 
-    public static RegistryObject<Item> rawIron = ITEMS.register("raw_iron", RawOre::new);
-    public static RegistryObject<Item> rawGold = ITEMS.register("raw_gold", RawOre::new);
-    public static RegistryObject<Item> bambooCoal = ITEMS.register("bamboo_coal", RawOre::new);
+    public static RegistryObject<Item> bambooCoal = ITEMS.register("bamboo_coal",
+            () -> new Item(new Item.Properties().group(ModGroup.youEnchants)));
     public static RegistryObject<Item> BrokenMagicPearl = ITEMS.register("broken_magic_pearl", ModPearl::new);
     public static RegistryObject<Item> SuperBrokenMagicPearl = ITEMS.register("broken_magic_pearl_super", ModPearl::new);
     public static RegistryObject<Item> modEnchantBook = ITEMS.register("mod_enchant_book", ModEnchantBook::new);

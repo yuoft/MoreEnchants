@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "yuoenchants:raw_iron"
-  },
-  "result": "minecraft:iron_ingot",
-  "experience": 0.2,
-  "cookingtime": 200
-}

@@ -4,7 +4,7 @@
     "item": "yuoenchants:nether_gold"
   },
   "result": {
-    "item": "yuoenchants:raw_gold",
+    "item": "minecraft:gold_ingot",
     "count": 3
   },
   "experience": 0.2

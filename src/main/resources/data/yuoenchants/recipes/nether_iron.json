@@ -4,7 +4,7 @@
     "item": "yuoenchants:nether_iron"
   },
   "result": {
-    "item": "yuoenchants:raw_iron",
+    "item": "minecraft:iron_ingot",
     "count": 3
   },
   "experience": 0.2,

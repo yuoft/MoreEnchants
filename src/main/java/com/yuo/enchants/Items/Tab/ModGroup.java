@@ -14,7 +14,7 @@ public class ModGroup extends ItemGroup{
 	//图标
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(YEItems.rawIron.get());
+		return new ItemStack(YEItems.SuperBrokenMagicPearl.get());
 	}
 
 }

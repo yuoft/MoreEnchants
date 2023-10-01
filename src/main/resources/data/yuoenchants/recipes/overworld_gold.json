@@ -4,7 +4,7 @@
     "item": "yuoenchants:overworld_gold"
   },
   "result": {
-    "item": "yuoenchants:raw_gold",
+    "item": "minecraft:gold_ingot",
     "count": 2
   },
   "experience": 0.2,
