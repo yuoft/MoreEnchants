@@ -1,6 +1,8 @@
 package com.yuo.enchants.Event;
 
+import com.yuo.enchants.Config;
 import com.yuo.enchants.Enchants.EnchantRegistry;
+import com.yuo.enchants.Enchants.Melting;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,10 +15,7 @@ import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -30,7 +29,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.*;
 
@@ -46,7 +44,7 @@ public class EventHelper {
      * @param instability 附魔等级
      */
     public static void dropItem(PlayerEntity player, int instability) {
-        if (instability > 0 && !player.world.isRemote && !player.isCreative()){ //挖掘时
+        if (instability > 0 && !player.world.isRemote && !player.isCreative() && Config.SERVER.isInstability.get()){ //挖掘时
             EffectInstance instance = player.getActivePotionEffect(Effects.LUCK);
             int luck = -1;
             if (instance != null)
@@ -130,12 +128,8 @@ public class EventHelper {
         int finalCount = count;
         drops.forEach(e -> {
             ItemEntity itemEntity = new ItemEntity(world, player.getPosX(), player.getPosY(), player.getPosZ());
-            if (melting > 0) { //有熔炼附魔 替换产物
-                ItemStack dropStack = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(e), world)
-                        .map(FurnaceRecipe::getRecipeOutput).filter(f -> !e.isEmpty())
-                        .map(f -> ItemHandlerHelper.copyStackWithSize(f, tool.getCount() * f.getCount()))
-                        .orElse(e);
-                dropStack.setCount(finalCount);
+            if (melting > 0  && Config.SERVER.isMelting.get()) { //有熔炼附魔 替换产物
+                ItemStack dropStack = Melting.getMeltingItem(world, e, tool);
                 itemEntity.setItem(dropStack);
             }else itemEntity.setItem(new ItemStack(e.getItem(), finalCount));
             world.addEntity(itemEntity);
@@ -202,7 +196,7 @@ public class EventHelper {
     public static void changeMaxHealth(PlayerEntity player){
         int health = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.health.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
         ModifiableAttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
-        if (maxHealth != null){
+        if (maxHealth != null  && Config.SERVER.isHealth.get()){
             if (health <= 0){
                 RemoveModifier(maxHealth, ATTR_TYPE.HEALTH, health, attrHealth);
                 return;
@@ -214,7 +208,7 @@ public class EventHelper {
     public static void changeHandRange(PlayerEntity player){
         int handRange = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.handRange.get(), player.getHeldItemMainhand());
         ModifiableAttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
-        if (reachDistance != null){
+        if (reachDistance != null  && Config.SERVER.isHandRange.get()){
             if (handRange <= 0){
                 RemoveModifier(reachDistance, ATTR_TYPE.REACH_DISTANCE, handRange, attrHandRange);
                 return;
@@ -226,7 +220,7 @@ public class EventHelper {
     public static void changeSwimSpeed(PlayerEntity player){
         int deepFear = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.deepFear.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
         ModifiableAttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-        if (swimSpeed != null){
+        if (swimSpeed != null && Config.SERVER.isDeepFear.get()){
             if (deepFear <= 0){
                 RemoveModifier(swimSpeed, ATTR_TYPE.SWIM_SPEED, deepFear, attrSwimSpeed);
                 return;

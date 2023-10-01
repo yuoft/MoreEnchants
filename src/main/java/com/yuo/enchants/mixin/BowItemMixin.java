@@ -1,5 +1,6 @@
 package com.yuo.enchants.mixin;
 
+import com.yuo.enchants.Config;
 import com.yuo.enchants.Enchants.EnchantRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -35,7 +36,7 @@ public abstract class BowItemMixin extends Item {
             boolean flag = playerentity.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemstack = playerentity.findAmmo(stack);
             int fastBow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fastBow.get(), stack);
-            int i = (this.getUseDuration(stack) - timeLeft) * (1 + fastBow);
+            int i = (this.getUseDuration(stack) - timeLeft) * (1 + (Config.SERVER.isFastBow.get() ? fastBow : 0));
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, playerentity, i, !itemstack.isEmpty() || flag);
             if (i < 0) return;
 

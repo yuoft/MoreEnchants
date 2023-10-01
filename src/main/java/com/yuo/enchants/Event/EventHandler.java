@@ -1,5 +1,6 @@
 package com.yuo.enchants.Event;
 
+import com.yuo.enchants.Config;
 import com.yuo.enchants.Enchants.*;
 import com.yuo.enchants.Proxy.CommonProxy;
 import com.yuo.enchants.YuoEnchants;
@@ -52,27 +53,27 @@ public class EventHandler {
             ItemStack stackLegs = player.getItemStackFromSlot(EquipmentSlotType.LEGS);
             ItemStack stackFeet = player.getItemStackFromSlot(EquipmentSlotType.FEET);
             int lavaWalker = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.lavaWalker.get(), stackFeet);
-            if (lavaWalker > 0 && event.getSource() == DamageSource.HOT_FLOOR){
+            if (lavaWalker > 0 && event.getSource() == DamageSource.HOT_FLOOR  && Config.SERVER.isLavaWalker.get()){
                 event.setCanceled(true);
             }
             int fireImmune_legs = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fireImmune.get(), stackLegs);
-            if (fireImmune_legs > 0) {
+            if (fireImmune_legs > 0 && Config.SERVER.isFireImmune.get()) {
                 FireImmune.fireImmune(event, stackLegs, player);
             }
             int lastStand = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.lastStand.get(), stackFeet);
-            if (lastStand > 0) {
+            if (lastStand > 0   && Config.SERVER.isLastStand.get()) {
                 LastStand.lastStand(player, event, stackFeet);
             }
             int superFire = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.superFire.get(), stackLegs);
-            if (superFire > 0 && event.getSource().isFireDamage()) {
+            if (superFire > 0 && event.getSource().isFireDamage() && Config.SERVER.isSuperFire.get()) {
                 event.setAmount(SuperProtect.getDamage(event.getAmount(), superFire));
             }
             int superBlast = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.superBlast.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
-            if (superBlast > 0 && event.getSource().isExplosion()) {
+            if (superBlast > 0 && event.getSource().isExplosion() && Config.SERVER.isSuperBlast.get()) {
                 event.setAmount(SuperProtect.getDamage(event.getAmount(), superBlast));
             }
             int superArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.superArrow.get(), player.getItemStackFromSlot(EquipmentSlotType.HEAD));
-            if (superArrow > 0 && event.getSource().isProjectile()) {
+            if (superArrow > 0 && event.getSource().isProjectile() && Config.SERVER.isSuperArrow.get()) {
                 event.setAmount(SuperProtect.getDamage(event.getAmount(), superArrow));
             }
         }
@@ -81,7 +82,7 @@ public class EventHandler {
             PlayerEntity player = (PlayerEntity) trueSource;
             ItemStack mainHand = EventHelper.getUseItem(player);
             int beHead = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.beHead.get(), mainHand);
-            if (beHead > 0) {
+            if (beHead > 0  && Config.SERVER.isBehead.get()) {
                 BeHead.addDamage(beHead, event, player, entityLiving);
             }
         }
@@ -93,7 +94,7 @@ public class EventHandler {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
             int superFall = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.superFall.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
-            if (superFall > 0) {
+            if (superFall > 0 && Config.SERVER.isSuperFall.get()) {
                 event.setDamageMultiplier(SuperProtect.getDamage(event.getDamageMultiplier(), superFall));
             }
         }
@@ -106,11 +107,11 @@ public class EventHandler {
         if (player == null) return;
         ItemStack stack = EventHelper.getUseItem(player);
         int warToWar = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.warToWar.get(), stack);
-        if (warToWar > 0) { //有附魔
+        if (warToWar > 0 && Config.SERVER.isWarToWar.get()) { //有附魔
             WarToWar.heal(warToWar, player);
         }
         int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
-        if (unDurable > 0) {
+        if (unDurable > 0  && Config.SERVER.isUnDurable.get()) {
             UnDurable.unDurable(stack, unDurable, player);
         }
 
@@ -127,7 +128,7 @@ public class EventHandler {
             if (player != null) {
                 ItemStack itemStack = EventHelper.getUseItem(player);
                 int blastArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.blastArrow.get(), itemStack);
-                if (blastArrow > 0) {
+                if (blastArrow > 0  && Config.SERVER.isBlastArrow.get()) {
                     BlastArrow.boom(arrow, blastArrow);
                 }
             }
@@ -139,18 +140,18 @@ public class EventHandler {
     public static void unDurableTool(BlockEvent.BreakEvent event) {
         PlayerEntity player = event.getPlayer();
         if (player == null) return;
-        ItemStack stack = EventHelper.getUseItem(player);
-        if (stack.isEmpty()) return;
-        Item item = stack.getItem();
+        ItemStack tool = EventHelper.getUseItem(player);
+        if (tool.isEmpty()) return;
+        Item item = tool.getItem();
         if (item instanceof ToolItem || item instanceof ShearsItem) {
-            int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
-            if (unDurable > 0) {
-                stack.damageItem(RANDOM.nextInt(unDurable) + 1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND)); //破坏方块时消耗更多耐久
+            int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), tool);
+            if (unDurable > 0  && Config.SERVER.isUnDurable.get()) {
+                tool.damageItem(RANDOM.nextInt(unDurable) + 1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND)); //破坏方块时消耗更多耐久
             }
         }
         if (event.getExpToDrop() > 0) {
-            int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), stack);
-            if (insight > 0) {
+            int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), tool);
+            if (insight > 0  && Config.SERVER.isInsight.get()) {
                 Insight.addDropExp(event, insight);
             }
         }
@@ -159,32 +160,32 @@ public class EventHandler {
         Block block = event.getState().getBlock();
         BlockState state = event.getState();
 
-        int strengthLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.strengthLuck.get(), stack);
-        int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), stack);
-        if (strengthLuck > 0) {
+        int strengthLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.strengthLuck.get(), tool);
+        int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), tool);
+        if (strengthLuck > 0 && Config.SERVER.isStrengthLuck.get()) {
             StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, player);
             return;
         }
-        if (unLuck > 0 &&  RANDOM.nextDouble() < unLuck * 0.2){
+        if (unLuck > 0 && Config.SERVER.isUnLuck.get() &&  RANDOM.nextDouble() < unLuck * 0.2){
             if (event.getExpToDrop() > 0){
                 event.setExpToDrop(0);
             }
             world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
         }
-        int rangBreak = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.rangBreak.get(), stack);
+        int rangBreak = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.rangBreak.get(), tool);
 
-        if (CommonProxy.isIsKeyC() && rangBreak > 0) {
-            EventHelper.breakBlocks(stack, world, pos, state, player, Math.min(rangBreak, 5)); //最大等级5
+        if (CommonProxy.isIsKeyC() && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
+            EventHelper.breakBlocks(tool, world, pos, state, player, Math.min(rangBreak, 5)); //最大等级5
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
         }
-        int melting = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.melting.get(), stack); //熔炼
-        if (melting > 0) {
-            Melting.melting(block, state, world, pos, player, stack, event);
+        int melting = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.melting.get(), tool); //熔炼
+        if (melting > 0  && Config.SERVER.isMelting.get()) {
+            Melting.melting(block, state, world, pos, player, tool, event);
         }
-        int diamondDrop = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.diamondDrop.get(), stack);
-        int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
-        if (diamondDrop > 0 && state.getBlock() == Blocks.COAL_ORE){
+        int diamondDrop = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.diamondDrop.get(), tool);
+        int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
+        if (diamondDrop > 0 && state.getBlock() == Blocks.COAL_ORE && Config.SERVER.isDiamondDrop.get()){
             DiamondDrop.diamondDrop(diamondDrop, world, fortune, pos);
         }
     }
@@ -215,7 +216,7 @@ public class EventHandler {
             Item item = stack.getItem();
             if (item instanceof BowItem || item instanceof CrossbowItem || item instanceof TridentItem) {
                 int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
-                if (unDurable > 0)
+                if (unDurable > 0  && Config.SERVER.isUnDurable.get())
                     stack.damageItem(RANDOM.nextInt(unDurable) + 1, player, e -> e.sendBreakAnimation(event.getEntityLiving().getActiveHand()));
             }
         }
@@ -229,7 +230,7 @@ public class EventHandler {
         Item item = stack.getItem();
         if (item instanceof FishingRodItem) {
             int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
-            if (unDurable > 0)
+            if (unDurable > 0  && Config.SERVER.isUnDurable.get())
                 stack.damageItem(RANDOM.nextInt(unDurable) + 1, player, e -> e.sendBreakAnimation(event.getHand()));
         }
     }
@@ -242,7 +243,7 @@ public class EventHandler {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         int farmer = EnchantmentHelper.getMaxEnchantmentLevel(EnchantRegistry.farmer.get(), player);
-        if (farmer > 0) {
+        if (farmer > 0 && Config.SERVER.isFarmer.get()) {
             Farmer.harvestCrop(player, hand, world, pos, farmer);
         }
     }
@@ -253,9 +254,9 @@ public class EventHandler {
         PlayerEntity player = event.getPlayer();
         ItemUseContext context = event.getContext();
         ItemStack item = context.getItem();
-        int level = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), item);
-        if (level > 0) {
-            item.damageItem(RANDOM.nextInt(level) + 1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
+        int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), item);
+        if (unDurable > 0  && Config.SERVER.isUnDurable.get()) {
+            item.damageItem(RANDOM.nextInt(unDurable) + 1, player, e -> e.sendBreakAnimation(Hand.MAIN_HAND));
         }
     }
 
@@ -270,13 +271,13 @@ public class EventHandler {
                 int unDurable = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
                 int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), stack);
                 int badLuckOfTheSea = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.badLuckOfTheSea.get(), stack);
-                if (unDurable > 0) {
+                if (unDurable > 0  && Config.SERVER.isUnDurable.get()) {
                     event.damageRodBy(event.getRodDamage() + RANDOM.nextInt(unDurable) + 1);
                 }
-                if (insight > 0) {
+                if (insight > 0  && Config.SERVER.isInsight.get()) {
                     Insight.addFishingExp(player, world, insight);
                 }
-                if (badLuckOfTheSea > 0) {
+                if (badLuckOfTheSea > 0  && Config.SERVER.isBadLuckOfTheSea.get()) {
                     BadLuckOfTheSea.fishingTnt(event, badLuckOfTheSea, player, world);
                 }
             }
@@ -289,7 +290,7 @@ public class EventHandler {
         PlayerEntity player = event.getPlayer();
         if (player == null) return;
         int slow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.slow.get(), EventHelper.getUseItem(player));
-        if (slow > 0) {
+        if (slow > 0   && Config.SERVER.isSlow.get()) {
             event.setNewSpeed(event.getOriginalSpeed() * (1 - slow * 0.2f)); //挖掘速度变慢
         }
     }
@@ -300,7 +301,7 @@ public class EventHandler {
         World world = event.getWorld();
         ItemStack bow = event.getBow();
         int manyArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.manyArrow.get(), bow);
-        if (manyArrow > 0) {
+        if (manyArrow > 0  && Config.SERVER.isManyArrow.get()) {
             ManyArrow.manyArrow(event.getCharge(), event.getPlayer(), bow, manyArrow, world);
         }
     }
@@ -315,7 +316,7 @@ public class EventHandler {
         player.onItemPickup(event.getOrb(), 1);
         //获取含有此附魔的装备map
         Map.Entry<EquipmentSlotType, ItemStack> entry = EnchantmentHelper.getRandomItemWithEnchantment(EnchantRegistry.expCorrode.get(), player);
-        if (entry != null) {
+        if (entry != null  && Config.SERVER.isExpCorrode.get()) {
             ItemStack itemstack = entry.getValue();
             if (!itemstack.isEmpty() && itemstack.getDamage() > 0) { //物品非空，且有耐久
                 int i = (int) (xpValue * 1.0f);  //获取经验值 * 物品经验修复率
@@ -340,15 +341,15 @@ public class EventHandler {
                 feet.getOrCreateTag().putInt(DoubleJump.USES, 0);
             }
             int lavaWalker = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.lavaWalker.get(), feet);
-            if (lavaWalker > 0) {
+            if (lavaWalker > 0  && Config.SERVER.isLavaWalker.get()) {
                 LavaWalker.freezingNearby(player, player.world, player.getPosition(), lavaWalker);
             }
             int magnet = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.magnet.get(), player.getItemStackFromSlot(EquipmentSlotType.LEGS));
-            if (magnet > 0 && player.isSneaking()) {
+            if (magnet > 0 && player.isSneaking() && Config.SERVER.isMagnet.get()) {
                 Magnet.moveEntityItemsInRegion(player.world, player.getPosition(), 3 + magnet * 2, magnet);
             }
             int waterWalk = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.waterWalk.get(), feet);
-            if (waterWalk > 0) {
+            if (waterWalk > 0 && Config.SERVER.isWaterWalk.get()) {
                 WaterWalk.walk(player);
             }
             if (!player.world.isRemote){
@@ -380,11 +381,11 @@ public class EventHandler {
         ItemStack stackLegs = player.getItemStackFromSlot(EquipmentSlotType.LEGS);
         ItemStack stackChest = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
         int lightningDamage = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.lightningDamage.get(), stackLegs);
-        if (lightningDamage > 0) { //在雨天生效
+        if (lightningDamage > 0   && Config.SERVER.isLightningDamage.get()) { //在雨天生效
             LightningDamage.lighting(player, stackLegs);
         }
         int thorns = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.thorns.get(), stackChest);
-        if (thorns > 0) {
+        if (thorns > 0   && Config.SERVER.isThorns.get()) {
             Thorns.thorns(player, stackChest, thorns);
         }
     }
@@ -395,12 +396,12 @@ public class EventHandler {
         PlayerEntity player = event.getAttackingPlayer();
         if (player != null) {
             int insight = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.insight.get(), EventHelper.getUseItem(player));
-            if (insight > 0) {
+            if (insight > 0  && Config.SERVER.isInsight.get()) {
                 double exp = event.getOriginalExperience() * (100 + insight * 30) / 100.0;
                 event.setDroppedExperience((int) Math.ceil(exp));
             }
             int unLooting = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLooting.get(), EventHelper.getUseItem(player));
-            if (unLooting > 0 && event.getDroppedExperience() > 0){
+            if (unLooting > 0 && Config.SERVER.isUnLooting.get() && event.getDroppedExperience() > 0){
                 int luck = -1;
                 EffectInstance instance = player.getActivePotionEffect(Effects.LUCK);
                 if (instance != null)
@@ -420,11 +421,11 @@ public class EventHandler {
             PlayerEntity player = (PlayerEntity) trueSource;
             ItemStack mainHand = EventHelper.getUseItem(player);
             int leech = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.leech.get(), mainHand);
-            if (leech > 0) {
+            if (leech > 0  && Config.SERVER.isLeech.get()) {
                 player.heal(leech / 2.0f); //回血
             }
             int healthToS = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.healthToSacrifice.get(), mainHand);
-            if (healthToS > 0) {
+            if (healthToS > 0 && Config.SERVER.isHealthToSacrifice.get()) {
                 LivingEntity entityLiving = event.getEntityLiving();
                 World world = entityLiving.world;
                 int looting = EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, mainHand);
@@ -440,11 +441,11 @@ public class EventHandler {
         if (trueSource instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) trueSource;
             int beHead = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.beHead.get(), EventHelper.getUseItem(player));
-            if (beHead > 0) {
+            if (beHead > 0  && Config.SERVER.isBehead.get()) {
                 event.getDrops().add(BeHead.dropHead(beHead, event.getEntityLiving()));
             }
             int unLooting = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLooting.get(), EventHelper.getUseItem(player));
-            if (unLooting > 0){
+            if (unLooting > 0 && Config.SERVER.isUnLooting.get()){
                 int luck = -1;
                 EffectInstance instance = player.getActivePotionEffect(Effects.LUCK);
                 if (instance != null)
@@ -462,7 +463,7 @@ public class EventHandler {
         if (source instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source;
             int robbery = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.robbery.get(), EventHelper.getUseItem(player));
-            if (robbery > 0){
+            if (robbery > 0 && Config.SERVER.isRobbery.get()){
                 event.setLootingLevel(Robbery.getLootingLevel(event.getLootingLevel(), robbery));
             }
         }
@@ -474,7 +475,7 @@ public class EventHandler {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
             int fastHeal = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fastHeal.get(), player.getItemStackFromSlot(EquipmentSlotType.CHEST));
-            if (fastHeal > 0) {
+            if (fastHeal > 0 && Config.SERVER.isFastHeal.get()) {
                 event.setAmount(FastHeal.fastHeal(fastHeal, event.getAmount()));
             }
         }
@@ -487,7 +488,7 @@ public class EventHandler {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
             if (event.getItem().getItem() instanceof ShootableItem) {
                 int repulsion = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.repulsion.get(), event.getItem());
-                if (repulsion > 0) {
+                if (repulsion > 0 && Config.SERVER.isRepulsion.get()) {
                     Repulsion.moveLivingEntityInRegion(player.world, player.getPosition(), 1 + repulsion, repulsion);
                 }
             }
@@ -506,7 +507,7 @@ public class EventHandler {
                 ItemStack bow = living.getActiveItemStack();
                 if (!bow.isEmpty() && bow.getItem() instanceof BowItem) {
                     int superPower = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.superPower.get(), bow);
-                    if (superPower > 0) {
+                    if (superPower > 0 && Config.SERVER.isSuperPower.get()) {
                         arrow.setDamage(arrow.getDamage() + 1.25D + (double) superPower * 0.75D);
                     }
                 }
@@ -523,11 +524,11 @@ public class EventHandler {
             ItemStack shield = player.getHeldItemOffhand();
             if (!shield.isEmpty() && shield.isShield(player)) {
                 int rebound = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.rebound.get(), shield);
-                if (rebound > 0) {
+                if (rebound > 0 && Config.SERVER.isRebound.get()) {
                     Rebound.rebound(event, rebound, player, shield);
                 }
                 int fireShield = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fireShield.get(), shield);
-                if (fireShield > 0) {
+                if (fireShield > 0 && Config.SERVER.isFireShield.get()) {
                     FireShield.fireShield(event.getSource(), fireShield, player);
                 }
             }
@@ -539,7 +540,7 @@ public class EventHandler {
         ItemStack stack = event.getItemStack();
         PlayerEntity player = event.getPlayer();
         int instability = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.instability.get(), stack);
-        if (!player.world.isRemote){
+        if (!player.world.isRemote && Config.SERVER.isInstability.get()){
             EventHelper.dropItem(player, instability);
         }
     }

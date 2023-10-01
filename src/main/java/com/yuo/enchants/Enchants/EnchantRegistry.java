@@ -11,7 +11,7 @@ public class EnchantRegistry {
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, YuoEnchants.MOD_ID);
     //火焰免疫
     public static RegistryObject<Enchantment> fireImmune = ENCHANTMENTS.register("fire_immune",
-            () -> new FireImmune(Enchantment.Rarity.VERY_RARE, ModEnchantBase.EnchantType.ARMOR_LEGS, EquipmentSlotType.values()));
+            () ->new FireImmune(Enchantment.Rarity.VERY_RARE, ModEnchantBase.EnchantType.ARMOR_LEGS, EquipmentSlotType.values()));
     //以战养战
     public static RegistryObject<Enchantment> warToWar = ENCHANTMENTS.register("war_to_war",
             () -> new WarToWar(Enchantment.Rarity.COMMON, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));

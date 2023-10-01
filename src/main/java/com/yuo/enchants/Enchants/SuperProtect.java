@@ -1,5 +1,6 @@
 package com.yuo.enchants.Enchants;
 
+import com.yuo.enchants.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -49,16 +50,16 @@ public class SuperProtect extends ModEnchantBase {
     public int calcModifierDamage(int level, DamageSource source) {
         if (source.canHarmInCreative()) {
             return 0;
-        } else if (enchantType == 0) {
+        } else if (enchantType == 0 && Config.SERVER.isSuperProtect.get()) {
             return level * 2;
-        } else if (enchantType == 1 && source.isFireDamage()) {
+        } else if (enchantType == 1 && source.isFireDamage() && Config.SERVER.isSuperFire.get()) {
             return level * 3;
-        } else if (enchantType == 2 && source == DamageSource.FALL) {
+        } else if (enchantType == 2 && source == DamageSource.FALL && Config.SERVER.isSuperFall.get()) {
             return level * 4;
-        } else if (enchantType == 3 && source.isExplosion()) {
+        } else if (enchantType == 3 && source.isExplosion() && Config.SERVER.isSuperBlast.get()) {
             return level * 3;
         } else {
-            return enchantType == 4 && source.isProjectile() ? level * 3 : 0;
+            return enchantType == 4 && source.isProjectile() && Config.SERVER.isSuperArrow.get() ? level * 3 : 0;
         }
     }
 

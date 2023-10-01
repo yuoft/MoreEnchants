@@ -1,5 +1,6 @@
 package com.yuo.enchants.Enchants;
 
+import com.yuo.enchants.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -42,7 +43,7 @@ public class FireThorns extends ModEnchantBase{
     public void onUserHurt(LivingEntity user, Entity attacker, int level) {
         Random random = user.getRNG();
         Map.Entry<EquipmentSlotType, ItemStack> entry = EnchantmentHelper.getRandomItemWithEnchantment(EnchantRegistry.fireThorns.get(), user);
-        if (shouldHit(level, random)) {
+        if (shouldHit(level, random) && Config.SERVER.isFireThorns.get()) {
             attacker.attackEntityFrom(DamageSource.causeThornsDamage(user), getDamage(level, random));
             attacker.setFire(level);
             if (entry != null) {
@@ -54,6 +55,12 @@ public class FireThorns extends ModEnchantBase{
 
     }
 
+    /**
+     * 是否应该反伤攻击者
+     * @param level 附魔等级
+     * @param rnd 随机函数
+     * @return 是否反伤
+     */
     public static boolean shouldHit(int level, Random rnd) {
         if (level <= 0) {
             return false;

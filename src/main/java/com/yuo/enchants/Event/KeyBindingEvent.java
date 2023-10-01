@@ -1,5 +1,6 @@
 package com.yuo.enchants.Event;
 
+import com.yuo.enchants.Config;
 import com.yuo.enchants.Enchants.DoubleJump;
 import com.yuo.enchants.Enchants.EnchantRegistry;
 import com.yuo.enchants.NetWork.NetWorkHandler;
@@ -35,7 +36,7 @@ public class KeyBindingEvent {
         }
         if (player == null) return;
         int doubleJump = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.doubleJump.get(), player.getItemStackFromSlot(EquipmentSlotType.FEET));
-        if (doubleJump > 0){
+        if (doubleJump > 0  && Config.SERVER.isDoubleJump.get()){
             DoubleJump.jump(player, doubleJump);
         }
     }

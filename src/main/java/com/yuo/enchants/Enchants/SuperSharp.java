@@ -1,5 +1,6 @@
 package com.yuo.enchants.Enchants;
 
+import com.yuo.enchants.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureAttribute;
@@ -46,12 +47,12 @@ public class SuperSharp extends ModEnchantBase {
     //额外伤害
     @Override
     public float calcDamageByCreature(int level, CreatureAttribute creatureType) {
-        if (enchantType == 0)
+        if (enchantType == 0 && Config.SERVER.isSuperSharp.get())
             return 2F + (float) Math.max(0, level - 1);
-        else if (this.enchantType == 1 && creatureType == CreatureAttribute.UNDEAD) {
+        else if (this.enchantType == 1 && creatureType == CreatureAttribute.UNDEAD && Config.SERVER.isSuperSmite.get()) {
             return 1f + (float)level * 3F;
         } else {
-            return this.enchantType == 2 && creatureType == CreatureAttribute.ARTHROPOD ? 1f + (float)level * 3F : 0.0F;
+            return this.enchantType == 2 && creatureType == CreatureAttribute.ARTHROPOD && Config.SERVER.isSuperArthropod.get() ? 1f + (float)level * 3F : 0.0F;
         }
     }
     //攻击实体时
@@ -59,7 +60,7 @@ public class SuperSharp extends ModEnchantBase {
     public void onEntityDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity) {
             LivingEntity livingentity = (LivingEntity)target;
-            if (this.enchantType == 2 && livingentity.getCreatureAttribute() == CreatureAttribute.ARTHROPOD) {
+            if (this.enchantType == 2 && livingentity.getCreatureAttribute() == CreatureAttribute.ARTHROPOD && Config.SERVER.isSuperArthropod.get()) {
                 int i = 20 + user.getRNG().nextInt(10 * level);
                 livingentity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, i, 3));
             }

@@ -1,5 +1,6 @@
 package com.yuo.enchants.Enchants;
 
+import com.yuo.enchants.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -43,7 +44,7 @@ public class SuperThorns extends ModEnchantBase{
         Random random = user.getRNG();
         //获取有此附魔的装备
         Map.Entry<EquipmentSlotType, ItemStack> entry = EnchantmentHelper.getRandomItemWithEnchantment(EnchantRegistry.superThorns.get(), user);
-        if (shouldHit(level, random)) {
+        if (shouldHit(level, random) && Config.SERVER.isSuperThorns.get()) {
             attacker.attackEntityFrom(DamageSource.causeThornsDamage(user), getDamage(level, random));
             if (entry != null) {
                 entry.getValue().damageItem(2, user, (livingEntity) -> {

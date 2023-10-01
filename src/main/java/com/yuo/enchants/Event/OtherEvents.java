@@ -125,7 +125,7 @@ public class OtherEvents {
 
     private static final ResourceLocation[] RS = { //将要追加的战利品表 列表
             LootTables.CHESTS_JUNGLE_TEMPLE, //丛林神殿
-            LootTables.GAMEPLAY_FISHING, //钓鱼
+//            LootTables.GAMEPLAY_FISHING, //钓鱼
             LootTables.CHESTS_DESERT_PYRAMID, //沙漠神殿
             LootTables.BASTION_TREASURE, //猪灵堡垒
             LootTables.CHESTS_END_CITY_TREASURE, //末地城
@@ -145,6 +145,11 @@ public class OtherEvents {
                 table.addPool(getPoolSuperBook());
             }
         }
+        if (LootTables.GAMEPLAY_FISHING.equals(name)){
+            LootTable table = event.getTable();
+            table.addPool(getFishPoolOldBook());
+            table.addPool(getFishPoolSuperBook());
+        }
     }
 
     /**
@@ -153,7 +158,7 @@ public class OtherEvents {
      */
     private static LootPool getPoolOldBook(){
         LootPool.Builder builder = new LootPool.Builder().name("old_book")
-                .addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook())
+                .addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook())
                 .acceptCondition(RandomChance.builder(0.1f)) //通过概率
                 .rolls(new RandomValueRange(1, 2)).bonusRolls(0, 1); //抽取次数：1~4 幸运增加的抽取次数
         return builder.build();
@@ -164,6 +169,22 @@ public class OtherEvents {
                 .addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook())
                 .acceptCondition(RandomChance.builder(0.15f))
                 .rolls(new RandomValueRange(1, 3)).bonusRolls(0, 2);
+        return builder.build();
+    }
+
+    private static LootPool getFishPoolOldBook(){
+        LootPool.Builder builder = new LootPool.Builder().name("old_book")
+                .addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook())
+                .acceptCondition(RandomChance.builder(0.05f)) //通过概率
+                .rolls(new RandomValueRange(0, 2)).bonusRolls(0, 1); //抽取次数：1~4 幸运增加的抽取次数
+        return builder.build();
+    }
+
+    private static LootPool getFishPoolSuperBook(){
+        LootPool.Builder builder = new LootPool.Builder().name("super_enchant_book")
+                .addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook())
+                .acceptCondition(RandomChance.builder(0.1f))
+                .rolls(new RandomValueRange(1, 3)).bonusRolls(0, 1);
         return builder.build();
     }
 

@@ -46,7 +46,7 @@ public class BadLuckOfTheSea extends ModEnchantBase {
         if (i < badLuckOfTheSea * 10 + 30){ //引燃的TNT飞向玩家
             event.getDrops().clear();
             TNTEntity tntEntity = new TNTEntity(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), player);
-            tntEntity.setFuse(40); //引燃时间40刻度（2S）
+            tntEntity.setFuse(40); //引燃时间40刻度 2S
             BlockPos pos = event.getHookEntity().getPosition(); //获取鱼鳔实体坐标
             double d0 = player.getPosX() - pos.getX();
             double d1 = player.getPosY() - pos.getY();

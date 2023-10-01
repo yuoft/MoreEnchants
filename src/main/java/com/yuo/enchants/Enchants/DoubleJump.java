@@ -34,24 +34,25 @@ public class DoubleJump extends ModEnchantBase {
     }
 
     //跳跃控制
-    public static void jump(PlayerEntity player, int level){
-        if (player.getRidingEntity() instanceof BoatEntity || player.isCrouching() || player.isSneaking()) return; //坐船 或 潜行不能跳
+    public static void jump(PlayerEntity player, int level) {
+        if (player.getRidingEntity() instanceof BoatEntity || player.isCrouching() || player.isSneaking())
+            return; //坐船 或 潜行不能跳
         ItemStack feet = player.getItemStackFromSlot(EquipmentSlotType.FEET);
         if (player.getCooldownTracker().hasCooldown(feet.getItem())) return; //鞋子冷却时不能跳
         int uses = feet.getOrCreateTag().getInt(USES);
-        if (!player.isOnGround() && !player.abilities.isFlying){ //不在地面 未飞行
+        if (!player.isOnGround() && !player.abilities.isFlying) { //不在地面 未飞行
             if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() //按下跳跃键 未在最高高度 在空中 不在水里 不在岩浆里
-                && player.getPosY() < player.lastTickPosY && player.isAirBorne && !player.isInWater() && !player.isInLava()) {
+                    && player.getPosY() < player.lastTickPosY && player.isAirBorne && !player.isInWater() && !player.isInLava()) {
                 player.fallDistance = 0;
 //                float angle = (player.getMotion().x == 0 && player.getMotion().z == 0) ? 90 : 70;
 //                launch(player, angle, player.rotationYaw, 1.05f);
                 player.jump();
-                for (int i = 0; i < 10; i++){
+                for (int i = 0; i < 10; i++) {
                     player.world.addParticle(ParticleTypes.CRIT, player.getPosX() + player.world.rand.nextGaussian(),
                             player.getPosY(), player.getPosZ() + player.world.rand.nextGaussian(), 0, 0, 0);
                 }
                 uses++;
-                if (uses >= level){
+                if (uses >= level) {
                     player.getCooldownTracker().setCooldown(feet.getItem(), 40);
                     uses = 0;
                 }
@@ -61,13 +62,13 @@ public class DoubleJump extends ModEnchantBase {
     }
 
 
-
     /**
      * 玩家跳跃
-     * @param player 玩家
-     * @param rotationPitch  p
-     * @param rotationYaw y
-     * @param power 高度
+     *
+     * @param player        玩家
+     * @param rotationPitch p
+     * @param rotationYaw   y
+     * @param power         高度
      */
     public static void launch(PlayerEntity player, float rotationPitch, float rotationYaw, float power) {
         float mountPower = (float) (power + 0.5);
@@ -83,8 +84,7 @@ public class DoubleJump extends ModEnchantBase {
             player.setMotion(player.getMotion().x, mountPower, player.getMotion().z);
             ridingEntity.fallDistance = 0;
             ridingEntity.addVelocity(velX * mountPower, velY * mountPower, velZ * mountPower);
-        }
-        else {
+        } else {
             player.setMotion(player.getMotion().x, mountPower, player.getMotion().z);
             player.fallDistance = 0;
             player.addVelocity(velX, velY, velZ);
