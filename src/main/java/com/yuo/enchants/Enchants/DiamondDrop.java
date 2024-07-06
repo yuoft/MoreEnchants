@@ -36,7 +36,7 @@ public class DiamondDrop extends ModEnchantBase{
     public static void diamondDrop(int level, World world, int fortune, BlockPos pos){
         Random rand = world.rand;
         if (rand.nextDouble() < 0.05 + level * 0.1 + fortune * 0.1){
-            ItemStack diamond = new ItemStack(Items.DIAMOND, MathHelper.nextInt(rand, 1, level + fortune));
+            ItemStack diamond = new ItemStack(Items.DIAMOND, MathHelper.nextInt(rand, 1, level + 3));
             world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), diamond));
         }
     }

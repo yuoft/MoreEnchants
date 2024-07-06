@@ -31,8 +31,8 @@ public class StrengthLuck extends ModEnchantBase {
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
-        return this != ench && (ench != Enchantments.FORTUNE || ench != EnchantRegistry.rangBreak.get()
-                || ench != EnchantRegistry.unLuck.get());
+        return this != ench && ench != Enchantments.FORTUNE && ench != EnchantRegistry.rangBreak.get()
+                && ench != EnchantRegistry.unLuck.get() && ench != EnchantRegistry.melting.get();
     }
 
     /**

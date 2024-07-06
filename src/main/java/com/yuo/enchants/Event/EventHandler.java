@@ -7,10 +7,12 @@ import com.yuo.enchants.YuoEnchants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PotatoBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -35,7 +37,9 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * 事件处理类 附魔实现
@@ -169,6 +173,11 @@ public class EventHandler {
         if (unLuck > 0 && Config.SERVER.isUnLuck.get() &&  RANDOM.nextDouble() < unLuck * 0.2){
             if (event.getExpToDrop() > 0){
                 event.setExpToDrop(0);
+            }
+            if (block == Blocks.POTATOES){ //破坏成熟马铃薯，掉落毒马铃薯
+                Integer cropAge = state.get(PotatoBlock.AGE);
+                if (cropAge >= 7) world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(),
+                        new ItemStack(Items.POISONOUS_POTATO)));
             }
             world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
         }

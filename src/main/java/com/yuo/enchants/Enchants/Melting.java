@@ -1,8 +1,10 @@
 package com.yuo.enchants.Enchants;
 
+import com.yuo.enchants.Config;
 import com.yuo.enchants.Event.EventHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -41,9 +43,11 @@ public class Melting extends ModEnchantBase {
 
     //熔炼方块掉落
     public static void melting(Block block, BlockState state, World world, BlockPos pos, PlayerEntity player, ItemStack tool, BlockEvent.BreakEvent event){
-        if (!block.canHarvestBlock(state, world, pos, player)) return;
+        if (!block.canHarvestBlock(state, world, pos, player) || block instanceof CropsBlock) return;
         List<ItemStack> drops = Block.getDrops(state, (ServerWorld) world, pos, null);
-        if (drops.size() <= 0) return;
+        int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), tool);
+        //霉运影响
+        if (drops.size() <= 0 || !(unLuck > 0 && Config.SERVER.isUnLuck.get() &&  world.rand.nextDouble() < unLuck * 0.2)) return;
         drops.forEach(itemStack -> {
             ItemStack dropStack = Melting.getMeltingItem(world, itemStack, tool);
             if (!dropStack.equals(itemStack)){
