@@ -19,9 +19,10 @@ public class UnDurable extends ModEnchantBase {
     public int getMaxLevel() {
         return 3;
     }
+
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 3 + enchantmentLevel * 7;
     }
 
     //负面负面

@@ -15,11 +15,7 @@ public class Health extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 30;
+        return 10 + enchantmentLevel * 5;
     }
 
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
 }

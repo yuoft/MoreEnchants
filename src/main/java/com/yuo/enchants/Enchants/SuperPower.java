@@ -17,14 +17,8 @@ public class SuperPower extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 30;
+        return 15 + enchantmentLevel * 4;
     }
-
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-
 
     @Override
     protected boolean canApplyTogether(Enchantment ench) {

@@ -13,8 +13,8 @@ public class Instability extends ModEnchantBase{
     }
 
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 15 + enchantmentLevel * 6;
     }
 
     //负面负面

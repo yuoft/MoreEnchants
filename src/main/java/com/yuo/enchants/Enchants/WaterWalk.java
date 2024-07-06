@@ -22,11 +22,6 @@ public class WaterWalk extends ModEnchantBase {
     }
 
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-
-    @Override
     protected boolean canApplyTogether(Enchantment ench) {
         return this != ench && (ench != Enchantments.FROST_WALKER || ench != EnchantRegistry.lavaWalker.get());
     }

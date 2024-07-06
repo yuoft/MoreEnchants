@@ -14,12 +14,7 @@ public class BlastArrow extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 20;
-    }
-
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+        return 21;
     }
 
     @Override

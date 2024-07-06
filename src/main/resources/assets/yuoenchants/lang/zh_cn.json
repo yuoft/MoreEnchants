@@ -106,7 +106,7 @@
 	"enchantInfo.yuoenchants:rebound": "当持盾防御时，会击退攻击者并反弹一定伤害。有概率完全防御此次攻击（消耗耐久）",
 	"enchantInfo.yuoenchants:fire_shield": "当持盾防御时，点燃攻击者",
 	"enchantInfo.yuoenchants:health_to_sacrifice": "击杀生物时有概率掉落经验液滴",
-	"enchantInfo.yuoenchants:strength_luck": "强化时运",
+	"enchantInfo.yuoenchants:strength_luck": "强化时运，额外掉落方块",
 	"enchantInfo.yuoenchants:robbery": "强化抢夺",
 	"enchantInfo.yuoenchants:super_thorns": "高级荆棘",
 	"enchantInfo.yuoenchants:fire_thorns": "反伤并且点燃攻击者",

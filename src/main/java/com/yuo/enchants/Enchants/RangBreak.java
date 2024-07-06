@@ -18,9 +18,4 @@ public class RangBreak extends ModEnchantBase {
         return 15 + enchantmentLevel * 5;
     }
 
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-
 }

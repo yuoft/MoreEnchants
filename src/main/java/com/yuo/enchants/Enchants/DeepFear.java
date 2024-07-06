@@ -15,8 +15,8 @@ public class DeepFear extends ModEnchantBase{
     }
 
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 15 + enchantmentLevel * 5;
     }
 
     //负面附魔

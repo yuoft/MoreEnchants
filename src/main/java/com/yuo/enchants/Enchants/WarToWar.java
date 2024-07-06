@@ -15,10 +15,6 @@ public class WarToWar extends ModEnchantBase {
     public int getMaxLevel() {
         return 4;
     }
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {

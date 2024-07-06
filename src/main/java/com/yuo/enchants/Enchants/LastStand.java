@@ -14,12 +14,7 @@ public class LastStand extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 20;
-    }
-
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+        return 30;
     }
 
     //用经验抵挡伤害

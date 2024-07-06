@@ -22,10 +22,6 @@ public class ExpCorrode extends ModEnchantBase {
     }
 
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-    @Override
     protected boolean canApplyTogether(Enchantment ench) {
         //经验修补
         return this != ench && ench != Enchantments.MENDING;

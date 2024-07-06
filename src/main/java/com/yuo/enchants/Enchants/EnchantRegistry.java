@@ -45,7 +45,7 @@ public class EnchantRegistry {
 //    });
     //海之嫌弃
     public static RegistryObject<Enchantment> badLuckOfTheSea = ENCHANTMENTS.register("bad_luck_of_the_sea",
-            () -> new BadLuckOfTheSea(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.FISHING_ROD, EquipmentSlotType.values()));
+            () -> new BadLuckOfTheSea(Enchantment.Rarity.UNCOMMON, ModEnchantBase.EnchantType.FISHING_ROD, EquipmentSlotType.values()));
     //屹立不倒
     public static RegistryObject<Enchantment> lastStand = ENCHANTMENTS.register("last_stand",
             () -> new LastStand(Enchantment.Rarity.VERY_RARE, ModEnchantBase.EnchantType.ARMOR_FEET, EquipmentSlotType.values()));
@@ -87,28 +87,28 @@ public class EnchantRegistry {
             () -> new Farmer(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.FARMER, EquipmentSlotType.values()));
     //超级锋利
     public static RegistryObject<Enchantment> superSharp = ENCHANTMENTS.register("super_sharp",
-            () -> new SuperSharp(Enchantment.Rarity.VERY_RARE,0, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
+            () -> new SuperSharp(Enchantment.Rarity.RARE,0, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
     //超级亡灵杀手
     public static RegistryObject<Enchantment> superSmite = ENCHANTMENTS.register("super_smite",
-            () -> new SuperSharp(Enchantment.Rarity.RARE,1, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
+            () -> new SuperSharp(Enchantment.Rarity.UNCOMMON,1, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
     //超级节肢杀手
     public static RegistryObject<Enchantment> superArthropod = ENCHANTMENTS.register("super_arthropod",
-            () -> new SuperSharp(Enchantment.Rarity.RARE,2, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
+            () -> new SuperSharp(Enchantment.Rarity.UNCOMMON,2, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
     //高级保护
     public static RegistryObject<Enchantment> superProtect = ENCHANTMENTS.register("super_protect",
-            () -> new SuperProtect(Enchantment.Rarity.VERY_RARE,0, ModEnchantBase.EnchantType.ARMOR, EquipmentSlotType.values()));
+            () -> new SuperProtect(Enchantment.Rarity.RARE,0, ModEnchantBase.EnchantType.ARMOR, EquipmentSlotType.values()));
     //高级火焰保护
     public static RegistryObject<Enchantment> superFire = ENCHANTMENTS.register("super_fire",
-            () -> new SuperProtect(Enchantment.Rarity.RARE,1, ModEnchantBase.EnchantType.ARMOR_LEGS, EquipmentSlotType.values()));
+            () -> new SuperProtect(Enchantment.Rarity.UNCOMMON,1, ModEnchantBase.EnchantType.ARMOR_LEGS, EquipmentSlotType.values()));
     //高级摔落保护
     public static RegistryObject<Enchantment> superFall = ENCHANTMENTS.register("super_fall",
-            () -> new SuperProtect(Enchantment.Rarity.RARE,2, ModEnchantBase.EnchantType.ARMOR_FEET, EquipmentSlotType.values()));
+            () -> new SuperProtect(Enchantment.Rarity.UNCOMMON,2, ModEnchantBase.EnchantType.ARMOR_FEET, EquipmentSlotType.values()));
     //高级爆炸保护
     public static RegistryObject<Enchantment> superBlast = ENCHANTMENTS.register("super_blast",
-            () -> new SuperProtect(Enchantment.Rarity.RARE,3, ModEnchantBase.EnchantType.ARMOR_CHEST, EquipmentSlotType.values()));
+            () -> new SuperProtect(Enchantment.Rarity.UNCOMMON,3, ModEnchantBase.EnchantType.ARMOR_CHEST, EquipmentSlotType.values()));
     //高级弹射物保护
     public static RegistryObject<Enchantment> superArrow = ENCHANTMENTS.register("super_arrow",
-            () -> new SuperProtect(Enchantment.Rarity.RARE,4, ModEnchantBase.EnchantType.ARMOR_HEAD, EquipmentSlotType.values()));
+            () -> new SuperProtect(Enchantment.Rarity.UNCOMMON,4, ModEnchantBase.EnchantType.ARMOR_HEAD, EquipmentSlotType.values()));
     //快速恢复
     public static RegistryObject<Enchantment> fastHeal = ENCHANTMENTS.register("fast_heal",
             () -> new FastHeal(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.ARMOR_CHEST, EquipmentSlotType.values()));
@@ -117,7 +117,7 @@ public class EnchantRegistry {
             () -> new Repulsion(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.BOW_ALL, EquipmentSlotType.values()));
     //超级力量
     public static RegistryObject<Enchantment> superPower = ENCHANTMENTS.register("super_power",
-            () -> new SuperPower(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.BOW_ALL, EquipmentSlotType.values()));
+            () -> new SuperPower(Enchantment.Rarity.UNCOMMON, ModEnchantBase.EnchantType.BOW_ALL, EquipmentSlotType.values()));
     //弹反
     public static RegistryObject<Enchantment> rebound = ENCHANTMENTS.register("rebound",
             () -> new Rebound(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.SHIELD, EquipmentSlotType.values()));
@@ -136,7 +136,7 @@ public class EnchantRegistry {
             () -> new Robbery(Enchantment.Rarity.VERY_RARE, ModEnchantBase.EnchantType.WEAPON, EquipmentSlotType.values()));
     //高级荆棘
     public static RegistryObject<Enchantment> superThorns = ENCHANTMENTS.register("super_thorns",
-            () -> new SuperThorns(Enchantment.Rarity.RARE, ModEnchantBase.EnchantType.ARMOR, EquipmentSlotType.values()));
+            () -> new SuperThorns(Enchantment.Rarity.UNCOMMON, ModEnchantBase.EnchantType.ARMOR, EquipmentSlotType.values()));
     //火焰荆棘
     public static RegistryObject<Enchantment> fireThorns = ENCHANTMENTS.register("fire_thorns",
             () -> new FireThorns(Enchantment.Rarity.COMMON, ModEnchantBase.EnchantType.ARMOR, EquipmentSlotType.values()));

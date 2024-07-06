@@ -26,13 +26,9 @@ public class Magnet extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 30;
+        return 18 + enchantmentLevel * 8;
     }
 
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
     /**
      * 吸引或排斥实体
      * @param world 世界

@@ -19,15 +19,10 @@ public class FireShield extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 20;
+        return 17 + enchantmentLevel * 7;
     }
 
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-
-    //弹反
+    //火焰盾
     public static void fireShield(DamageSource source, int rebound, PlayerEntity player){
         Entity immediateSource = source.getImmediateSource(); //发起攻击者
         if (player.isActiveItemStackBlocking() && immediateSource instanceof LivingEntity){ //燃烧攻击者

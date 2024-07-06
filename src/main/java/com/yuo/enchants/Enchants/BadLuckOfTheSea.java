@@ -23,8 +23,8 @@ public class BadLuckOfTheSea extends ModEnchantBase {
     }
 
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 10 + enchantmentLevel * 5;
     }
 
     //负面负面

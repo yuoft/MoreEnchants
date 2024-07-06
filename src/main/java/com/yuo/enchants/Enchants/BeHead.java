@@ -32,11 +32,6 @@ public class BeHead extends ModEnchantBase {
         return 25;
     }
 
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
-    }
-
     //掉落头颅
     public static ItemEntity dropHead(int beHead, LivingEntity living){
         int i = new Random().nextInt(100);

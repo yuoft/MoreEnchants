@@ -25,12 +25,7 @@ public class DoubleJump extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 30;
-    }
-
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+        return 22 + enchantmentLevel * 7;
     }
 
     //跳跃控制

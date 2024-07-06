@@ -15,12 +15,7 @@ public class FastHeal extends ModEnchantBase {
 
     @Override
     public int getMinEnchantability(int enchantmentLevel) {
-        return 30;
-    }
-
-    @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
-        return this.getMinEnchantability(enchantmentLevel) + 50;
+        return 10 + enchantmentLevel * 5;
     }
 
     //额外恢复值

@@ -22,6 +22,31 @@ public class ModEnchantBase extends Enchantment {
     }
 
     @Override
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return this.getMinEnchantability(enchantmentLevel) + getMaxLv();
+    }
+
+    /**
+     * 根据获取难度决定 刷新等级范围
+     * @return
+     */
+    private int getMaxLv(){
+        Rarity rarity = getRarity();
+        switch (rarity) {
+            case COMMON: return 5;
+            case UNCOMMON: return 10;
+            case RARE: return 20;
+            case VERY_RARE: return 30;
+        }
+        return 0;
+    }
+
+    @Override
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 30;
+    }
+
+    @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
         return type.canEnchantItem(stack.getItem());
     }
