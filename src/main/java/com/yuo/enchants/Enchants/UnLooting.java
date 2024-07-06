@@ -29,4 +29,9 @@ public class UnLooting extends ModEnchantBase{
     protected boolean canApplyTogether(Enchantment ench) {
         return this != ench && (ench != Enchantments.LOOTING || ench != EnchantRegistry.robbery.get());
     }
+
+    @Override
+    public boolean isCurse() {
+        return true;
+    }
 }

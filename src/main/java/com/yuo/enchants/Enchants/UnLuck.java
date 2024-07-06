@@ -9,7 +9,6 @@ public class UnLuck extends ModEnchantBase{
         super(rarityIn, type, slots);
     }
 
-
     @Override
     public int getMaxLevel() {
         return 3;
@@ -28,5 +27,10 @@ public class UnLuck extends ModEnchantBase{
     @Override
     protected boolean canApplyTogether(Enchantment ench) {
         return this != ench && (ench != Enchantments.FORTUNE || ench != EnchantRegistry.strengthLuck.get());
+    }
+
+    @Override
+    public boolean isCurse() {
+        return true;
     }
 }

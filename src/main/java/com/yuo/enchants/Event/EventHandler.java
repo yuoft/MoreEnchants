@@ -295,7 +295,7 @@ public class EventHandler {
         }
     }
 
-    //万箭 快速拉弓
+    //万箭
     @SubscribeEvent
     public static void manyArrow(ArrowLooseEvent event) {
         World world = event.getWorld();
@@ -303,6 +303,17 @@ public class EventHandler {
         int manyArrow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.manyArrow.get(), bow);
         if (manyArrow > 0  && Config.SERVER.isManyArrow.get()) {
             ManyArrow.manyArrow(event.getCharge(), event.getPlayer(), bow, manyArrow, world);
+        }
+    }
+
+    //快速拉弓
+    @SubscribeEvent
+    public static void  fastBow(LivingEntityUseItemEvent event){
+        ItemStack item = event.getItem();
+        int fastBow = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.fastBow.get(), item);
+        int duration = event.getDuration();
+        if (fastBow > 0 && Config.SERVER.isFastBow.get() && duration > fastBow){
+            event.setDuration(duration - fastBow);
         }
     }
 

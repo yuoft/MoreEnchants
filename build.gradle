@@ -5,20 +5,17 @@ buildscript {
             url 'https://maven.aliyun.com/repository/public/' //阿里云仓库
         }
         mavenCentral()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
 
-version = '1.16.5-1.4.2'
+version = '${yuoenchants_ver}'
 group = 'com.github.yuoft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'YuoMoreEnchants'
 
@@ -33,7 +30,6 @@ minecraft {
             workingDirectory project.file('run')
             property 'mixin.env.remapRefMap','true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            arg "-mixin.config=yuoenchants.mixins.json"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -46,7 +42,6 @@ minecraft {
             workingDirectory project.file('run')
             property 'mixin.env.remapRefMap','true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            arg "-mixin.config=yuoenchants.mixins.json"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -59,7 +54,6 @@ minecraft {
             workingDirectory project.file('run')
             property 'mixin.env.remapRefMap','true'
             property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            arg "-mixin.config=yuoenchants.mixins.json"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'yuoenchants', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
@@ -92,11 +86,6 @@ dependencies {
 
     compileOnly("mezz.jei:jei-1.16.5:7.7.1.152") //引入mod API
     runtimeOnly fg.deobf("curse.maven:jei-238222:3681294") //引入mod
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-}
-
-mixin {
-    config 'yuoenchants.mixins.json'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -105,12 +94,11 @@ jar {
         attributes([
             "Specification-Title": "yuoenchants",
             "Specification-Vendor": "yuoft",
-            "Specification-Version": "1.4.2", // We are version 1 of ourselves
+            "Specification-Version": "${yuoenchants_ver}", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"yuoft",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs" : "yuoenchants.mixins.json"
         ])
     }
 }

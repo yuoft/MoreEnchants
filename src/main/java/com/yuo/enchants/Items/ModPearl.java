@@ -14,7 +14,7 @@ import java.util.List;
 public class ModPearl extends Item {
 
     public ModPearl() {
-        super(new Properties().maxStackSize(1).group(ModGroup.youEnchants));
+        super(new Properties().maxStackSize(2).group(ModGroup.youEnchants));
     }
 
     @Override
