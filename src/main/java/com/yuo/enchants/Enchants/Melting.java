@@ -47,7 +47,8 @@ public class Melting extends ModEnchantBase {
         List<ItemStack> drops = Block.getDrops(state, (ServerWorld) world, pos, null);
         int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), tool);
         //霉运影响
-        if (drops.size() <= 0 || !(unLuck > 0 && Config.SERVER.isUnLuck.get() &&  world.rand.nextDouble() < unLuck * 0.2)) return;
+        boolean flag = unLuck > 0 && Config.SERVER.isUnLuck.get() &&  world.rand.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
+        if (drops.size() <= 0 || flag) return;
         drops.forEach(itemStack -> {
             ItemStack dropStack = Melting.getMeltingItem(world, itemStack, tool);
             if (!dropStack.equals(itemStack)){

@@ -19,10 +19,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -30,7 +32,10 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.world.BlockEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class EventHelper {
     private static final Random RANDOM = new Random();
@@ -106,7 +111,17 @@ public class EventHelper {
             if (player.getFoodStats().getFoodLevel() <= 2) return; //低饱食度时无法使用
         }
         int count = 1;
-        ArrayList<BlockPos> points = getPoints(pos, lv); //坐标
+        ArrayList<BlockPos> points = getPoints(player, pos, lv); //坐标
+        //方块挖掘前统计掉落物
+        List<ItemStack> drops = new ArrayList<>();
+        points.forEach(e ->{
+            BlockState blockState = world.getBlockState(e);
+            if (!world.isAirBlock(e) && state.getBlock().equals(blockState.getBlock())){
+                List<ItemStack> drop = Block.getDrops(blockState, (ServerWorld) world, e, null, player, tool);
+                drops.addAll(drop);
+            }
+        });
+        //清除方块
         for (BlockPos blockPos : points){
             BlockState blockState = world.getBlockState(blockPos);
             if (player.getFoodStats().getFoodLevel() <= 2){
@@ -119,8 +134,7 @@ public class EventHelper {
             player.getFoodStats().addStats(0, -0.05f);
             if (count % 20 == 0) player.getFoodStats().addStats(-1, 0); //消耗饱食度 20方块消耗一格
         }
-        //方块挖掘结束 生成掉落物
-        List<ItemStack> drops = Block.getDrops(state, (ServerWorld) world, pos, null, player, tool);
+        //生成掉落物和经验
         if (drops.size() <= 0) return;
         int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
         int silkTouch = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
@@ -144,31 +158,71 @@ public class EventHelper {
 
     /**
      * 返回当前坐标的周围一圈坐标
-     * @param origin 中心坐标
+     * @param player 玩家
+     * @param pos 挖掘坐标
      * @param lv 范围挖掘等级
      * @return 周围方块坐标集合
      */
-    private static ArrayList<BlockPos> getPoints(BlockPos origin, int lv) {
+    private static ArrayList<BlockPos> getPoints(PlayerEntity player, BlockPos pos, int lv) {
+        Vector3d vec = player.getLookVec();
         ArrayList<BlockPos> points = new ArrayList<>();
-        int[][] dimRange = {
-                {-1, 0, 1},
-                {-2, -1, 0, 1, 2},
-                {-3, -2, -1, 0, 1, 2, 3},
-                {-4, -3, -2, -1, 0, 1, 2, 3, 4},
-                {-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5},
-        };
-        for(int dx : dimRange[lv-1]) {
-            for(int dy : dimRange[lv-1]) {
-                for(int dz : dimRange[lv-1]) {
-                    if(dx == 0 && dy == 0 && dz == 0) {
-                        // If 0, 0, 0
-                        continue;
+        Direction facing = Direction.getFacingFromVector(vec.x, vec.y, vec.z);
+        switch (facing){
+            case UP:
+                for (int x = pos.getX() - lv; x <= pos.getX() + lv; x ++){
+                    for (int y = pos.getY(); y <= pos.getY() + (2 * lv); y ++){
+                        for (int z = pos.getZ() - lv; z <= pos.getZ() + lv; z ++){
+                            points.add(new BlockPos(x,  y, z));
+                        }
                     }
-                    points.add(new BlockPos(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz));
                 }
-            }
+                break;
+            case DOWN:
+                for (int x = pos.getX() - lv; x <= pos.getX() + lv; x ++){
+                    for (int y = pos.getY(); y >= pos.getY() - (2 * lv); y --){
+                        for (int z = pos.getZ() - lv; z <= pos.getZ() + lv; z ++){
+                            points.add(new BlockPos(x,  y, z));
+                        }
+                    }
+                }
+                break;
+            case EAST:
+                for (int x = pos.getX(); x <= pos.getX() + (2 * lv); x ++){
+                    for (int y = pos.getY() - lv; y <= pos.getY() + lv; y ++){
+                        for (int z = pos.getZ() - lv; z <= pos.getZ() + lv; z ++){
+                            points.add(new BlockPos(x,  y, z));
+                        }
+                    }
+                }
+                break;
+            case WEST:
+                for (int x = pos.getX(); x >= pos.getX() - (2 * lv); x --){
+                    for (int y = pos.getY() - lv; y <= pos.getY() + lv; y ++){
+                        for (int z = pos.getZ() - lv; z <= pos.getZ() + lv; z ++){
+                            points.add(new BlockPos(x,  y, z));
+                        }
+                    }
+                }
+                break;
+            case NORTH:
+                for (int x = pos.getX() - lv; x <= pos.getX() + lv; x ++){
+                    for (int y = pos.getY() - lv; y <= pos.getY() + lv; y ++){
+                        for (int z = pos.getZ(); z >= pos.getZ() - (2 * lv); z --){
+                            points.add(new BlockPos(x,  y, z));
+                        }
+                    }
+                }
+                break;
+            case SOUTH:
+                for (int x = pos.getX() - lv; x <= pos.getX() + lv; x ++){
+                    for (int y = pos.getY() - lv; y <= pos.getY() + lv; y ++){
+                        for (int z = pos.getZ(); z <= pos.getZ() + (2 * lv); z ++){
+                            points.add(new BlockPos(x,  y, z));
+                        }
+                    }
+                }
+                break;
         }
-        Collections.shuffle(points); //随机排序
         return points;
     }
 
