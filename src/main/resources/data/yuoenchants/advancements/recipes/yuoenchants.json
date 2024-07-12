@@ -1,0 +1,25 @@
+{
+  "criteria": {
+    "coal_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{
+            "item": "minecraft:coal"
+          }]
+      }
+    }
+  },
+  "rewards":{
+    "recipes": [
+      "yuoenchants:raw_gold",
+      "yuoenchants:raw_iron",
+      "yuoenchants:nether_gold",
+      "yuoenchants:nether_iron",
+      "yuoenchants:overworld_gold",
+      "yuoenchants:overworld_iron",
+      "yuoenchants:broken_magic_pearl",
+      "yuoenchants:diamond_anvil",
+      "yuoenchants:bamboo_coal"
+    ]
+  }
+}

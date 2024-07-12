@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "yuoenchants:nether_gold"
+  },
+  "result": {
+    "item": "minecraft:gold_ingot",
+    "count": 3
+  },
+  "experience": 0.2,
+  "cookingtime": 200
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "yxy",
+    "xzx",
+    "yxy"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:enchanted_book"
+    },
+    "y": {
+      "item": "minecraft:diamond_block"
+    },
+    "z": {
+      "item": "minecraft:anvil"
+    }
+  },
+  "result": {
+    "item": "yuoenchants:diamond_anvil"
+  }
+}

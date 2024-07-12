@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "xyx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "yuoenchants:small_exp_drip"
+    },
+    "y": {
+      "item": "minecraft:experience_bottle"
+    }
+  },
+  "result": {
+    "item": "yuoenchants:big_exp_drip"
+  }
+}

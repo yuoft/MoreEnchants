@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "yuoenchants:nether_iron"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot",
+    "count": 3
+  },
+  "experience": 0.2
+}

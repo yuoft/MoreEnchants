@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "yxy",
+    "xzx",
+    "yxy"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:gold_block"
+    },
+    "y": {
+      "item": "minecraft:redstone_block"
+    },
+    "z": {
+      "item": "minecraft:enchanted_book"
+    }
+  },
+  "result": {
+    "item": "yuoenchants:remove_cures_pearl"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "yuoenchants:block/deep_overworld_gold"
+  }
+}
