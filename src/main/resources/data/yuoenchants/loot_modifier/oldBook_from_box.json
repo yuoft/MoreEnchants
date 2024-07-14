@@ -5,6 +5,6 @@
       "loot_table_id": "minecraft:entities/creeper"
     }
   ],
-  "addition": "yuoenchants:old_book",
+  "addition": "yuoenchants:bamboo_coal",
   "type": "yuoenchants:oldBook_from_box"
 }

@@ -4,7 +4,7 @@ import com.yuo.Enchants.Enchants.EnchantRegistry;
 import com.yuo.Enchants.Enchants.ModEnchantBase;
 import com.yuo.Enchants.Item.OldBook;
 import com.yuo.Enchants.Item.YEItems;
-import com.yuo.Enchants.Loot.OldBookFromBoxAddModifier;
+import com.yuo.Enchants.Event.Loot.OldBookFromBoxAddModifier;
 import com.yuo.Enchants.YuoEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.Registry;

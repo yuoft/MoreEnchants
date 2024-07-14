@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
+import java.util.Iterator;
+
 public class LavaWalker extends ModEnchantBase {
 
     public LavaWalker(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
@@ -40,29 +42,22 @@ public class LavaWalker extends ModEnchantBase {
     //凝固岩浆
     public static void freezingNearby(LivingEntity living, Level worldIn, BlockPos pos, int level) {
         if (living.isOnGround()) {
-            BlockState blockstate = YEBlocks.coolingLava.get().defaultBlockState().setValue(CoolingLava.AGE, Math.max(25 - level * 10, 0));
+            BlockState blockstate = YEBlocks.coolingLava.get().defaultBlockState().setValue(CoolingLava.AGE, Math.max(7 - level * 3, 0));
             float f = (float)Math.min(16, 2 + level);
-            BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
-            for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-f, -1.0D, -f), pos.offset(f, -1.0D, f))) {
-                if (blockpos.closerToCenterThan(living.position(), f)) {
-                    blockpos$mutable.set(blockpos.getX(), blockpos.getY() + 1, blockpos.getZ());
-                    BlockState blockstate1 = worldIn.getBlockState(blockpos$mutable);
-                    if (blockstate1.isAir()) {
-                        BlockState blockstate2 = worldIn.getBlockState(blockpos);
-                        boolean isFull = blockstate2.getBlock() == Blocks.LAVA && blockstate2.getValue(LiquidBlock.LEVEL) == 0; //是源头的岩浆方块
-                        if (blockstate2.getMaterial() == Material.LAVA && isFull && blockstate.canSurvive(worldIn, blockpos)
-                                && worldIn.isUnobstructed(blockstate, blockpos, CollisionContext.empty())
-                                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(living,
-                                net.minecraftforge.common.util.BlockSnapshot.create(worldIn.dimension(), worldIn, blockpos),
-                               Direction.UP)) {
-                            worldIn.setBlockAndUpdate(blockpos, blockstate);
-                            worldIn.scheduleTick(blockpos, YEBlocks.coolingLava.get(), Mth.nextInt(worldIn.getRandom(), 60, 120));
-                        }
+            for (BlockPos next : BlockPos.betweenClosed(pos.offset(-f, 0, -f), pos.offset(f, 0, f))) {
+                if (next.closerToCenterThan(living.position(), f) && !worldIn.getBlockState(next).isAir()) { //距离小于f  不是空气
+                    BlockState blockstate2 = worldIn.getBlockState(next);
+                    boolean isFull = blockstate2.getBlock() == Blocks.LAVA && blockstate2.getValue(LiquidBlock.LEVEL) == 0; //是源头的岩浆方块
+                    if (blockstate2.getMaterial() == Material.LAVA && isFull && blockstate.canSurvive(worldIn, next)
+                            && worldIn.isUnobstructed(blockstate, next, CollisionContext.empty())
+                            && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(living,
+                            net.minecraftforge.common.util.BlockSnapshot.create(worldIn.dimension(), worldIn, next),
+                            Direction.UP)) {
+                        worldIn.setBlockAndUpdate(next, blockstate);
                     }
                 }
             }
-
         }
     }
 

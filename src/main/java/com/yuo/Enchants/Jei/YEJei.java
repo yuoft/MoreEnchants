@@ -31,8 +31,8 @@ public class YEJei implements IModPlugin {
                     StringBuilder s = new StringBuilder();
                     s.append(com.getString("id"));
                     s.append(com.getString("lvl"));
+                    return s.toString();
                 }
-
             }
             return "";
         });

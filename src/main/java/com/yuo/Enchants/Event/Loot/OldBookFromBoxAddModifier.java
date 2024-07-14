@@ -1,4 +1,4 @@
-package com.yuo.Enchants.Loot;
+package com.yuo.Enchants.Event.Loot;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;

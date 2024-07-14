@@ -2,6 +2,7 @@ package com.yuo.Enchants.Blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -17,20 +18,20 @@ import net.minecraft.world.level.material.MaterialColor;
 import java.util.Random;
 
 public class CoolingLava extends Block {
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_25;
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
 
     public CoolingLava() {
         super(Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).randomTicks().strength(1.0F, 2.2F).sound(SoundType.BASALT));
+        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 7));
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-        super.randomTick(state, level, pos, random);
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
         int age = state.getValue(AGE);
-        if (age >= 25){
-            level.setBlock(pos, Blocks.LAVA.defaultBlockState(), 11);
+        if (age >= 7){
+            level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }else {
-            level.setBlock(pos, state.setValue(AGE, Math.min(25, age + random.nextInt(3))), 11);
+            level.setBlockAndUpdate(pos, state.setValue(AGE, Math.min(7, age + Mth.nextInt(random, 3, 6))));
         }
     }
 

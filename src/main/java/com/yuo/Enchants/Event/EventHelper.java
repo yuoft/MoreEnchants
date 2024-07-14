@@ -52,8 +52,10 @@ public class EventHelper {
             int luck = -1;
             if (instance != null)
                 luck =- instance.getAmplifier();
-            if (RANDOM.nextDouble() < 0.15 * instability - (luck + 1) * 0.1){
-                player.drop(player.getMainHandItem(),true);
+            if (RANDOM.nextDouble() < 0.15 * instability - (luck + 1) * 0.1){ //45%
+                ItemStack handItem = player.getMainHandItem();
+                player.drop(handItem.copy(),true);
+                handItem.shrink(1);
             }
         }
     }

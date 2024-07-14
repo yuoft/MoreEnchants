@@ -5,10 +5,7 @@ import com.yuo.Enchants.Enchants.*;
 import com.yuo.Enchants.Proxy.CommonProxy;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -43,26 +40,17 @@ import java.util.UUID;
 /**
  * 事件处理类 附魔实现
  */
-@Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID)
+@Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
 
     //附魔，火焰免疫 屹立不倒 受到伤害
     @SubscribeEvent
-    public static void fireImmune(LivingHurtEvent event) {
+    public static void livingHurt(LivingHurtEvent event) {
         LivingEntity entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof Player) { //只对玩家生效
-            Player player = (Player) entityLiving;
+        if (entityLiving instanceof Player player) { //只对玩家生效
             ItemStack stackLegs = player.getItemBySlot(EquipmentSlot.LEGS);
             ItemStack stackFeet = player.getItemBySlot(EquipmentSlot.FEET);
-            int lavaWalker = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.lavaWalker.get(), stackFeet);
-            if (lavaWalker > 0 && event.getSource() == DamageSource.HOT_FLOOR  && Config.SERVER.isLavaWalker.get()){
-                event.setCanceled(true);
-            }
-            int fireImmune_legs = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.fireImmune.get(), stackLegs);
-            if (fireImmune_legs > 0 && Config.SERVER.isFireImmune.get()) {
-                FireImmune.fireImmune(event, stackLegs, player);
-            }
             int lastStand = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.lastStand.get(), stackFeet);
             if (lastStand > 0   && Config.SERVER.isLastStand.get()) {
                 LastStand.lastStand(player, event, stackFeet);
@@ -81,8 +69,7 @@ public class EventHandler {
             }
         }
         Entity trueSource = event.getSource().getDirectEntity();
-        if (trueSource instanceof Player) {
-            Player player = (Player) trueSource;
+        if (trueSource instanceof Player player) {
             ItemStack mainHand = player.getUseItem();
             int beHead = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.beHead.get(), mainHand);
             if (beHead > 0  && Config.SERVER.isBehead.get()) {
@@ -93,9 +80,8 @@ public class EventHandler {
 
     //高级摔落保护
     @SubscribeEvent
-    public static void fallProtect(LivingFallEvent event) {
-        if (event.getEntityLiving() instanceof Player) {
-            Player player = (Player) event.getEntityLiving();
+    public static void livingFall(LivingFallEvent event) {
+        if (event.getEntityLiving() instanceof Player player) {
             int superFall = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.superFall.get(), player.getItemBySlot(EquipmentSlot.FEET));
             if (superFall > 0 && Config.SERVER.isSuperFall.get()) {
                 event.setDamageMultiplier(SuperProtect.getDamage(event.getDamageMultiplier(), superFall));
@@ -105,7 +91,7 @@ public class EventHandler {
 
     //附魔，以战养战 脆弱 生命献祭 攻击生物
     @SubscribeEvent
-    public static void warToWar(AttackEntityEvent event) {
+    public static void attackEntity(AttackEntityEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
         ItemStack stack = player.getUseItem();
@@ -122,23 +108,28 @@ public class EventHandler {
         EventHelper.dropItem(player, instability);
     }
 
-    //爆炸箭 箭碰撞方块或实体
+    //爆炸箭 \ 超级力量 箭碰撞方块或实体
     @SubscribeEvent
-    public static void blastArrow(ProjectileImpactEvent event) {
+    public static void projectileImpact(ProjectileImpactEvent event) {
         Projectile projectile = event.getProjectile();
-        if (projectile instanceof AbstractArrow arrow)
-        if (arrow.getOwner() instanceof Player player) {
-            ItemStack itemStack = player.getUseItem();
-            int blastArrow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.blastArrow.get(), itemStack);
-            if (blastArrow > 0  && Config.SERVER.isBlastArrow.get()) {
-                BlastArrow.boom(arrow, blastArrow);
+        if (projectile instanceof AbstractArrow arrow){
+            if (arrow.getOwner() instanceof LivingEntity shooter) {
+                ItemStack bow = shooter.getItemInHand(shooter.getUsedItemHand());
+                int blastArrow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.blastArrow.get(), bow);
+                if (blastArrow > 0  && Config.SERVER.isBlastArrow.get()) {
+                    BlastArrow.boom(arrow, blastArrow);
+                }
+                int superPower = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.superPower.get(), bow);
+                if (superPower > 0 && Config.SERVER.isSuperPower.get()) {
+                    arrow.setBaseDamage(arrow.getBaseDamage() + 1.25D + (double) superPower * 0.75D);
+                }
             }
         }
     }
 
     //脆弱 洞察 熔炼 粉碎 范围挖掘 强运  --破坏方块
     @SubscribeEvent
-    public static void unDurableTool(BlockEvent.BreakEvent event) {
+    public static void breakBlock(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
         ItemStack tool = player.getUseItem();
@@ -214,7 +205,7 @@ public class EventHandler {
 
     //脆弱 弓 弩 三叉戟 停止使用物品
     @SubscribeEvent
-    public static void unDurableRightUse(LivingEntityUseItemEvent.Stop event) {
+    public static void stopUseItem(LivingEntityUseItemEvent.Stop event) {
         LivingEntity entityLiving = event.getEntityLiving();
         if (entityLiving instanceof Player player) {
             ItemStack stack = event.getItem();
@@ -229,7 +220,7 @@ public class EventHandler {
 
     //脆弱 右键物品 钓鱼竿
     @SubscribeEvent
-    public static void unDurableRightClick(PlayerInteractEvent.RightClickItem event) {
+    public static void rightClick(PlayerInteractEvent.RightClickItem event) {
         ItemStack stack = event.getItemStack();
         Player player = event.getPlayer();
         Item item = stack.getItem();
@@ -242,7 +233,7 @@ public class EventHandler {
 
     //农夫
     @SubscribeEvent
-    public static void farmer(PlayerInteractEvent.RightClickBlock event) {
+    public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getPlayer();
         InteractionHand hand = event.getHand();
         Level world = event.getWorld();
@@ -255,7 +246,7 @@ public class EventHandler {
 
     //脆弱 使用锄头
     @SubscribeEvent
-    public static void unDurableHoe(BlockEvent.BlockToolModificationEvent event) {
+    public static void toolModification(BlockEvent.BlockToolModificationEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getHeldItemStack();
         int unDurable = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unDurable.get(), item);
@@ -266,7 +257,7 @@ public class EventHandler {
 
     //脆弱 洞察 海之嫌弃 钓鱼竿钓起鱼
     @SubscribeEvent
-    public static void unDurableFishing(ItemFishedEvent event) {
+    public static void itemFished(ItemFishedEvent event) {
         Player player = event.getPlayer();
         if (player != null) {
             ItemStack stack = player.getUseItem();
@@ -290,40 +281,47 @@ public class EventHandler {
 
     //拖拉 挖掘速度
     @SubscribeEvent
-    public static void onPlayerBreakSpeed(PlayerEvent.BreakSpeed event) {
+    public static void breakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        int slow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.slow.get(), player.getUseItem());
-        if (slow > 0   && Config.SERVER.isSlow.get()) {
+        int slow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.slow.get(), player.getItemInHand(player.getUsedItemHand()));
+        if (slow > 0 && Config.SERVER.isSlow.get()) {
             event.setNewSpeed(event.getOriginalSpeed() * (1 - slow * 0.2f)); //挖掘速度变慢
         }
     }
 
     //万箭
     @SubscribeEvent
-    public static void manyArrow(ArrowLooseEvent event) {
+    public static void arrowLoose(ArrowLooseEvent event) {
         Level world = event.getWorld();
         ItemStack bow = event.getBow();
-        int manyArrow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.manyArrow.get(), bow);
-        if (manyArrow > 0  && Config.SERVER.isManyArrow.get()) {
-            ManyArrow.manyArrow(event.getCharge(), event.getPlayer(), bow, manyArrow, world);
+        if (!bow.isEmpty() && bow.getItem() instanceof BowItem){
+            int manyArrow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.manyArrow.get(), bow);
+            if (manyArrow > 0  && Config.SERVER.isManyArrow.get()) {
+                ManyArrow.manyArrow(event.getCharge(), event.getPlayer(), bow, manyArrow, world);
+            }
         }
     }
 
-    //快速拉弓
+    //快速拉弓 失稳
     @SubscribeEvent
-    public static void  fastBow(LivingEntityUseItemEvent event){
+    public static void  useItem(LivingEntityUseItemEvent event){
         ItemStack item = event.getItem();
         int fastBow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.fastBow.get(), item);
         int duration = event.getDuration();
         if (fastBow > 0 && Config.SERVER.isFastBow.get() && duration > fastBow){
             event.setDuration(duration - fastBow);
         }
+        LivingEntity living = event.getEntityLiving();
+        if (living instanceof Player){
+            int instability = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.instability.get(), living.getMainHandItem());
+            EventHelper.dropItem((Player) living, instability);
+        }
     }
 
     //经验腐蚀 获取经验
     @SubscribeEvent
-    public static void expCorrode(PlayerXpEvent.PickupXp event) {
+    public static void pickupXp(PlayerXpEvent.PickupXp event) {
         Player player = event.getPlayer();
         if (player.takeXpDelay != 0) return;
         int xpValue = event.getOrb().getValue(); //经验值
@@ -346,7 +344,7 @@ public class EventHandler {
 
     //岩浆行者 生机 距离提升 实体更新
     @SubscribeEvent
-    public static void lavaWalker(LivingEvent.LivingUpdateEvent event) {
+    public static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entityLiving = event.getEntityLiving();
         if (entityLiving instanceof Player player) {
             ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
@@ -389,7 +387,7 @@ public class EventHandler {
 
     //雷击 真荆棘
     @SubscribeEvent
-    public static void tickEvent(TickEvent.PlayerTickEvent event) {
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if (player == null || player.level.isClientSide) return;
         ItemStack stackLegs = player.getItemBySlot(EquipmentSlot.LEGS);
@@ -406,7 +404,7 @@ public class EventHandler {
 
     //洞察 生物掉落经验
     @SubscribeEvent
-    public static void expDrops(LivingExperienceDropEvent event) {
+    public static void expDrop(LivingExperienceDropEvent event) {
         Player player = event.getAttackingPlayer();
         if (player != null) {
             int insight = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.insight.get(), player.getUseItem());
@@ -429,7 +427,7 @@ public class EventHandler {
 
     //生命汲取 生物死亡
     @SubscribeEvent
-    public static void insightLiving(LivingDeathEvent event) {
+    public static void livingDeath(LivingDeathEvent event) {
         Entity trueSource = event.getSource().getDirectEntity(); //伤害来源
         if (trueSource instanceof Player player) {
             ItemStack mainHand = player.getUseItem();
@@ -449,7 +447,7 @@ public class EventHandler {
 
     //斩首 抢劫 生物掉落
     @SubscribeEvent
-    public static void vorapl(LivingDropsEvent event) {
+    public static void livingDrop(LivingDropsEvent event) {
         Entity trueSource = event.getSource().getDirectEntity();
         if (trueSource instanceof Player player) {
             int beHead = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.beHead.get(), player.getUseItem());
@@ -470,7 +468,7 @@ public class EventHandler {
 
     //抢夺等级
     @SubscribeEvent
-    public static void looting(LootingLevelEvent event) {
+    public static void lootingLevel(LootingLevelEvent event) {
         DamageSource damageSource = event.getDamageSource();
         if (damageSource == null) return;
         Entity source = damageSource.getDirectEntity();
@@ -484,7 +482,7 @@ public class EventHandler {
 
     //快速恢复
     @SubscribeEvent
-    public static void fastHeal(LivingHealEvent event) {
+    public static void livingHeal(LivingHealEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
             int fastHeal = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.fastHeal.get(), player.getItemBySlot(EquipmentSlot.CHEST));
             if (fastHeal > 0 && Config.SERVER.isFastHeal.get()) {
@@ -495,7 +493,7 @@ public class EventHandler {
 
     //斥力
     @SubscribeEvent
-    public static void repulsion(LivingEntityUseItemEvent.Tick event) {
+    public static void useItemTick(LivingEntityUseItemEvent.Tick event) {
         if (event.getEntityLiving() instanceof Player player) {
             if (event.getItem().getItem() instanceof ProjectileWeaponItem) {
                 int repulsion = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.repulsion.get(), event.getItem());
@@ -506,30 +504,13 @@ public class EventHandler {
         }
     }
 
-    //超级力量
+    //弹反 火焰盾 火焰免疫 熔岩行者
     @SubscribeEvent
-    public static void superPower(ArrowLooseEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof AbstractArrow arrow) {
-            Entity shooter = arrow.getOwner();
-            if (shooter instanceof LivingEntity living) {
-                ItemStack bow = living.getUseItem();
-                if (!bow.isEmpty() && bow.getItem() instanceof BowItem) {
-                    int superPower = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.superPower.get(), bow);
-                    if (superPower > 0 && Config.SERVER.isSuperPower.get()) {
-                        arrow.setBaseDamage(arrow.getBaseDamage() + 1.25D + (double) superPower * 0.75D);
-                    }
-                }
-            }
-        }
-    }
-
-    //弹反 火焰盾
-    @SubscribeEvent
-    public static void rebound(LivingAttackEvent event) {
+    public static void livingAttack(LivingAttackEvent event) {
         LivingEntity living = event.getEntityLiving();
         if (living instanceof Player player) {
             ItemStack shield = player.getOffhandItem();
+            DamageSource source = event.getSource();
             if (!shield.isEmpty() && player.getUseItem() == shield) {
                 int rebound = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.rebound.get(), shield);
                 if (rebound > 0 && Config.SERVER.isRebound.get()) {
@@ -537,28 +518,29 @@ public class EventHandler {
                 }
                 int fireShield = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.fireShield.get(), shield);
                 if (fireShield > 0 && Config.SERVER.isFireShield.get()) {
-                    FireShield.fireShield(event.getSource(), fireShield, player);
+                    FireShield.fireShield(source, fireShield, player);
                 }
+            }
+            ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+            int fireImmune = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.fireImmune.get(), legs);
+            if (fireImmune > 0 && Config.SERVER.isFireImmune.get() && source.isFire()) {
+                FireImmune.fireImmune(event, legs, player);
+            }
+            ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
+            int lavaWalker = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.lavaWalker.get(), feet);
+            if (lavaWalker > 0 && event.getSource() == DamageSource.HOT_FLOOR  && Config.SERVER.isLavaWalker.get()){
+                event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent
-    public static void instability(PlayerInteractEvent.LeftClickBlock event){
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event){
         ItemStack stack = event.getItemStack();
         Player player = event.getPlayer();
         int instability = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.instability.get(), stack);
         if (!player.level.isClientSide && Config.SERVER.isInstability.get()){
             EventHelper.dropItem(player, instability);
-        }
-    }
-
-    @SubscribeEvent
-    public static void playerUseItem(LivingEntityUseItemEvent.Start event){
-        LivingEntity living = event.getEntityLiving();
-        if (living instanceof Player){
-            int instability = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.instability.get(), living.getMainHandItem());
-            EventHelper.dropItem((Player) living, instability);
         }
     }
 }

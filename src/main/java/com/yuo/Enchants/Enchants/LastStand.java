@@ -29,7 +29,6 @@ public class LastStand extends ModEnchantBase {
                 event.setAmount(0);
                 stackFeet.hurtAndBreak(1, player, e->e.broadcastBreakEvent(EquipmentSlot.FEET));
             }
-
         }
     }
 }

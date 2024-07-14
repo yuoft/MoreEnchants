@@ -2,10 +2,12 @@ package com.yuo.Enchants.Enchants;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -37,9 +39,10 @@ public class Farmer extends ModEnchantBase {
      */
     public static void harvestCrop(Player playerIn, InteractionHand handIn, Level worldIn, BlockPos blockPos, int farmer){
         ItemStack heldItem = playerIn.getItemInHand(handIn);
-        if (playerIn.getCooldowns().isOnCooldown(heldItem.getItem())) return;
+        BlockState blockState = worldIn.getBlockState(blockPos);
+        Block clickBlock = blockState.getBlock();
+        if (playerIn.getCooldowns().isOnCooldown(heldItem.getItem()) || !(clickBlock instanceof BushBlock)) return; //对作物右键
         if (!worldIn.isClientSide){
-            playerIn.swing(handIn); //玩家摆臂
             BlockPos minPos = blockPos.offset(-farmer, -1, -farmer);
             BlockPos maxPos = blockPos.offset(farmer, 1, farmer);
             for (BlockPos pos : BlockPos.betweenClosed(minPos, maxPos)) {
@@ -76,8 +79,9 @@ public class Farmer extends ModEnchantBase {
                         ((BonemealableBlock) block).performBonemeal((ServerLevel) worldIn, worldIn.random, pos, state);
                 }
             }
-            heldItem.hurtAndBreak(1, playerIn, e -> e.broadcastBreakEvent(handIn));
+            heldItem.hurtAndBreak(farmer, playerIn, e -> e.broadcastBreakEvent(handIn)); //根据附魔等级消耗耐久
             playerIn.getCooldowns().addCooldown(heldItem.getItem(), 20); //冷却
+            playerIn.swing(handIn, true); //玩家摆臂
         }
     }
 

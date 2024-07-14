@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -98,13 +99,15 @@ public class Magnet extends ModEnchantBase {
      */
     public static void setEntityMotionFromVector(Entity entity, BlockPos pos, float modifier) {
         Vec3 originalPosVector = new Vec3(pos.getX(), pos.getY(), pos.getZ());
-        Vec3 finalVector = originalPosVector.add(entity.position());
+        Vec3 finalVector = originalPosVector.vectorTo(entity.position());
         if (finalVector.length() > 1) { //向量长度超过1
             finalVector.normalize(); //化为标准1单位
         }
+        modifier *= -1;
         double motionX = finalVector.x * modifier;
         double motionY = finalVector.y * modifier;
         double motionZ = finalVector.z * modifier;
-        entity.setDeltaMovement(motionX, motionY, motionZ);
+//        entity.setDeltaMovement(motionX, motionY, motionZ);
+        entity.move(MoverType.SELF, new Vec3(motionX, motionY, motionZ));
     }
 }
