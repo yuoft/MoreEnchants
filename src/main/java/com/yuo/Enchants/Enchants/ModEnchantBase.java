@@ -66,7 +66,7 @@ public class ModEnchantBase extends Enchantment {
         return mutableComponent;
     }
 
-    enum EnchantType {
+    public enum EnchantType {
         ARMOR{ //盔甲
             @Override
             public boolean canEnchant(Item itemIn) {

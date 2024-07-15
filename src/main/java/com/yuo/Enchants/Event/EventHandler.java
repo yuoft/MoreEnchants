@@ -1,11 +1,15 @@
 package com.yuo.Enchants.Event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Enchants.*;
-import com.yuo.Enchants.Proxy.CommonProxy;
 import com.yuo.Enchants.YuoEnchants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -132,7 +136,7 @@ public class EventHandler {
     public static void breakBlock(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        ItemStack tool = player.getUseItem();
+        ItemStack tool = player.getItemInHand(player.getUsedItemHand());
         if (tool.isEmpty()) return;
         Item item = tool.getItem();
         if (item instanceof DiggerItem || item instanceof ShearsItem) {
@@ -170,8 +174,8 @@ public class EventHandler {
             world.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
         }
         int rangBreak = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.rangBreak.get(), tool);
-
-        if (CommonProxy.isIsKeyC() && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
+        boolean keyDown = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), KeyBindingEvent.ENCHANT_KEY_C.getKey().getValue());
+        if (keyDown && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
             EventHelper.breakBlocks(tool, world, pos, state, player, Math.min(rangBreak, 5)); //最大等级5
             world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             return;
@@ -186,22 +190,6 @@ public class EventHandler {
             DiamondDrop.diamondDrop(diamondDrop, world, fortune, pos);
         }
     }
-
-    //脆弱 盔甲
-//    @SubscribeEvent
-//    public static void unDurableDamage(LivingAttackEvent event){
-//        LivingEntity entityLiving = event.getEntityLiving();
-//        if (entityLiving instanceof Player){
-//            Player player = (Player) entityLiving;
-//            player.getArmorInventoryList().forEach(e -> {
-//                int level = EnchantmentHelper.getItemEnchantmentLevel(EnchantsRegistry.unDurable.get(), e);
-//                if (level > 0){
-//                    e.damageItem(level, player, f -> f.sendBreakAnimation(Hand.MAIN_HAND));
-//                }
-//            });
-//        }
-//    }
-    //脆弱 物品右键使用 弓 弩 三叉戟
 
     //脆弱 弓 弩 三叉戟 停止使用物品
     @SubscribeEvent
@@ -248,6 +236,7 @@ public class EventHandler {
     @SubscribeEvent
     public static void toolModification(BlockEvent.BlockToolModificationEvent event) {
         Player player = event.getPlayer();
+        if (player == null) return;
         ItemStack item = event.getHeldItemStack();
         int unDurable = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unDurable.get(), item);
         if (unDurable > 0  && Config.SERVER.isUnDurable.get()) {
@@ -348,10 +337,6 @@ public class EventHandler {
         LivingEntity entityLiving = event.getEntityLiving();
         if (entityLiving instanceof Player player) {
             ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
-            //重置二段跳次数
-            if ((!player.getAbilities().flying || player.isOnGround()) && !feet.isEmpty() && feet.getOrCreateTag().getInt(DoubleJump.USES) > 0) {
-                feet.getOrCreateTag().putInt(DoubleJump.USES, 0);
-            }
             int lavaWalker = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.lavaWalker.get(), feet);
             if (lavaWalker > 0  && Config.SERVER.isLavaWalker.get()) {
                 LavaWalker.freezingNearby(player, player.level, player.getOnPos(), lavaWalker);

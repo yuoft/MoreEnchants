@@ -4,12 +4,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Enchants.DoubleJump;
 import com.yuo.Enchants.Enchants.EnchantRegistry;
-import com.yuo.Enchants.NetWork.KeyPacket;
-import com.yuo.Enchants.NetWork.NetWorkHandler;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -30,14 +29,14 @@ public class KeyBindingEvent {
     @SubscribeEvent
     public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null){
-            if (player.level.isClientSide)
-                NetWorkHandler.INSTANCE.sendToServer(new KeyPacket(67, ENCHANT_KEY_C.isDown()));
-        }
-        if (player == null) return;
-        int doubleJump = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.doubleJump.get(), player.getItemBySlot(EquipmentSlot.FEET));
-        if (doubleJump > 0  && Config.SERVER.isDoubleJump.get()){
-            DoubleJump.jump(player, doubleJump);
+        if (player != null && player.level.isClientSide){
+            ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
+            int doubleJump = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.doubleJump.get(), feet);
+            boolean keyDown = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_SPACE);
+            //按下空格 有附魔
+            if (keyDown && doubleJump > 0 && Config.SERVER.isDoubleJump.get()){
+                DoubleJump.jump(player);
+            }
         }
     }
 }
