@@ -7,7 +7,7 @@ import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.HoverEvent.Action;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
@@ -29,22 +29,35 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PotatoBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent.Stop;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent.Tick;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
+import net.minecraftforge.event.entity.player.PlayerXpEvent.PickupXp;
+import net.minecraftforge.event.world.BlockEvent.BlockToolModificationEvent;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 
 /**
  * 事件处理类 附魔实现
  */
-@Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = YuoEnchants.MOD_ID, bus = Bus.FORGE)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
 
@@ -98,7 +111,7 @@ public class EventHandler {
     public static void attackEntity(AttackEntityEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        ItemStack stack = player.getUseItem();
+        ItemStack stack = player.getItemInHand(player.getUsedItemHand());
         int warToWar = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.warToWar.get(), stack);
         if (warToWar > 0 && Config.SERVER.isWarToWar.get()) { //有附魔
             WarToWar.heal(warToWar, player);
@@ -133,7 +146,7 @@ public class EventHandler {
 
     //脆弱 洞察 熔炼 粉碎 范围挖掘 强运  --破坏方块
     @SubscribeEvent
-    public static void breakBlock(BlockEvent.BreakEvent event) {
+    public static void breakBlock(BreakEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
         ItemStack tool = player.getItemInHand(player.getUsedItemHand());
@@ -193,7 +206,7 @@ public class EventHandler {
 
     //脆弱 弓 弩 三叉戟 停止使用物品
     @SubscribeEvent
-    public static void stopUseItem(LivingEntityUseItemEvent.Stop event) {
+    public static void stopUseItem(Stop event) {
         LivingEntity entityLiving = event.getEntityLiving();
         if (entityLiving instanceof Player player) {
             ItemStack stack = event.getItem();
@@ -208,7 +221,7 @@ public class EventHandler {
 
     //脆弱 右键物品 钓鱼竿
     @SubscribeEvent
-    public static void rightClick(PlayerInteractEvent.RightClickItem event) {
+    public static void rightClick(RightClickItem event) {
         ItemStack stack = event.getItemStack();
         Player player = event.getPlayer();
         Item item = stack.getItem();
@@ -221,7 +234,7 @@ public class EventHandler {
 
     //农夫
     @SubscribeEvent
-    public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+    public static void rightClickBlock(RightClickBlock event) {
         Player player = event.getPlayer();
         InteractionHand hand = event.getHand();
         Level world = event.getWorld();
@@ -234,7 +247,7 @@ public class EventHandler {
 
     //脆弱 使用锄头
     @SubscribeEvent
-    public static void toolModification(BlockEvent.BlockToolModificationEvent event) {
+    public static void toolModification(BlockToolModificationEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
         ItemStack item = event.getHeldItemStack();
@@ -270,7 +283,7 @@ public class EventHandler {
 
     //拖拉 挖掘速度
     @SubscribeEvent
-    public static void breakSpeed(PlayerEvent.BreakSpeed event) {
+    public static void breakSpeed(BreakSpeed event) {
         Player player = event.getPlayer();
         if (player == null) return;
         int slow = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.slow.get(), player.getItemInHand(player.getUsedItemHand()));
@@ -310,14 +323,14 @@ public class EventHandler {
 
     //经验腐蚀 获取经验
     @SubscribeEvent
-    public static void pickupXp(PlayerXpEvent.PickupXp event) {
+    public static void pickupXp(PickupXp event) {
         Player player = event.getPlayer();
         if (player.takeXpDelay != 0) return;
         int xpValue = event.getOrb().getValue(); //经验值
         player.takeXpDelay = 2;
         player.take(event.getOrb(), 1); //捡起经验
         //获取含有此附魔的装备map
-        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(EnchantRegistry.expCorrode.get(), player);
+        Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(EnchantRegistry.expCorrode.get(), player);
         if (entry != null  && Config.SERVER.isExpCorrode.get()) {
             ItemStack itemstack = entry.getValue();
             if (!itemstack.isEmpty() && itemstack.getDamageValue() > 0) { //物品非空，且有耐久
@@ -333,7 +346,7 @@ public class EventHandler {
 
     //岩浆行者 生机 距离提升 实体更新
     @SubscribeEvent
-    public static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
+    public static void livingUpdate(LivingUpdateEvent event) {
         LivingEntity entityLiving = event.getEntityLiving();
         if (entityLiving instanceof Player player) {
             ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
@@ -359,20 +372,20 @@ public class EventHandler {
 
     //玩家登入
     @SubscribeEvent
-    public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void playerLogin(PlayerLoggedInEvent event) {
         Player player = event.getPlayer();
         if (!player.getPersistentData().getBoolean("yuoenchants:login")){
             player.getPersistentData().putBoolean("yuoenchants:login", true);
             //发送消息
             player.sendMessage(new TranslatableComponent("yuoenchants.message.login")
-                    .setStyle(Style.EMPTY.withHoverEvent(HoverEvent.Action.SHOW_TEXT.deserializeFromLegacy(new TranslatableComponent("yuoenchants.message.login0")))
+                    .setStyle(Style.EMPTY.withHoverEvent(Action.SHOW_TEXT.deserializeFromLegacy(new TranslatableComponent("yuoenchants.message.login0")))
                             .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://space.bilibili.com/21854371"))), UUID.randomUUID());
         }
     }
 
     //雷击 真荆棘
     @SubscribeEvent
-    public static void playerTick(TickEvent.PlayerTickEvent event) {
+    public static void playerTick(PlayerTickEvent event) {
         Player player = event.player;
         if (player == null || player.level.isClientSide) return;
         ItemStack stackLegs = player.getItemBySlot(EquipmentSlot.LEGS);
@@ -415,7 +428,7 @@ public class EventHandler {
     public static void livingDeath(LivingDeathEvent event) {
         Entity trueSource = event.getSource().getDirectEntity(); //伤害来源
         if (trueSource instanceof Player player) {
-            ItemStack mainHand = player.getUseItem();
+            ItemStack mainHand = player.getItemInHand(player.getUsedItemHand());
             int leech = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.leech.get(), mainHand);
             if (leech > 0  && Config.SERVER.isLeech.get()) {
                 player.heal(leech / 2.0f); //回血
@@ -424,8 +437,12 @@ public class EventHandler {
             if (healthToS > 0 && Config.SERVER.isHealthToSacrifice.get()) {
                 LivingEntity entityLiving = event.getEntityLiving();
                 Level world = entityLiving.level;
+                int luck = 0;
+                MobEffectInstance effect = player.getEffect(MobEffects.LUCK);
+                if (effect != null)
+                    luck = effect.getAmplifier();
                 int looting = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, mainHand);
-                HealthToSacrifice.dropExpDrip(world, healthToS, looting, entityLiving.getOnPos(), entityLiving.getMaxHealth());
+                HealthToSacrifice.dropExpDrip(world, healthToS, looting, entityLiving.getOnPos(), entityLiving.getMaxHealth(), luck);
             }
         }
     }
@@ -435,11 +452,12 @@ public class EventHandler {
     public static void livingDrop(LivingDropsEvent event) {
         Entity trueSource = event.getSource().getDirectEntity();
         if (trueSource instanceof Player player) {
-            int beHead = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.beHead.get(), player.getUseItem());
+            ItemStack useItem = player.getItemInHand(player.getUsedItemHand());
+            int beHead = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.beHead.get(), useItem);
             if (beHead > 0  && Config.SERVER.isBehead.get()) {
                 event.getDrops().add(BeHead.dropHead(beHead, event.getEntityLiving()));
             }
-            int unLooting = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unLooting.get(), player.getUseItem());
+            int unLooting = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unLooting.get(), useItem);
             if (unLooting > 0 && Config.SERVER.isUnLooting.get()){
                 int luck = -1;
                 MobEffectInstance instance = player.getEffect(MobEffects.LUCK);
@@ -478,7 +496,7 @@ public class EventHandler {
 
     //斥力
     @SubscribeEvent
-    public static void useItemTick(LivingEntityUseItemEvent.Tick event) {
+    public static void useItemTick(Tick event) {
         if (event.getEntityLiving() instanceof Player player) {
             if (event.getItem().getItem() instanceof ProjectileWeaponItem) {
                 int repulsion = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.repulsion.get(), event.getItem());
@@ -520,7 +538,7 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event){
+    public static void leftClickBlock(LeftClickBlock event){
         ItemStack stack = event.getItemStack();
         Player player = event.getPlayer();
         int instability = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.instability.get(), stack);

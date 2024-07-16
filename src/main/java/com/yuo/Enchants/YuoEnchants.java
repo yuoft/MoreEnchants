@@ -4,7 +4,6 @@ import com.yuo.Enchants.Blocks.MenuRegister;
 import com.yuo.Enchants.Blocks.YEBlocks;
 import com.yuo.Enchants.Enchants.EnchantRegistry;
 import com.yuo.Enchants.Item.YEItems;
-import com.yuo.Enchants.NetWork.NetWorkHandler;
 import com.yuo.Enchants.Proxy.ClientProxy;
 import com.yuo.Enchants.Proxy.CommonProxy;
 import com.yuo.Enchants.Proxy.IProxy;
@@ -44,6 +43,6 @@ public class YuoEnchants
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(NetWorkHandler::registerMessage); //创建数据包
+//        event.enqueueWork(NetWorkHandler::registerMessage); //创建数据包
     }
 }

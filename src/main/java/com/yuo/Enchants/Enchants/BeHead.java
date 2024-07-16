@@ -6,8 +6,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,8 +45,21 @@ public class BeHead extends ModEnchantBase {
                 CompoundTag nbt = new CompoundTag(); //添加玩家头颅信息
                 nbt.putString("playerName", living.getName().getString());
                 skull.setTag(nbt);
-            }else if (living instanceof WitherSkeleton){
+            }
+            if (living instanceof WitherSkeleton){
                 skull = new ItemStack(Items.WITHER_SKELETON_SKULL, 1);
+            }
+            if (living instanceof Skeleton){
+                skull = new ItemStack(Items.SKELETON_SKULL, 1);
+            }
+            if (living instanceof Creeper){
+                skull = new ItemStack(Items.CREEPER_HEAD, 1);
+            }
+            if (living instanceof Zombie){
+                skull = new ItemStack(Items.ZOMBIE_HEAD, 1);
+            }
+            if (living instanceof EnderDragon && living.getRandom().nextDouble() < 0.01d){
+                skull = new ItemStack(Items.DRAGON_HEAD, 1);
             }
         }
         return new ItemEntity(living.level, living.getX(), living.getY(), living.getZ(), skull);

@@ -27,7 +27,7 @@ public class Insight extends ModEnchantBase {
     //额外经验掉落
     public static void addDropExp(BlockEvent.BreakEvent event, int insight){
         //额外获取 原本经验值 * （1 + insight * 30%）经验值
-        double exp = event.getExpToDrop() + (100 + insight * 30) / 100.0;
+        double exp = (100 + insight * 30) / 100.0 * event.getExpToDrop();
         event.setExpToDrop((int) Math.ceil(exp));
     }
 
