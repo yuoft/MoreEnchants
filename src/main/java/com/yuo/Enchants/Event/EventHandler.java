@@ -87,7 +87,7 @@ public class EventHandler {
         }
         Entity trueSource = event.getSource().getDirectEntity();
         if (trueSource instanceof Player player) {
-            ItemStack mainHand = player.getUseItem();
+            ItemStack mainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
             int beHead = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.beHead.get(), mainHand);
             if (beHead > 0  && Config.SERVER.isBehead.get()) {
                 BeHead.addDamage(beHead, event, player, entityLiving);
@@ -111,7 +111,7 @@ public class EventHandler {
     public static void attackEntity(AttackEntityEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        ItemStack stack = player.getItemInHand(player.getUsedItemHand());
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.MAINHAND);
         int warToWar = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.warToWar.get(), stack);
         if (warToWar > 0 && Config.SERVER.isWarToWar.get()) { //有附魔
             WarToWar.heal(warToWar, player);
@@ -149,7 +149,7 @@ public class EventHandler {
     public static void breakBlock(BreakEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        ItemStack tool = player.getItemInHand(player.getUsedItemHand());
+        ItemStack tool = player.getItemBySlot(EquipmentSlot.MAINHAND);
         if (tool.isEmpty()) return;
         Item item = tool.getItem();
         if (item instanceof DiggerItem || item instanceof ShearsItem) {
@@ -262,7 +262,7 @@ public class EventHandler {
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getPlayer();
         if (player != null) {
-            ItemStack stack = player.getUseItem();
+            ItemStack stack = player.getMainHandItem().isEmpty() ? player.getOffhandItem() : player.getMainHandItem();
             if (stack.getItem() instanceof FishingRodItem) {
                 Level world = player.level;
                 int unDurable = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unDurable.get(), stack);
@@ -428,7 +428,7 @@ public class EventHandler {
     public static void livingDeath(LivingDeathEvent event) {
         Entity trueSource = event.getSource().getDirectEntity(); //伤害来源
         if (trueSource instanceof Player player) {
-            ItemStack mainHand = player.getItemInHand(player.getUsedItemHand());
+            ItemStack mainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
             int leech = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.leech.get(), mainHand);
             if (leech > 0  && Config.SERVER.isLeech.get()) {
                 player.heal(leech / 2.0f); //回血
@@ -452,7 +452,7 @@ public class EventHandler {
     public static void livingDrop(LivingDropsEvent event) {
         Entity trueSource = event.getSource().getDirectEntity();
         if (trueSource instanceof Player player) {
-            ItemStack useItem = player.getItemInHand(player.getUsedItemHand());
+            ItemStack useItem = player.getItemBySlot(EquipmentSlot.MAINHAND);
             int beHead = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.beHead.get(), useItem);
             if (beHead > 0  && Config.SERVER.isBehead.get()) {
                 event.getDrops().add(BeHead.dropHead(beHead, event.getEntityLiving()));
@@ -512,9 +512,9 @@ public class EventHandler {
     public static void livingAttack(LivingAttackEvent event) {
         LivingEntity living = event.getEntityLiving();
         if (living instanceof Player player) {
-            ItemStack shield = player.getOffhandItem();
+            ItemStack shield = player.getItemInHand(player.getUsedItemHand());
             DamageSource source = event.getSource();
-            if (!shield.isEmpty() && player.getUseItem() == shield) {
+            if (!shield.isEmpty() && player.isBlocking() && player.getUseItem() == shield) {
                 int rebound = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.rebound.get(), shield);
                 if (rebound > 0 && Config.SERVER.isRebound.get()) {
                     Rebound.rebound(event, rebound, player, shield);

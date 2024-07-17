@@ -4,9 +4,9 @@ import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Event.EventHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -49,7 +49,7 @@ public class Melting extends ModEnchantBase {
         boolean flag = unLuck > 0 && Config.SERVER.isUnLuck.get() &&  world.random.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
         if (drops.size() <= 0 || flag) return;
         drops.forEach(itemStack -> {
-            ItemStack dropStack = Melting.getMeltingItem(world, itemStack, tool, player);
+            ItemStack dropStack = Melting.getMeltingItem(world, itemStack, tool);
             if (!dropStack.equals(itemStack)){
                 EventHelper.meltingAchieve(world, player, pos, event);
                 world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dropStack));
@@ -65,10 +65,10 @@ public class Melting extends ModEnchantBase {
      * @param tool 使用工具
      * @return 烧炼产物
      */
-    public static ItemStack getMeltingItem(Level world,ItemStack itemStack, ItemStack tool, Player player){
-        ItemStack dropStack = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new Inventory(player), world)
+    public static ItemStack getMeltingItem(Level world,ItemStack itemStack, ItemStack tool){
+        ItemStack dropStack = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(itemStack), world)
                 .map(SmeltingRecipe::getResultItem).filter(e -> !e.isEmpty())
-                .map(e -> ItemHandlerHelper.copyStackWithSize(e, tool.getCount() * e.getCount()))
+                .map(e -> ItemHandlerHelper.copyStackWithSize(e, e.getCount()))
                 .orElse(itemStack);
         int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
         if (fortune > 0){ //时运影响产物数量

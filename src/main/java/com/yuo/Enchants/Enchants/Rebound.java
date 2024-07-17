@@ -49,7 +49,7 @@ public class Rebound extends ModEnchantBase {
     //击退攻击者
     public static void knockbackEntity(LivingEntity living, int rebound){
         Vec3 vec3 = living.getViewVector(1.0f);
-        Vec3 scale = vec3.scale(0.75 + rebound * 0.25);
+        Vec3 scale = vec3.scale(-0.75 + rebound * -0.25);
         living.setDeltaMovement(scale);
     }
 }

@@ -40,7 +40,7 @@ public class EventHelper {
 
     public static final float attrHealth = 2.0f; //属性变更基础系数
     public static final float attrHandRange = 0.5f;
-    public static final float attrSwimSpeed = -0.25f;
+    public static final float attrSwimSpeed = -0.20f;
     /**
      * 将玩家主手物品丢出
      * @param player 玩家
@@ -130,7 +130,7 @@ public class EventHelper {
         drops.forEach(e -> {
             ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), ItemStack.EMPTY);
             if (melting > 0  && Config.SERVER.isMelting.get()) { //有熔炼附魔 替换产物
-                ItemStack dropStack = Melting.getMeltingItem(world, e, tool, player);
+                ItemStack dropStack = Melting.getMeltingItem(world, e, tool);
                 itemEntity.setItem(dropStack);
             }else itemEntity.setItem(new ItemStack(e.getItem(), finalCount));
             world.addFreshEntity(itemEntity);
