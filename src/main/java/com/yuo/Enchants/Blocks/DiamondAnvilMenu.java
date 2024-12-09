@@ -1,8 +1,8 @@
 package com.yuo.Enchants.Blocks;
 
-import com.yuo.Enchants.Item.ModEnchantBook;
-import com.yuo.Enchants.Item.YEItems;
-import com.yuo.Enchants.Item.YETags;
+import com.yuo.Enchants.Items.ModEnchantBook;
+import com.yuo.Enchants.Items.YEItems;
+import com.yuo.Enchants.Items.YETags;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -289,8 +289,7 @@ public class DiamondAnvilMenu extends ItemCombinerMenu {
     }
 
     //触发铁砧更新事件
-    public static boolean onAnvilChange(DiamondAnvilMenu container, @Nonnull ItemStack left, @Nonnull ItemStack right, Container outputSlot, String name, int baseCost, Player player)
-    {
+    public static boolean onAnvilChange(DiamondAnvilMenu container, @Nonnull ItemStack left, @Nonnull ItemStack right, Container outputSlot, String name, int baseCost, Player player) {
         AnvilUpdateEvent e = new AnvilUpdateEvent(left, right, name, baseCost, player);
         if (MinecraftForge.EVENT_BUS.post(e)) return false;
         if (e.getOutput().isEmpty()) return true;
@@ -302,8 +301,7 @@ public class DiamondAnvilMenu extends ItemCombinerMenu {
     }
 
     //触发铁砧修理事件
-    public static float onAnvilRepair(Player player, @Nonnull ItemStack output, @Nonnull ItemStack left, @Nonnull ItemStack right)
-    {
+    public static float onAnvilRepair(Player player, @Nonnull ItemStack output, @Nonnull ItemStack left, @Nonnull ItemStack right) {
         AnvilRepairEvent e = new AnvilRepairEvent(player, left, right, output);
         MinecraftForge.EVENT_BUS.post(e);
         e.setBreakChance(0.08f); //损坏概率

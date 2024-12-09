@@ -30,22 +30,24 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
         this.titleLabelX = 60;
     }
 
+    @Override
     public void containerTick() {
         super.containerTick();
         this.name.tick();
     }
 
-    protected void initFields() {
+    @Override
+    protected void subInit() {
         if (this.minecraft != null){
             this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-            int i = (this.width - this.imageWidth) / 2;
-            int j = (this.height - this.imageHeight) / 2;
-            this.name = new EditBox(this.font, i + 62, j + 24, 103, 12, new TranslatableComponent("container.repair"));
+            int $$0 = (this.width - this.imageWidth) / 2;
+            int $$1 = (this.height - this.imageHeight) / 2;
+            this.name = new EditBox(this.font, $$0 + 62, $$1 + 24, 103, 12, new TranslatableComponent("container.repair"));
             this.name.setCanLoseFocus(false);
             this.name.setTextColor(-1);
             this.name.setTextColorUneditable(-1);
             this.name.setBordered(false);
-            this.name.setMaxLength(35);
+            this.name.setMaxLength(50);
             this.name.setResponder(this::onNameChanged);
             this.name.setValue("");
             this.addWidget(this.name);
@@ -54,29 +56,40 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
         }
     }
 
+    @Override
     public void resize(Minecraft minecraft, int width, int height) {
         String s = this.name.getValue();
         this.init(minecraft, width, height);
         this.name.setValue(s);
     }
 
+    @Override
+    public void removed() {
+        super.removed();
+        if (this.minecraft != null) {
+            this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
+        }
+    }
+
+    @Override
     public void onClose() {
         super.onClose();
         if (this.minecraft != null)
             this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == 256 && this.minecraft != null) {
             if (this.minecraft.player != null)
                 this.minecraft.player.closeContainer();
         }
-
-        return this.name.keyPressed(keyCode, scanCode, modifiers) || this.name.canConsumeInput() || super.keyPressed(keyCode, scanCode, modifiers);
+        return false;
+//        return this.name.keyPressed(keyCode, scanCode, modifiers) || this.name.canConsumeInput() || super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private void onNameChanged(String name) {
-        if (!name.isEmpty()) {
+        if (!name.isEmpty() && this.player.level.isClientSide) {
             String s = name;
             Slot slot = this.menu.getSlot(0);
             if (slot.hasItem() && !slot.getItem().hasCustomHoverName() && name.equals(slot.getItem().getHoverName().getString())) {
@@ -89,6 +102,7 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
         }
     }
 
+    @Override
     protected void renderLabels(PoseStack pPoseStack, int pX, int pY) {
         RenderSystem.disableBlend();
         super.renderLabels(pPoseStack, pX, pY);
@@ -119,18 +133,16 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
 
     }
 
-    public void renderNameField(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.name.render(matrixStack, mouseX, mouseY, partialTicks);
+    @Override
+    public void renderFg(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        this.name.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }
 
-    /**
-     * Sends the contents of an inventory slot to the client-side Container. This doesn't have to match the actual
-     * contents of that slot.
-     */
-    public void sendSlotContents(AbstractContainerMenu containerToSend, int slotInd, ItemStack stack) {
-        if (slotInd == 0) {
-            this.name.setValue(stack.isEmpty() ? "" : stack.getDisplayName().getString());
-            this.name.setEditable(!stack.isEmpty());
+    @Override
+    public void slotChanged(AbstractContainerMenu pContainerToSend, int pSlotInd, ItemStack pStack) {
+        if (pSlotInd == 0) {
+            this.name.setValue(pStack.isEmpty() ? "" : pStack.getHoverName().getString());
+//            this.name.setEditable(!pStack.isEmpty());
             this.setFocused(this.name);
         }
 

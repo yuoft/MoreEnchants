@@ -1,6 +1,6 @@
 package com.yuo.Enchants.Enchants;
 
-import com.yuo.Enchants.Item.YEItems;
+import com.yuo.Enchants.Items.YEItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;

@@ -1,10 +1,10 @@
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
         maven {
             url 'https://maven.aliyun.com/repository/public/' //阿里云仓库
         }
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
@@ -21,7 +21,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '1.18.2-0.0.5'
+version = '1.18.2-0.0.8'
 group = 'com.github.yuo' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'yuoenchants'
 

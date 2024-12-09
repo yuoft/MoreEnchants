@@ -1,10 +1,8 @@
 package com.yuo.Enchants.Event;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Enchants.*;
 import com.yuo.Enchants.YuoEnchants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent.Action;
@@ -148,7 +146,7 @@ public class EventHandler {
     @SubscribeEvent
     public static void breakBlock(BreakEvent event) {
         Player player = event.getPlayer();
-        if (player == null) return;
+        if (player == null || player.isCreative()) return;
         ItemStack tool = player.getItemBySlot(EquipmentSlot.MAINHAND);
         if (tool.isEmpty()) return;
         Item item = tool.getItem();
@@ -173,6 +171,7 @@ public class EventHandler {
         int unLuck = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unLuck.get(), tool);
         if (strengthLuck > 0 && Config.SERVER.isStrengthLuck.get()) {
             StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, player);
+            event.setCanceled(true);
             return;
         }
         if (unLuck > 0 && Config.SERVER.isUnLuck.get() &&  RANDOM.nextDouble() < unLuck * 0.2){
@@ -187,10 +186,10 @@ public class EventHandler {
             world.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
         }
         int rangBreak = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.rangBreak.get(), tool);
-        boolean keyDown = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), KeyBindingEvent.ENCHANT_KEY_C.getKey().getValue());
-        if (keyDown && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
+        if (player.isCrouching() && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
             EventHelper.breakBlocks(tool, world, pos, state, player, Math.min(rangBreak, 5)); //最大等级5
             world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            event.setCanceled(true);
             return;
         }
         int melting = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.melting.get(), tool); //熔炼
@@ -199,7 +198,7 @@ public class EventHandler {
         }
         int diamondDrop = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.diamondDrop.get(), tool);
         int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
-        if (diamondDrop > 0 && state.getBlock() == Blocks.COAL_ORE && Config.SERVER.isDiamondDrop.get()){
+        if (diamondDrop > 0 && (state.getBlock() == Blocks.COAL_ORE || state.getBlock() == Blocks.DEEPSLATE_COAL_ORE) && Config.SERVER.isDiamondDrop.get()){
             DiamondDrop.diamondDrop(diamondDrop, world, fortune, pos);
         }
     }

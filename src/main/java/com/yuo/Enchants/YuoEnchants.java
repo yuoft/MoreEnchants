@@ -3,12 +3,11 @@ package com.yuo.Enchants;
 import com.yuo.Enchants.Blocks.MenuRegister;
 import com.yuo.Enchants.Blocks.YEBlocks;
 import com.yuo.Enchants.Enchants.EnchantRegistry;
-import com.yuo.Enchants.Item.YEItems;
+import com.yuo.Enchants.Items.YEItems;
+import com.yuo.Enchants.Proxy.AAA;
 import com.yuo.Enchants.Proxy.ClientProxy;
 import com.yuo.Enchants.Proxy.CommonProxy;
 import com.yuo.Enchants.Proxy.IProxy;
-import com.yuo.Enchants.World.ModConfiguredFeatures;
-import com.yuo.Enchants.World.ModPlaceFeatures;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -34,11 +33,7 @@ public class YuoEnchants
         YEBlocks.BLOCKS.register(bus);
         EnchantRegistry.ENCHANTMENTS.register(bus);
         MenuRegister.CONTAINER_TYPES.register(bus);
-        ModConfiguredFeatures.CONFIGURED_FEATURES.register(bus); //注册生成规则
-        ModPlaceFeatures.PLACED_FEATURES.register(bus); //注册世界生成
-//        ModLootModifier.LOOT_MODIFIERS.register(bus);
-
-//        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, OreGen::generateOres); //注册矿物生成
+        AAA.TYPES.register(bus);
         proxy.registerHandlers();
     }
 

@@ -1,0 +1,10 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/desert_pyramid"
+    }
+  ],
+  "addition": "yuoenchants:old_book",
+  "type": "yuoenchants:old_book_from_desert_pyramid"
+}

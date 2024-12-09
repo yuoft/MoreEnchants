@@ -1,16 +1,13 @@
 package com.yuo.Enchants.Event;
 
-import com.yuo.Enchants.Enchants.EnchantRegistry;
-import com.yuo.Enchants.Enchants.ModEnchantBase;
-import com.yuo.Enchants.Item.OldBook;
-import com.yuo.Enchants.Item.YEItems;
-import com.yuo.Enchants.Event.Loot.OldBookFromBoxAddModifier;
+import com.yuo.Enchants.Event.Loot.LootModifierHelper;
+import com.yuo.Enchants.Items.OldBook;
+import com.yuo.Enchants.Items.YEItems;
+import com.yuo.Enchants.World.ModOreGen;
 import com.yuo.Enchants.YuoEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -21,27 +18,32 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * 处理其它功能事件
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = YuoEnchants.MOD_ID)
+@Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID)
 public class OtherEvents {
+
+    @SubscribeEvent
+    public static void worldGen(BiomeLoadingEvent event) {
+        ModOreGen.genOres(event);
+    }
+
     //燃烧时间 竹炭
     @SubscribeEvent
     public static void smeltingItem(FurnaceFuelBurnTimeEvent event) {
@@ -126,96 +128,6 @@ public class OtherEvents {
         return false;
     }
 
-    @SubscribeEvent
-    public static void registerAddItemModifier(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
-        event.getRegistry().registerAll(
-                new OldBookFromBoxAddModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "oldBook_from_box"))
-        );
-    }
-/*
-    private static final ResourceLocation[] RS = { //将要追加的战利品表 列表
-            LootTables.serialize().CHESTS_JUNGLE_TEMPLE, //丛林神殿
-//            LootTables.GAMEPLAY_FISHING, //钓鱼
-            LootTables.CHESTS_DESERT_PYRAMID, //沙漠神殿
-            LootTables.BASTION_TREASURE, //猪灵堡垒
-            LootTables.CHESTS_END_CITY_TREASURE, //末地城
-            LootTables.CHESTS_STRONGHOLD_LIBRARY, //末地地牢图书馆
-            LootTables.CHESTS_BURIED_TREASURE, //埋藏的宝藏
-            LootTables.CHESTS_WOODLAND_MANSION, //林地府邸
-            LootTables.CHESTS_SHIPWRECK_TREASURE}; //沉船宝箱
-
-    //战利品添加
-    @SubscribeEvent
-    public static void lootTableAdd(LootTableLoadEvent event){
-        ResourceLocation name = event.getName();
-        LootTables manager = event.getLootTableManager();
-        for (ResourceLocation r : RS) {
-            if (r.equals(name)) {
-                LootTable table = event.getTable();
-                table.addPool(getPoolOldBook());
-                LootModifierManager
-                table.addPool(getPoolSuperBook());
-            }
-        }
-        if (LootTables.GAMEPLAY_FISHING.equals(name)){
-            LootTable table = event.getTable();
-            table.addPool(getFishPoolOldBook());
-            table.addPool(getFishPoolSuperBook());
-        }
-    }
-
-    /**
-     * 获取一个战利品奖池
-     * @return 含有5个项的奖池
-     */
-/*
-    private static LootPool getPoolOldBook(){
-        LootPool.Builder builder = new LootPool.Builder().name("old_book")
-                .addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook())
-                .acceptCondition(RandomChance.builder(0.1f)) //通过概率
-                .rolls(new RandomValueRange(1, 2)).bonusRolls(0, 1); //抽取次数：1~4 幸运增加的抽取次数
-        return builder.build();
-    }
-
-    private static LootPool getPoolSuperBook(){
-        LootPool.Builder builder = new LootPool.Builder().name("super_enchant_book")
-                .addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook())
-                .acceptCondition(RandomChance.builder(0.15f))
-                .rolls(new RandomValueRange(1, 3)).bonusRolls(0, 2);
-        return builder.build();
-    }
-
-    private static LootPool getFishPoolOldBook(){
-        LootPool.Builder builder = new LootPool.Builder().name("old_book")
-                .addEntry(getEntryOldBook()).addEntry(getEntryOldBook()).addEntry(getEntryOldBook())
-                .acceptCondition(RandomChance.builder(0.05f)) //通过概率
-                .rolls(new RandomValueRange(0, 2)).bonusRolls(0, 1); //抽取次数：1~4 幸运增加的抽取次数
-        return builder.build();
-    }
-
-    private static LootPool getFishPoolSuperBook(){
-        LootPool.Builder builder = new LootPool.Builder().name("super_enchant_book")
-                .addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook()).addEntry(getEntrySuperBook())
-                .acceptCondition(RandomChance.builder(0.1f))
-                .rolls(new RandomValueRange(1, 3)).bonusRolls(0, 1);
-        return builder.build();
-    }
-
-    /**
-     * 构造一个奖池项目
-     * @return 奖池项目
-     */
-/*
-    private static StandaloneLootEntry.Builder<?> getEntryOldBook(){
-        return ItemLootEntry.builder(YEItems.oldBook.get()).quality(8).weight(4)//物品 幸运影响 权重
-                .acceptFunction(SetNBT.builder(getCompoundNbt(getRandomOldBook()))); //添加nbt数据
-    }
-
-    private static StandaloneLootEntry.Builder<?> getEntrySuperBook(){
-        return ItemLootEntry.builder(YEItems.modEnchantBook.get()).quality(10).weight(5)
-                .acceptFunction(SetNBT.builder(getCompoundNbt(getRandomSuperBook())));
-    }
-
     /**
      * 根据物品数据来构建一个CompoundNbt数据
      * @param stack 数据来源
@@ -228,44 +140,7 @@ public class OtherEvents {
         return nbt;
     }
 
-    //初始化原版附魔列表
-    private static final ArrayList<Enchantment> ENCHANTS = new ArrayList<>();
-    static {
-        for(Enchantment enchantment : Registry.ENCHANTMENT) {
-            if (enchantment.getMaxLevel() != 1 && enchantment.getRegistryType() != null){
-                ENCHANTS.add(enchantment);
-            }
-        }
-    }
 
-    /**
-     * 获取一个含有随机附魔的古卷
-     * @return 物品
-     */
-    private static ItemStack getRandomOldBook(){
-        ItemStack stack = new ItemStack(YEItems.oldBook.get());
-        Enchantment enchantment = ENCHANTS.get(new Random().nextInt(ENCHANTS.size()));
-        if (enchantment != null)
-            EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(enchantment, enchantment.getMaxLevel()));
-        else EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 5));
-        return stack;
-    }
-
-    private static ItemStack getRandomSuperBook(){
-        ItemStack stack = new ItemStack(YEItems.modEnchantBook.get());
-        ArrayList<Enchantment> SUPER_ENCHANTS = new ArrayList<>();
-        for (RegistryObject<Enchantment> entry : EnchantRegistry.ENCHANTMENTS.getEntries()) {
-            Enchantment enchantment = entry.get();
-            if (enchantment instanceof ModEnchantBase){
-                SUPER_ENCHANTS.add(enchantment);
-            }
-        }
-        Enchantment enchantment = SUPER_ENCHANTS.get(new Random().nextInt(ENCHANTS.size()));
-        if (enchantment != null)
-            EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(enchantment, enchantment.getMaxLevel()));
-        else EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 5));
-        return stack;
-    }
 
     //村民交易
     @SubscribeEvent
@@ -275,8 +150,8 @@ public class OtherEvents {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, YEItems.BrokenMagicPearl.get(), 1, YEItems.SuperBrokenMagicPearl.get(), 1, 5, 8));
             trades.get(5).add(new ItemsForEmeraldsAndItemsTrade(Items.NETHER_STAR, 1, YEItems.CuresPearl.get(), 1, YEItems.SuperCuresPearl.get(), 1, 5, 8));
-            trades.get(4).add(new EnchantedBookForEmeraldsTrade(getRandomOldBook(),  6));
-            trades.get(5).add(new EnchantedBookForEmeraldsTrade(getRandomOldBook(), 8));
+            trades.get(4).add(new EnchantedBookForEmeraldsTrade(LootModifierHelper.getRandomOldBook(YEItems.oldBook.get()),  6));
+            trades.get(5).add(new EnchantedBookForEmeraldsTrade(LootModifierHelper.getRandomOldBook(YEItems.oldBook.get()), 8));
         }
     }
 

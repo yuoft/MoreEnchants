@@ -1,8 +1,8 @@
 package com.yuo.Enchants.Jei;
 
-import com.yuo.Enchants.Item.ModEnchantBook;
-import com.yuo.Enchants.Item.OldBook;
-import com.yuo.Enchants.Item.YEItems;
+import com.yuo.Enchants.Items.ModEnchantBook;
+import com.yuo.Enchants.Items.OldBook;
+import com.yuo.Enchants.Items.YEItems;
 import com.yuo.Enchants.YuoEnchants;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -25,12 +25,16 @@ public class YEJei implements IModPlugin {
         IModPlugin.super.registerItemSubtypes(registration);
         registration.registerSubtypeInterpreter(YEItems.modEnchantBook.get(), (e, u) -> {
             ListTag tag = ModEnchantBook.getEnchantments(e);
+//            for (Enchantment enchant : LootModifierHelper.MOD_ENCHANTS) {
+//                String id = enchant.getDescriptionId();
+//                int level = enchant.getMaxLevel();
+//                return id + level;
+//            }
             if (!tag.isEmpty()){
                 for (Tag t : tag) {
                     CompoundTag com = (CompoundTag) t;
                     StringBuilder s = new StringBuilder();
-                    s.append(com.getString("id"));
-                    s.append(com.getString("lvl"));
+                    s.append(com.getString("id")).append(com.getString("lvl"));
                     return s.toString();
                 }
             }

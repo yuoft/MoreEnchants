@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -30,10 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.world.BlockEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EventHelper {
     private static final Random RANDOM = new Random();
@@ -97,7 +96,7 @@ public class EventHelper {
         if (!player.isCreative()){
             if (player.getFoodData().getFoodLevel() <= 2) return; //低饱食度时无法使用
         }
-        int count = 1;
+        int count = 0;
         ArrayList<BlockPos> points = getPoints(player, pos, lv); //坐标
         //方块挖掘前统计掉落物
         List<ItemStack> drops = new ArrayList<>();
@@ -122,19 +121,26 @@ public class EventHelper {
             if (count % 20 == 0) player.getFoodData().setSaturation(-1); //消耗饱食度 20方块消耗一格
         }
         //生成掉落物和经验
-        if (drops.size() <= 0) return;
+        if (drops.isEmpty()) return;
         int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
         int silkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
         int melting = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.melting.get(), tool);
-        int finalCount = count;
-        drops.forEach(e -> {
+        int diamondDrop = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.diamondDrop.get(), tool);
+        List<ItemStack> stackList = getDrops(drops);
+        stackList.forEach(e -> {
             ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), ItemStack.EMPTY);
-            if (melting > 0  && Config.SERVER.isMelting.get()) { //有熔炼附魔 替换产物
-                ItemStack dropStack = Melting.getMeltingItem(world, e, tool);
-                itemEntity.setItem(dropStack);
-            }else itemEntity.setItem(new ItemStack(e.getItem(), finalCount));
-            world.addFreshEntity(itemEntity);
+            if (melting > 0 && Config.SERVER.isMelting.get()) { //有熔炼附魔 替换产物
+                ItemStack meltingItem = Melting.getMeltingItem(world, e, tool);
+                itemEntity.setItem(meltingItem);
+                world.addFreshEntity(itemEntity);
+            }else if (diamondDrop > 0 && Config.SERVER.isDiamondDrop.get()){
+
+            }else {
+                itemEntity.setItem(e);
+                world.addFreshEntity(itemEntity);
+            }
         });
+
         int expValue = state.getExpDrop(world, pos, fortune, silkTouch) * count;
         if (expValue > 0){
             ExperienceOrb exp = new ExperienceOrb(world, pos.getX(), pos.getY(), pos.getZ(), expValue);
@@ -142,6 +148,22 @@ public class EventHelper {
         }
         tool.hurtAndBreak(count, player, e -> e.broadcastBreakEvent(InteractionHand.MAIN_HAND));
     }
+
+    /**
+     * 对掉落物列表分组
+     * @param drops 列表
+     * @return 分组后列表
+     */
+    private static List<ItemStack> getDrops(List<ItemStack> drops){
+        List<ItemStack> result = new ArrayList<>();
+        Map<Item, List<ItemStack>> listMap = drops.stream().collect(Collectors.groupingBy(ItemStack::getItem));
+        listMap.forEach((k, v) -> {
+            int size = v.size();
+            result.add(new ItemStack(k, size));
+        });
+        return result;
+    }
+
 
     /**
      * 返回当前坐标的周围一圈坐标

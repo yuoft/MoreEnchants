@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "yuoenchants:overworld_iron",
+    "yuoenchants:deep_overworld_iron",
+    "yuoenchants:overworld_gold",
+    "yuoenchants:deep_overworld_gold",
+    "yuoenchants:nether_iron",
+    "yuoenchants:nether_gold"
+  ]
+}

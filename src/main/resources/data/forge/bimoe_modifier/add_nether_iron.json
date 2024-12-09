@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_nether",
-  "features": "yuoenchants:nether_iron_place",
-  "step": "underground_ores"
-}

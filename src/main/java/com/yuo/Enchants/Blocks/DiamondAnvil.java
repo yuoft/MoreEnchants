@@ -1,6 +1,6 @@
 package com.yuo.Enchants.Blocks;
 
-import com.yuo.Enchants.Item.YEItems;
+import com.yuo.Enchants.Items.YEItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.BaseComponent;
