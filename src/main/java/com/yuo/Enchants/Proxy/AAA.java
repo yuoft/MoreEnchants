@@ -11,6 +11,5 @@ public class AAA {
     public static final DeferredRegister<EntityType<?>> TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, YuoEnchants.MOD_ID);
 
     public static final RegistryObject<EntityType<ColorBolt>> COLOR_LIGHT_BOLT = TYPES.register("color_light_bolt",
-            () -> EntityType.Builder.<ColorBolt>of(ColorBolt::new, MobCategory.CREATURE).noSave().setShouldReceiveVelocityUpdates(true)
-                    .setTrackingRange(100).setUpdateInterval(3).fireImmune().sized(0.6f, 1.8f).build("color_light_bolt"));
+            () -> EntityType.Builder.<ColorBolt>of(ColorBolt::new, MobCategory.MISC).noSave().sized(0.0F, 0.0F).clientTrackingRange(16).updateInterval(Integer.MAX_VALUE).build("color_light_bolt"));
 }

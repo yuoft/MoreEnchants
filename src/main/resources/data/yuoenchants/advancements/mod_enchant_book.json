@@ -18,7 +18,7 @@
       "conditions": { 
 		"items":[
 			{
-				"item": "yuoenchants:mod_enchant_book"
+				"items": ["yuoenchants:mod_enchant_book"]
 			}
 		]
       }

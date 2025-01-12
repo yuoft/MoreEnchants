@@ -18,7 +18,7 @@
       "conditions": { 
 		"items":[
 			{
-				"item": "yuoenchants:old_book"
+				"items": ["yuoenchants:old_book"]
 			}
 		]
       }
