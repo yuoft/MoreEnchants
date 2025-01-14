@@ -252,6 +252,7 @@ public class DiamondAnvilMenu extends ItemCombinerMenu {
             }
 
             this.resultSlots.setItem(0, itemstack1);
+            this.slotsChanged(resultSlots);
             this.broadcastChanges();
         }
     }

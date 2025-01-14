@@ -38,6 +38,6 @@ public class YuoEnchants
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-//        event.enqueueWork(NetWorkHandler::registerMessage); //创建数据包
+        event.enqueueWork(NetWorkHandler::registerMessage); //创建数据包
     }
 }

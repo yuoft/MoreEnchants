@@ -2,12 +2,12 @@ package com.yuo.Enchants.Blocks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yuo.Enchants.NetWorkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.game.ServerboundRenameItemPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -84,8 +84,7 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
             if (this.minecraft.player != null)
                 this.minecraft.player.closeContainer();
         }
-        return false;
-//        return this.name.keyPressed(keyCode, scanCode, modifiers) || this.name.canConsumeInput() || super.keyPressed(keyCode, scanCode, modifiers);
+        return this.name.keyPressed(keyCode, scanCode, modifiers) || this.name.canConsumeInput() || super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private void onNameChanged(String name) {
@@ -97,8 +96,7 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
             }
 
             this.menu.setItemName(s);
-            if (this.minecraft != null && this.minecraft.player != null)
-                this.minecraft.player.connection.send(new ServerboundRenameItemPacket(s));
+            NetWorkHandler.INSTANCE.sendToServer(new ServerAnvilRenamePacket(s));
         }
     }
 
@@ -142,7 +140,7 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
     public void slotChanged(AbstractContainerMenu pContainerToSend, int pSlotInd, ItemStack pStack) {
         if (pSlotInd == 0) {
             this.name.setValue(pStack.isEmpty() ? "" : pStack.getHoverName().getString());
-//            this.name.setEditable(!pStack.isEmpty());
+            this.name.setEditable(!pStack.isEmpty());
             this.setFocused(this.name);
         }
 
