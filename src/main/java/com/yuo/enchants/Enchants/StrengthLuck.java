@@ -50,7 +50,7 @@ public class StrengthLuck extends ModEnchantBase {
         if (block instanceof OreBlock || block instanceof CropsBlock || block instanceof LeavesBlock || block instanceof SweetBerryBushBlock
                 || block == Blocks.GLOWSTONE || block == Blocks.MELON || block == Blocks.SNOW || block == Blocks.CLAY || block == Blocks.BOOKSHELF) {
             List<ItemStack> drops = Block.getDrops(state, (ServerWorld) world, pos, null);
-            if (drops.size() > 0)
+            if (!drops.isEmpty())
                 drops.forEach(drop -> {
                     int max = strengthLuck * 2 - 1;
                     if (world.rand.nextGaussian() < 0.05f)
@@ -63,7 +63,7 @@ public class StrengthLuck extends ModEnchantBase {
         } else {
             if (world.rand.nextDouble() < 0.05 + 0.05 * strengthLuck) {
                 List<ItemStack> drops = Block.getDrops(state, (ServerWorld) world, pos, null);
-                if (drops.size() > 0)
+                if (!drops.isEmpty())
                     drops.forEach(drop -> {
                         drop.setCount(drop.getCount() * 2);
                         world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));

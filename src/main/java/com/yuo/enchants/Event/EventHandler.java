@@ -28,6 +28,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -168,6 +169,7 @@ public class EventHandler {
         int unLuck = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.unLuck.get(), tool);
         if (strengthLuck > 0 && Config.SERVER.isStrengthLuck.get()) {
             StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, player);
+            event.setCanceled(true);
             return;
         }
         if (unLuck > 0 && Config.SERVER.isUnLuck.get() &&  RANDOM.nextDouble() < unLuck * 0.2){
@@ -183,9 +185,10 @@ public class EventHandler {
         }
         int rangBreak = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.rangBreak.get(), tool);
 
-        if (CommonProxy.isIsKeyC() && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
+        if (player.isSneaking() && rangBreak > 0  && Config.SERVER.isRangBreak.get()) {
             EventHelper.breakBlocks(tool, world, pos, state, player, Math.min(rangBreak, 5)); //最大等级5
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            event.setCanceled(true);
             return;
         }
         int melting = EnchantmentHelper.getEnchantmentLevel(EnchantRegistry.melting.get(), tool); //熔炼

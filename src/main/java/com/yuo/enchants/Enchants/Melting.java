@@ -69,12 +69,13 @@ public class Melting extends ModEnchantBase {
     public static ItemStack getMeltingItem(World world,ItemStack itemStack, ItemStack tool){
         ItemStack dropStack = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(itemStack), world)
                 .map(FurnaceRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
-                .map(e -> ItemHandlerHelper.copyStackWithSize(e, tool.getCount() * e.getCount()))
+                .map(e -> ItemHandlerHelper.copyStackWithSize(e, itemStack.getCount()))
                 .orElse(itemStack);
         int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
+//        dropStack.setCount(dropStack.getCount() * itemStack.getCount());
         if (fortune > 0){ //时运影响产物数量
             Random random = new Random();
-            int count = 1;
+            int count = dropStack.getCount();
             if (random.nextDouble() < 0.3 + fortune * 0.1)
                 count += MathHelper.nextInt(random, 0, fortune + 1);
             if (random.nextDouble() < 0.1 + fortune * 0.05){ //触发暴击

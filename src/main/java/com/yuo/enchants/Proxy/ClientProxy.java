@@ -21,7 +21,6 @@ public class ClientProxy implements IProxy {
         event.enqueueWork(() -> {
             ScreenManager.registerFactory(ContainerRegister.diamondAnvil.get(), DiamondAnvilScreen::new);
         });
-        ClientRegistry.registerKeyBinding(KeyBindingEvent.ENCHANT_KEY_C); //快捷键注册
     }
 
 
