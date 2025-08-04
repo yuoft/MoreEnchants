@@ -1,10 +1,11 @@
 package com.yuo.Enchants.Enchants;
 
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class Health extends ModEnchantBase {
 
-    public Health(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public Health(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

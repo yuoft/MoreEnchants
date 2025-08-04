@@ -69,7 +69,7 @@ public class ModEnchantBook extends Item {
                     if (Screen.hasShiftDown()){
                         ModEnchantBase base = (ModEnchantBase) enchantment; //适用类型
                         pTooltipComponents.add(Component.translatable("enchantType.yuoenchants.type")
-                                .append(Component.translatable("enchantType.yuoenchants." + base.getTypeName())));
+                                .append(Component.translatable("enchantType.yuoenchants." + base.category.name())));
                         //附魔描述
                         pTooltipComponents.add(Component.translatable("enchantInfo." + compoundnbt.getString("id")));
                     } else pTooltipComponents.add(Component.translatable("enchantInfo.yuoenchants:info"));

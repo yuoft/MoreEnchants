@@ -15,13 +15,14 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import java.util.Random;
 
 public class BeHead extends ModEnchantBase {
 
-    public BeHead(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public BeHead(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

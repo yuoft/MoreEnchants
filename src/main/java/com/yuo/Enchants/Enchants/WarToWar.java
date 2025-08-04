@@ -2,12 +2,13 @@ package com.yuo.Enchants.Enchants;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 import java.util.Random;
 
 public class WarToWar extends ModEnchantBase {
 
-    public WarToWar(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public WarToWar(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

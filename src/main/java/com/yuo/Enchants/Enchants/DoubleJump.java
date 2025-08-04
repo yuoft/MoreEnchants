@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -14,7 +15,7 @@ public class DoubleJump extends ModEnchantBase {
     //玩家跳跃计数
     public static int num = 0;
 
-    public DoubleJump(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public DoubleJump(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

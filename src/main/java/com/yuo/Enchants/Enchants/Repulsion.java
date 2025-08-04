@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class Repulsion extends ModEnchantBase {
 
-    public Repulsion(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public Repulsion(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

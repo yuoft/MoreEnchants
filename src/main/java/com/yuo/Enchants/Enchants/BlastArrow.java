@@ -5,12 +5,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 
 public class BlastArrow extends ModEnchantBase {
 
-    public BlastArrow(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public BlastArrow(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
@@ -20,14 +21,9 @@ public class BlastArrow extends ModEnchantBase {
     }
 
     @Override
-    public boolean canEnchant(ItemStack stack) {
-        return type == EnchantType.BOW;
-    }
-
-    @Override
     protected boolean checkCompatibility(Enchantment ench) {
         //火矢
-        return this != ench && ench != Enchantments.FIRE_ASPECT && ench != YEEnchants.superSharp.get();
+        return this != ench && ench != Enchantments.FIRE_ASPECT;
     }
 
 

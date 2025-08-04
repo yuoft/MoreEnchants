@@ -5,11 +5,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 
 public class HealthToSacrifice extends ModEnchantBase {
 
-    protected HealthToSacrifice(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    protected HealthToSacrifice(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

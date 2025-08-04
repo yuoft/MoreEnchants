@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class FireThorns extends ModEnchantBase{
-    protected FireThorns(Rarity rarityIn, EnchantType type, EquipmentSlot[] slots) {
+    protected FireThorns(Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
         super(rarityIn, type, slots);
     }
 

@@ -3,11 +3,12 @@ package com.yuo.Enchants.Enchants;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class LastStand extends ModEnchantBase {
 
-    public LastStand(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public LastStand(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

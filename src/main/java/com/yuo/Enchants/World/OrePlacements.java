@@ -62,6 +62,6 @@ public class OrePlacements {
     }
 
     public static ResourceKey<PlacedFeature> createKey(String pKey) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(YuoEnchants.MOD_ID,pKey));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID,pKey));
     }
 }

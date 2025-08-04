@@ -5,12 +5,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 public class FireImmune extends ModEnchantBase {
 
-    public FireImmune(Enchantment.Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public FireImmune(Enchantment.Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
     //是宝藏吗？

@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
@@ -13,7 +14,7 @@ import java.util.Random;
 
 public class BadLuckOfTheSea extends ModEnchantBase {
 
-    public BadLuckOfTheSea(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public BadLuckOfTheSea(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

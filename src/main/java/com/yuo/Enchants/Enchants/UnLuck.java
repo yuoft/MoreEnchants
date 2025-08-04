@@ -2,10 +2,11 @@ package com.yuo.Enchants.Enchants;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class UnLuck extends ModEnchantBase{
-    protected UnLuck(Rarity rarityIn, EnchantType type, EquipmentSlot[] slots) {
+    protected UnLuck(Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
         super(rarityIn, type, slots);
     }
 

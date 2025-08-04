@@ -1,9 +1,10 @@
 package com.yuo.Enchants.Enchants;
 
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class Instability extends ModEnchantBase{
-    protected Instability(Rarity rarityIn, EnchantType type, EquipmentSlot[] slots) {
+    protected Instability(Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
         super(rarityIn, type, slots);
     }
 

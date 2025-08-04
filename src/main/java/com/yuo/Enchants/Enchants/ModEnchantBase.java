@@ -9,16 +9,23 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class ModEnchantBase extends Enchantment {
-    protected final EnchantType type;
+    public static final EnchantmentCategory BOW_ALL = EnchantmentCategory.create("bow_all", e -> e instanceof ProjectileWeaponItem);
+    public static final EnchantmentCategory TOOLS = EnchantmentCategory.create("tools", e -> e instanceof DiggerItem || e instanceof FishingRodItem);
+    public static final EnchantmentCategory HAND_RANGE = EnchantmentCategory.create("hand_range", e -> e instanceof TieredItem || e instanceof TridentItem);
+    public static final EnchantmentCategory FARMER = EnchantmentCategory.create("farmer", e -> e instanceof HoeItem);
+    public static final EnchantmentCategory SHIELD = EnchantmentCategory.create("shield", e -> e instanceof ShieldItem);
+    public static final EnchantmentCategory PICKAXE = EnchantmentCategory.create("pickaxe", e -> e instanceof PickaxeItem);
+    public static final EnchantmentCategory HAND = EnchantmentCategory.create("hand", e -> e instanceof TieredItem || e instanceof FishingRodItem || e instanceof TridentItem || e instanceof ProjectileWeaponItem || e instanceof ShieldItem);
+    protected final EnchantmentCategory type;
 
-    protected ModEnchantBase(Enchantment.Rarity rarityIn, EnchantType type, EquipmentSlot[] slots) {
-        super(rarityIn, null, slots);
+    protected ModEnchantBase(Enchantment.Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
+        super(rarityIn, type, slots);
         this.type = type;
     }
 
-    public String getTypeName() {
-        return type.getName();
-    }
+//    public String getTypeName() {
+//        return type.getName();
+//    }
 
     @Override
     public int getMaxCost(int pLevel) {
@@ -65,211 +72,4 @@ public class ModEnchantBase extends Enchantment {
         return mutableComponent;
     }
 
-    public enum EnchantType {
-        ARMOR{ //盔甲
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem;
-            }
-            @Override
-            public String getName() {
-                return "armor";
-            }
-        },
-        ARMOR_HEAD{ //头盔
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.HEAD;
-            }
-            @Override
-            public String getName() {
-                return "armor_head";
-            }
-        },
-        ARMOR_CHEST{ // 胸甲
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.CHEST;
-            }
-            @Override
-            public String getName() {
-                return "armor_chest";
-            }
-        },
-        ARMOR_LEGS{ // 护腿
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.LEGS;
-            }
-            @Override
-            public String getName() {
-                return "armor_legs";
-            }
-        },
-        ARMOR_FEET{ // 鞋子
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.FEET;
-            }
-            @Override
-            public String getName() {
-                return "armor_feet";
-            }
-        },
-        WEAPON { //武器 剑 斧
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof SwordItem || itemIn instanceof AxeItem;
-            }
-            @Override
-            public String getName() {
-                return "weapon";
-            }
-        },
-        BREAKABLE { //有耐久的
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn.canBeDepleted();
-            }
-            @Override
-            public String getName() {
-                return "breakable";
-            }
-        },
-        TOOLS { //工具
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof DiggerItem || itemIn instanceof FishingRodItem;
-            }
-            @Override
-            public String getName() {
-                return "tools";
-            }
-        },
-        HAND { //在手上使用
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof DiggerItem || itemIn instanceof FishingRodItem || itemIn instanceof TridentItem || itemIn instanceof ProjectileWeaponItem
-                        || itemIn instanceof ShieldItem;
-            }
-            @Override
-            public String getName() {
-                return "hand";
-            }
-        },
-        FISHING_ROD { //钓鱼竿
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof FishingRodItem;
-            }
-            @Override
-            public String getName() {
-                return "fishing_rod";
-            }
-        },
-        HAND_RANGE { // 有使用距离
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof DiggerItem || itemIn instanceof SwordItem || itemIn instanceof TridentItem;
-            }
-            @Override
-            public String getName() {
-                return "hand_range";
-            }
-        },
-        DIGGER { //工具 镐 斧 铲 锄
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof DiggerItem;
-            }
-            @Override
-            public String getName() {
-                return "digger";
-            }
-        },
-        PICKAXE { //镐
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof PickaxeItem;
-            }
-            @Override
-            public String getName() {
-                return "pickaxe";
-            }
-        },
-        FARMER { //锄
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof HoeItem;
-            }
-            @Override
-            public String getName() {
-                return "farmer";
-            }
-        },
-        SHIELD { //盾牌
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ShieldItem;
-            }
-            @Override
-            public String getName() {
-                return "shield";
-            }
-        },
-        BOW_ALL { // 弓 弩
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ProjectileWeaponItem;
-            }
-            @Override
-            public String getName() {
-                return "bow_all";
-            }
-        },
-        BOW { // 弓
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof BowItem;
-            }
-            @Override
-            public String getName() {
-                return "bow";
-            }
-        },
-        CROSSBOW { // 弩
-            @Override
-            public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof CrossbowItem;
-            }
-
-            @Override
-            public String getName() {
-                return "crossbow";
-            }
-        };
-        private java.util.function.Predicate<Item> delegate;
-
-        private String name;
-        EnchantType() {
-        }
-        private EnchantType(java.util.function.Predicate<Item> delegate) {
-            this.delegate = delegate;
-        }
-
-        public static EnchantmentCategory create(String name, java.util.function.Predicate<Item> delegate) {
-            throw new IllegalStateException("Enum not extended");
-        }
-
-        /**
-         * 此附魔能否用于此物品
-         */
-        public boolean canEnchant(Item itemIn) {
-            return this.delegate != null && this.delegate.test(itemIn);
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
 }

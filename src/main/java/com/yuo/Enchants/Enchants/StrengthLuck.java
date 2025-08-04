@@ -7,6 +7,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public class StrengthLuck extends ModEnchantBase {
-    protected StrengthLuck(Rarity rarityIn, EnchantType type, EquipmentSlot[] slots) {
+    protected StrengthLuck(Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
         super(rarityIn, type, slots);
     }
 

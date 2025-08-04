@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class Magnet extends ModEnchantBase {
 
-    public Magnet(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public Magnet(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 

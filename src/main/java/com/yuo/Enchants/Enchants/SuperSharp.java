@@ -8,13 +8,14 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SuperSharp extends ModEnchantBase {
 
     private final int enchantType;
 
-    public SuperSharp(Rarity rarityIn, int type, EnchantType typeIn, EquipmentSlot[] slots) {
+    public SuperSharp(Rarity rarityIn, int type, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
         this.enchantType = type;
     }

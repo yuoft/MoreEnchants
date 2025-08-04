@@ -96,7 +96,6 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int pX, int pY) {
-        RenderSystem.disableBlend();
         super.renderLabels(graphics, pX, pY);
         int i = this.menu.getCost();
         if (i > 0) {
@@ -128,6 +127,11 @@ public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
     @Override
     public void renderFg(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
         this.name.render(graphics, pMouseX, pMouseY, pPartialTick);
+    }
+
+    protected void renderBg(GuiGraphics graphics, float v, int i, int i1) {
+        super.renderBg(graphics, v, i, i1);
+        graphics.blit(ANVIL_RESOURCE, this.leftPos + 59, this.topPos + 20, 0, this.imageHeight + ((this.menu).getSlot(0).hasItem() ? 0 : 16), 110, 16);
     }
 
     @Override

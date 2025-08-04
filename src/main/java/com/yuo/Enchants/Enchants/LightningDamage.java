@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
@@ -12,7 +13,7 @@ import java.util.Random;
 
 public class LightningDamage extends ModEnchantBase {
 
-    public LightningDamage(Rarity rarityIn, EnchantType typeIn, EquipmentSlot[] slots) {
+    public LightningDamage(Rarity rarityIn, EnchantmentCategory typeIn, EquipmentSlot[] slots) {
         super(rarityIn, typeIn, slots);
     }
 
