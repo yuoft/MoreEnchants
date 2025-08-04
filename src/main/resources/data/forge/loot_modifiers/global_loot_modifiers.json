@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "entries": [
+    "yuoenchants:old_book_from_bastion_treasure",
+    "yuoenchants:old_book_from_buried_treasure",
+    "yuoenchants:old_book_from_desert_pyramid",
+    "yuoenchants:old_book_from_end_city_treasure",
+    "yuoenchants:old_book_from_igloo_chest",
+    "yuoenchants:old_book_from_jungle_temple",
+    "yuoenchants:old_book_from_stronghold_library",
+    "yuoenchants:old_book_from_woodland_mansion",
+    "yuoenchants:old_book_from_fish_treasure",
+    "yuoenchants:super_book_from_abandoned_mineshaft",
+    "yuoenchants:super_book_from_bastion_treasure",
+    "yuoenchants:super_book_from_desert_pyramid",
+    "yuoenchants:super_book_from_nether_bridge",
+    "yuoenchants:super_book_from_end_city_treasure",
+    "yuoenchants:super_book_from_stronghold_library",
+    "yuoenchants:super_book_from_fish_treasure"
+  ]
+}

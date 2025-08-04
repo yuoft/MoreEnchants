@@ -1,0 +1,10 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/abandoned_mineshaft"
+    }
+  ],
+  "addition": "yuoenchants:mod_enchant_book",
+  "type": "yuoenchants:super_book_from_abandoned_mineshaft"
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "yuoenchants:item/remove_cures_pearl"
+  }
+}

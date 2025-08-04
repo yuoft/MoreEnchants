@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "yxy",
+    "xzx",
+    "yxy"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:gold_block"
+    },
+    "y": {
+      "item": "minecraft:lapis_block"
+    },
+    "z": {
+      "item": "minecraft:enchanted_book"
+    }
+  },
+  "result": {
+    "item": "yuoenchants:broken_magic_pearl"
+  }
+}

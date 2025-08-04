@@ -1,0 +1,20 @@
+{
+  "display": { 
+    "icon": { 
+      "item": "yuoenchants:mod_enchant_book"
+    },
+    "title": {
+		"translate": "advancements.yuoenchants.enchants.title"
+	},
+    "description": {
+		"translate": "advancements.yuoenchants.enchants.desc"
+	},
+    "frame": "task",
+    "background": "minecraft:textures/block/stone.png"
+  },
+  "criteria": { 
+    "enchants": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

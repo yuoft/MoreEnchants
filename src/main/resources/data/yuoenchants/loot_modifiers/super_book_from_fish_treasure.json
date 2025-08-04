@@ -1,0 +1,10 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:gameplay/fishing/treasure"
+    }
+  ],
+  "addition": "yuoenchants:mod_enchant_book",
+  "type": "yuoenchants:super_book_from_fish_treasure"
+}
