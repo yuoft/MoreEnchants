@@ -1,7 +1,6 @@
 package com.yuo.Enchants.Enchants;
 
 import com.yuo.Enchants.Config;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,16 +29,16 @@ public class FireThorns extends ModEnchantBase{
 
     @Override
     protected boolean checkCompatibility(Enchantment ench) {
-        return this != ench && ench != Enchantments.THORNS && ench != EnchantRegistry.superThorns.get() &&
-                ench != EnchantRegistry.thorns.get();
+        return this != ench && ench != Enchantments.THORNS && ench != YEEnchants.superThorns.get() &&
+                ench != YEEnchants.thorns.get();
     }
 
     @Override
     public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-        Random random = user.getRandom();
-        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(EnchantRegistry.fireThorns.get(), user);
+        Random random = new Random();
+        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(YEEnchants.fireThorns.get(), user);
         if (shouldHit(level, random) && Config.SERVER.isFireThorns.get()) {
-            attacker.hurt(DamageSource.thorns(user), getDamage(level, random));
+            attacker.hurt(user.damageSources().thorns(user), getDamage(level, random));
             attacker.setSecondsOnFire(level);
             if (entry != null) {
                 entry.getValue().hurtAndBreak(2, user, e -> e.broadcastBreakEvent(entry.getKey()));

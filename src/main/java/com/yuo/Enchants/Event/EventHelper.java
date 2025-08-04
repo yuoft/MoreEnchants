@@ -1,12 +1,12 @@
 package com.yuo.Enchants.Event;
 
 import com.yuo.Enchants.Config;
-import com.yuo.Enchants.Enchants.EnchantRegistry;
+import com.yuo.Enchants.Enchants.YEEnchants;
 import com.yuo.Enchants.Enchants.Melting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,7 +46,7 @@ public class EventHelper {
      * @param instability 附魔等级
      */
     public static void dropItem(Player player, int instability) {
-        if (instability > 0 && !player.level.isClientSide && !player.isCreative() && Config.SERVER.isInstability.get()){ //挖掘时
+        if (instability > 0 && !player.level().isClientSide && !player.isCreative() && Config.SERVER.isInstability.get()){ //挖掘时
             MobEffectInstance instance = player.getEffect(MobEffects.LUCK);
             int luck = -1;
             if (instance != null)
@@ -66,7 +66,7 @@ public class EventHelper {
      * @param pos 坐标
      * @param event 事件
      */
-    public static void meltingAchieve(Level world, Player player, BlockPos pos, BlockEvent.BreakEvent event){
+    public static void meltingAchieve(Level world, Player player, BlockPos pos, BreakEvent event){
         if (!world.isClientSide){
             ServerLevel serverWorld = (ServerLevel) world;
             for (int i = 0; i < 10; i++){
@@ -111,7 +111,7 @@ public class EventHelper {
         for (BlockPos blockPos : points){
             BlockState blockState = world.getBlockState(blockPos);
             if (player.getFoodData().getFoodLevel() <= 2){
-                player.sendMessage(new TranslatableComponent("yuoenchants.message.noFood"), UUID.randomUUID());
+                player.sendSystemMessage(Component.translatable("yuoenchants.message.noFood"));
                 break;
             }
             if (!state.getBlock().equals(blockState.getBlock())) continue; //相同方块才继续
@@ -124,8 +124,8 @@ public class EventHelper {
         if (drops.isEmpty()) return;
         int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
         int silkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
-        int melting = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.melting.get(), tool);
-        int diamondDrop = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.diamondDrop.get(), tool);
+        int melting = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.melting.get(), tool);
+        int diamondDrop = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.diamondDrop.get(), tool);
         List<ItemStack> stackList = getDrops(drops);
         stackList.forEach(e -> {
             ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), ItemStack.EMPTY);
@@ -141,7 +141,7 @@ public class EventHelper {
             }
         });
 
-        int expValue = state.getExpDrop(world, pos, fortune, silkTouch) * count;
+        int expValue = state.getExpDrop(world, player.getRandom(), pos, fortune, silkTouch) * count;
         if (expValue > 0){
             ExperienceOrb exp = new ExperienceOrb(world, pos.getX(), pos.getY(), pos.getZ(), expValue);
             world.addFreshEntity(exp);
@@ -242,7 +242,7 @@ public class EventHelper {
      * @param player 玩家
      */
     public static void changeMaxHealth(Player player){
-        int health = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.health.get(), player.getItemBySlot(EquipmentSlot.CHEST));
+        int health = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.health.get(), player.getItemBySlot(EquipmentSlot.CHEST));
         AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealth != null  && Config.SERVER.isHealth.get()){
             if (health <= 0){
@@ -254,8 +254,8 @@ public class EventHelper {
     }
 
     public static void changeHandRange(Player player){
-        int handRange = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.handRange.get(), player.getMainHandItem());
-        AttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+        int handRange = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.handRange.get(), player.getMainHandItem());
+        AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
         if (reachDistance != null  && Config.SERVER.isHandRange.get()){
             if (handRange <= 0){
                 RemoveModifier(reachDistance, ATTR_TYPE.REACH_DISTANCE, handRange, attrHandRange);
@@ -266,7 +266,7 @@ public class EventHelper {
     }
 
     public static void changeSwimSpeed(Player player){
-        int deepFear = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.deepFear.get(), player.getItemBySlot(EquipmentSlot.FEET));
+        int deepFear = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.deepFear.get(), player.getItemBySlot(EquipmentSlot.FEET));
         AttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
         if (swimSpeed != null && Config.SERVER.isDeepFear.get()){
             if (deepFear <= 0){

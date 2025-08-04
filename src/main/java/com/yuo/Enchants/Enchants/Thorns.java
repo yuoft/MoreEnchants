@@ -1,6 +1,5 @@
 package com.yuo.Enchants.Enchants;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -31,15 +30,15 @@ public class Thorns extends ModEnchantBase {
 
     @Override
     protected boolean checkCompatibility(Enchantment ench) {
-        return this != ench && ench != Enchantments.THORNS && ench != EnchantRegistry.superThorns.get() &&
-                ench != EnchantRegistry.fireThorns.get(); //荆棘
+        return this != ench && ench != Enchantments.THORNS && ench != YEEnchants.superThorns.get() &&
+                ench != YEEnchants.fireThorns.get(); //荆棘
     }
 
     //真荆棘
     public static void thorns(Player player, ItemStack stackChest, int thorns){
-        long dayTime = player.level.getDayTime();
+        long dayTime = player.level().getDayTime();
         if (dayTime % 40 == 0){
-            player.hurt(DamageSource.GENERIC, thorns / 2.0f);
+            player.hurt(player.damageSources().generic(), thorns / 2.0f);
             stackChest.hurtAndBreak(2, player, e -> e.broadcastBreakEvent(EquipmentSlot.CHEST));
         }
     }

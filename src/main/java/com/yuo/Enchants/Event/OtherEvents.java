@@ -3,11 +3,11 @@ package com.yuo.Enchants.Event;
 import com.yuo.Enchants.Event.Loot.LootModifierHelper;
 import com.yuo.Enchants.Items.OldBook;
 import com.yuo.Enchants.Items.YEItems;
-import com.yuo.Enchants.World.ModOreGen;
 import com.yuo.Enchants.YuoEnchants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -31,18 +30,12 @@ import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * 处理其它功能事件
  */
 @Mod.EventBusSubscriber(modid = YuoEnchants.MOD_ID)
 public class OtherEvents {
-
-    @SubscribeEvent
-    public static void worldGen(BiomeLoadingEvent event) {
-        ModOreGen.genOres(event);
-    }
 
     //燃烧时间 竹炭
     @SubscribeEvent
@@ -164,7 +157,7 @@ public class OtherEvents {
             this.stack = stack;
         }
 
-        public MerchantOffer getOffer(Entity trader, Random rand) {
+        public MerchantOffer getOffer(Entity trader, RandomSource rand) {
             return new MerchantOffer(new ItemStack(Items.EMERALD, 64), new ItemStack(Items.BOOK), this.stack, 2, this.xpValue, 0.1F);
         }
     }
@@ -198,7 +191,7 @@ public class OtherEvents {
         }
 
         @Nullable
-        public MerchantOffer getOffer(Entity trader, Random rand) {
+        public MerchantOffer getOffer(Entity trader, RandomSource rand) {
             return new MerchantOffer(new ItemStack(buyingItem1.getItem(), this.buyingItemCount1), new ItemStack(this.buyingItem.getItem(), this.buyingItemCount), new ItemStack(this.sellingItem.getItem(), this.sellingItemCount), this.maxUses, this.xpValue, this.priceMultiplier);
         }
     }

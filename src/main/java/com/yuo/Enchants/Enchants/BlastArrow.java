@@ -3,9 +3,10 @@ package com.yuo.Enchants.Enchants;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 
 public class BlastArrow extends ModEnchantBase {
 
@@ -19,16 +20,21 @@ public class BlastArrow extends ModEnchantBase {
     }
 
     @Override
+    public boolean canEnchant(ItemStack stack) {
+        return type == EnchantType.BOW;
+    }
+
+    @Override
     protected boolean checkCompatibility(Enchantment ench) {
         //火矢
-        return this != ench && ench != Enchantments.FIRE_ASPECT;
+        return this != ench && ench != Enchantments.FIRE_ASPECT && ench != YEEnchants.superSharp.get();
     }
 
 
     //产生爆炸
     public static void boom(AbstractArrow arrow, int blastArrow){
         //产生爆炸
-        arrow.level.explode(arrow, arrow.getX(), arrow.getY(), arrow.getZ(), blastArrow * 4.0f, false, Explosion.BlockInteraction.NONE);
+        arrow.level().explode(arrow, arrow.getX(), arrow.getY(), arrow.getZ(), blastArrow * 4.0f, false, ExplosionInteraction.NONE);
         arrow.remove(Entity.RemovalReason.DISCARDED); //删除实体
     }
 }

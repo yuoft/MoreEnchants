@@ -62,7 +62,7 @@ public class BeHead extends ModEnchantBase {
                 skull = new ItemStack(Items.DRAGON_HEAD, 1);
             }
         }
-        return new ItemEntity(living.level, living.getX(), living.getY(), living.getZ(), skull);
+        return new ItemEntity(living.level(), living.getX(), living.getY(), living.getZ(), skull);
     }
 
     //暴击增加伤害
@@ -70,11 +70,11 @@ public class BeHead extends ModEnchantBase {
         int i = new Random().nextInt(100);
         if (i < 5 * beHead){ // 暴击概率 5% * 等级
             event.setAmount(event.getAmount() * 5); //暴击伤害*5
-            player.level.playSound(null, player.getOnPos(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 1.0F, 1.0F);
+            player.level().playSound(null, player.getOnPos(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 1.0F, 1.0F);
             for (int j = 0; j < beHead * 2; j++) {
-                living.level.addParticle(ParticleTypes.CRIT,
-                        living.getX() + living.level.random.nextDouble(), living.getY() + 1.5D,
-                        living.getZ() + living.level.random.nextDouble(), 1, 0, 0);
+                living.level().addParticle(ParticleTypes.CRIT,
+                        living.getX() + living.level().random.nextDouble(), living.getY() + 1.5D,
+                        living.getZ() + living.level().random.nextDouble(), 1, 0, 0);
             }
         }
     }

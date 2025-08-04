@@ -23,7 +23,7 @@ public class WaterWalk extends ModEnchantBase {
 
     @Override
     protected boolean checkCompatibility(Enchantment ench) {
-        return this != ench && ench != Enchantments.FROST_WALKER && ench != EnchantRegistry.lavaWalker.get();
+        return this != ench && ench != Enchantments.FROST_WALKER && ench != YEEnchants.lavaWalker.get();
     }
 
     /**
@@ -31,12 +31,12 @@ public class WaterWalk extends ModEnchantBase {
      * @param player 玩家
      */
     public static void walk(Player player){
-        waterWalk(player, player.level);
+        waterWalk(player, player.level());
     }
 
     public static void waterWalk(Player player, Level worldIn){
         Entity riding = player.getRootVehicle();
-        BlockPos pos = new BlockPos(riding.getX(), Math.ceil(riding.getY()), riding.getZ());
+        BlockPos pos = new BlockPos(riding.getBlockX(), riding.getBlockY(), riding.getBlockZ());
         FluidState fluidState = worldIn.getFluidState(pos.below());
         Vec3 motion = riding.getDeltaMovement();
         if (!fluidState.isEmpty() && fluidState.isSource() && !riding.isCrouching()) {

@@ -1,9 +1,10 @@
 package com.yuo.Enchants.Event.Loot;
 
-import com.yuo.Enchants.Enchants.EnchantRegistry;
+import com.yuo.Enchants.Enchants.YEEnchants;
 import com.yuo.Enchants.Enchants.ModEnchantBase;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,22 +19,22 @@ import java.util.Map;
 import java.util.Random;
 
 public class LootModifierHelper {
-    public static final Random RANDOM = new Random();
+    public static final RandomSource RANDOM = RandomSource.create();
     //初始化模组附魔列表
     public static final ArrayList<Enchantment> MOD_ENCHANTS = new ArrayList<>();
     //初始化原版附魔列表
     private static final ArrayList<Enchantment> ENCHANTS = new ArrayList<>();
 
     static {
-        for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            if (enchantment.getMaxLevel() != 1 && enchantment.category != null) {
+        for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
+            if (enchantment.getMaxLevel() != 1) {
                 ENCHANTS.add(enchantment);
             }
         }
     }
 
     static {
-        for (RegistryObject<Enchantment> entry : EnchantRegistry.ENCHANTMENTS.getEntries()) {
+        for (RegistryObject<Enchantment> entry : YEEnchants.ENCHANTMENTS.getEntries()) {
             Enchantment enchantment = entry.get();
             if (enchantment instanceof ModEnchantBase) {
                 MOD_ENCHANTS.add(enchantment);
@@ -77,7 +78,7 @@ public class LootModifierHelper {
             }
         }
         if (stack.getEnchantmentTags().isEmpty())
-            EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(EnchantRegistry.warToWar.get(), Mth.nextInt(RANDOM, 1, 5)));
+            EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(YEEnchants.warToWar.get(), Mth.nextInt(RANDOM, 1, 5)));
         return stack;
     }
 

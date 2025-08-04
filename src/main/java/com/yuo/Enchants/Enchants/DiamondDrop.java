@@ -1,6 +1,7 @@
 package com.yuo.Enchants.Enchants;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,7 @@ public class DiamondDrop extends ModEnchantBase{
 
     //钻石掉落
     public static void diamondDrop(int level, Level world, int fortune, BlockPos pos){
-        Random rand = world.random;
+        RandomSource rand = world.random;
         if (rand.nextDouble() < 0.05 + level * 0.05 + fortune * 0.1){
             ItemStack diamond = new ItemStack(Items.DIAMOND, world.random.nextInt(1, level + 3));
             world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), diamond));

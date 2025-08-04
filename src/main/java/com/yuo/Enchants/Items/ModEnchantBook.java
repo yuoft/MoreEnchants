@@ -1,21 +1,20 @@
 package com.yuo.Enchants.Items;
 
 import com.google.common.collect.Maps;
-import com.yuo.Enchants.Enchants.EnchantRegistry;
 import com.yuo.Enchants.Enchants.ModEnchantBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 import java.util.Map;
@@ -88,6 +87,15 @@ public class ModEnchantBook extends Item {
 //            return compoundtag != null ? compoundtag.getList("StoredEnchantments", 10) : new ListTag();
         }
         return EnchantedBookItem.getEnchantments(stack);
+    }
+
+    public static Map<Enchantment, Integer> getEnchantments(ItemStack stack, boolean f) {
+        if (stack.getItem() == Items.ENCHANTED_BOOK || stack.getItem() == YEItems.modEnchantBook.get()
+                || stack.getItem() == YEItems.oldBook.get()){
+            ListTag tag = stack.getTag().getList(EnchantedBookItem.TAG_STORED_ENCHANTMENTS, 0);
+            return deserializeEnchantments(tag);
+        }
+        return EnchantmentHelper.getEnchantments(stack);
     }
 
     public static Map<Enchantment, Integer> deserializeEnchantments(ListTag serialized) {

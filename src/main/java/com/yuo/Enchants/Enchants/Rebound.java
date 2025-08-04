@@ -41,7 +41,7 @@ public class Rebound extends ModEnchantBase {
         if (immediateSource instanceof LivingEntity) {//击退生命实体
             Rebound.knockbackEntity((LivingEntity) immediateSource, rebound);
             //给予攻击者一定反伤 lv * 15%
-            immediateSource.hurt(DamageSource.playerAttack(player), event.getAmount() * rebound * 0.15f);
+            immediateSource.hurt(player.damageSources().playerAttack(player), event.getAmount() * rebound * 0.15f);
         }
         player.hurtTime = 5 + 3 * rebound; //受击无敌时间
     }

@@ -51,7 +51,7 @@ public class DoubleJump extends ModEnchantBase {
      */
     public static boolean isJumping(Player player) {
         //在地面 飞行 爬梯子
-        if (player.isOnGround() || player.getAbilities().flying || player.onClimbable())
+        if (player.onGround() || player.getAbilities().flying || player.onClimbable())
             return false;
         if (player.getRootVehicle() instanceof Boat || player.isCrouching()) return false;
         return !(player.getOnPos().getY() >= player.yOld) && !player.isInWater() && !player.isInLava();
@@ -65,7 +65,7 @@ public class DoubleJump extends ModEnchantBase {
         player.resetFallDistance();
         player.jumpFromGround();
         for (int i = 0; i < 10; i++) {
-            player.level.addParticle(ParticleTypes.CRIT, player.getX() + player.level.random.nextGaussian(), player.getY(), player.getZ() + player.level.random.nextGaussian(), 0, 0, 0);
+            player.level().addParticle(ParticleTypes.CRIT, player.getX() + player.level().random.nextGaussian(), player.getY(), player.getZ() + player.level().random.nextGaussian(), 0, 0, 0);
         }
     }
 
@@ -76,8 +76,8 @@ public class DoubleJump extends ModEnchantBase {
      */
     public static void resetJump(Player player, ItemStack feet){
         BlockPos pos = player.getOnPos();
-        BlockState state = player.level.getBlockState(pos);
-        if (!isJumping(player) || state.getMaterial().isLiquid()) //不满足跳跃条件时 重置次数
-            num = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.doubleJump.get(), feet);
+        BlockState state = player.level().getBlockState(pos);
+        if (!isJumping(player) || state.liquid()) //不满足跳跃条件时 重置次数
+            num = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.doubleJump.get(), feet);
     }
 }

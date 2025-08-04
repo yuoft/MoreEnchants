@@ -1,7 +1,6 @@
 package com.yuo.Enchants.Enchants;
 
 import com.yuo.Enchants.Config;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,17 +29,17 @@ public class SuperThorns extends ModEnchantBase{
 
     @Override
     protected boolean checkCompatibility(Enchantment ench) {
-        return this != ench && ench != Enchantments.THORNS && ench != EnchantRegistry.thorns.get()
-                && ench != EnchantRegistry.fireThorns.get();
+        return this != ench && ench != Enchantments.THORNS && ench != YEEnchants.thorns.get()
+                && ench != YEEnchants.fireThorns.get();
     }
 
     @Override
     public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-        Random random = user.getRandom();
+        Random random = new Random();
         //获取有此附魔的装备
-        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(EnchantRegistry.superThorns.get(), user);
+        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(YEEnchants.superThorns.get(), user);
         if (shouldHit(level, random) && Config.SERVER.isSuperThorns.get()) {
-            attacker.hurt(DamageSource.thorns(user), getDamage(level, random));
+            attacker.hurt(user.damageSources().thorns(user), getDamage(level, random));
             if (entry != null) {
                 entry.getValue().hurtAndBreak(2, user, (livingEntity) -> {
                     livingEntity.broadcastBreakEvent(entry.getKey());

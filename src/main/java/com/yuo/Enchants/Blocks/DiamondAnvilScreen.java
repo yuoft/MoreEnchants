@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
-    private static final ResourceLocation ANVIL_RESOURCE = new ResourceLocation("textures/gui/container/anvil.png");
+    private static final ResourceLocation ANVIL_RESOURCE = ResourceLocation.withDefaultNamespace("textures/gui/container/anvil.png");
     private static final Component TOO_EXPENSIVE_TEXT = Component.translatable("container.repair.expensive");
     private EditBox name;
     private final Player player;

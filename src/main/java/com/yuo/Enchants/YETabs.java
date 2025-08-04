@@ -1,8 +1,10 @@
 package com.yuo.Enchants;
 
-import com.yuo.Enchants.Enchants.EnchantRegistry;
+import com.yuo.Enchants.Enchants.YEEnchants;
 import com.yuo.Enchants.Items.ModEnchantBook;
+import com.yuo.Enchants.Items.OldBook;
 import com.yuo.Enchants.Items.YEItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,13 +26,18 @@ public class YETabs {
             .displayItems((parameters, output) -> {
                 for (RegistryObject<Item> entry : YEItems.ITEMS.getEntries()) {
                     if (entry.get() instanceof ModEnchantBook){
-                        for(RegistryObject<Enchantment> obj : EnchantRegistry.ENCHANTMENTS.getEntries()) {
+                        for(RegistryObject<Enchantment> obj : YEEnchants.ENCHANTMENTS.getEntries()) {
                             Enchantment enchantment = obj.get();
                             for(int i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); ++i) {
                                 output.accept(getStack(new EnchantmentInstance(enchantment, i)));
                             }
                         }
-                    } else output.accept(new ItemStack(entry.get()));
+                    }else if (entry.get() instanceof OldBook){
+                        for(Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
+                            if (enchantment.getMaxLevel() != 1)
+                                output.accept(OldBook.getStack(new EnchantmentInstance(enchantment, enchantment.getMaxLevel())));
+                        }
+                    }else output.accept(new ItemStack(entry.get()));
                 }
             }).build());
 }

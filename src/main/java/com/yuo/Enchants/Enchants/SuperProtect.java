@@ -1,6 +1,7 @@
 package com.yuo.Enchants.Enchants;
 
 import com.yuo.Enchants.Config;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -42,24 +43,24 @@ public class SuperProtect extends ModEnchantBase {
     //额外保护
     @Override
     public int getDamageProtection(int level, DamageSource source) {
-        if (source.isBypassInvul()) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return 0;
         } else if (enchantType == 0 && Config.SERVER.isSuperProtect.get()) {
             return level * 2;
-        } else if (enchantType == 1 && source.isFire() && Config.SERVER.isSuperFire.get()) {
+        } else if (enchantType == 1 && source.is(DamageTypeTags.IS_FIRE) && Config.SERVER.isSuperFire.get()) {
             return level * 3;
-        } else if (enchantType == 2 && source == DamageSource.FALL && Config.SERVER.isSuperFall.get()) {
+        } else if (enchantType == 2 && source.is(DamageTypeTags.IS_FALL) && Config.SERVER.isSuperFall.get()) {
             return level * 4;
-        } else if (enchantType == 3 && source.isExplosion() && Config.SERVER.isSuperBlast.get()) {
+        } else if (enchantType == 3 && source.is(DamageTypeTags.IS_EXPLOSION) && Config.SERVER.isSuperBlast.get()) {
             return level * 3;
         } else {
-            return enchantType == 4 && source.isProjectile() && Config.SERVER.isSuperArrow.get() ? level * 3 : 0;
+            return enchantType == 4 && source.is(DamageTypeTags.IS_PROJECTILE) && Config.SERVER.isSuperArrow.get() ? level * 3 : 0;
         }
     }
 
     //减少火焰 和 爆炸伤害
     public static float getDamage(float damage, int enchant) {
-        damage -= Math.floor((float)damage * (float)enchant * 0.1F);
+        damage -= (float) Math.floor(damage * (float)enchant * 0.1F);
         return damage;
     }
 

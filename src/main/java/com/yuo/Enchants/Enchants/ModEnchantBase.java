@@ -3,14 +3,13 @@ package com.yuo.Enchants.Enchants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class ModEnchantBase extends Enchantment {
-    private final EnchantType type;
+    protected final EnchantType type;
 
     protected ModEnchantBase(Enchantment.Rarity rarityIn, EnchantType type, EquipmentSlot[] slots) {
         super(rarityIn, null, slots);
@@ -52,10 +51,10 @@ public class ModEnchantBase extends Enchantment {
 
     @Override
     public Component getFullname(int level) {
-        MutableComponent mutableComponent = new TranslatableComponent(this.getDescriptionId());
+        MutableComponent mutableComponent = Component.translatable(this.getDescriptionId());
 
         if (level != 1 || this.getMaxLevel() != 1) {
-            mutableComponent.append(" ").append(new TranslatableComponent("enchantment.level." + level));
+            mutableComponent.append(" ").append(Component.translatable("enchantment.level." + level));
         }
         if (this.isCurse()) {
             mutableComponent.withStyle(ChatFormatting.GREEN);
@@ -80,7 +79,7 @@ public class ModEnchantBase extends Enchantment {
         ARMOR_HEAD{ //头盔
             @Override
             public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getSlot() == EquipmentSlot.HEAD;
+                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.HEAD;
             }
             @Override
             public String getName() {
@@ -90,7 +89,7 @@ public class ModEnchantBase extends Enchantment {
         ARMOR_CHEST{ // 胸甲
             @Override
             public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getSlot() == EquipmentSlot.CHEST;
+                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.CHEST;
             }
             @Override
             public String getName() {
@@ -100,7 +99,7 @@ public class ModEnchantBase extends Enchantment {
         ARMOR_LEGS{ // 护腿
             @Override
             public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getSlot() == EquipmentSlot.LEGS;
+                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.LEGS;
             }
             @Override
             public String getName() {
@@ -110,7 +109,7 @@ public class ModEnchantBase extends Enchantment {
         ARMOR_FEET{ // 鞋子
             @Override
             public boolean canEnchant(Item itemIn) {
-                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getSlot() == EquipmentSlot.FEET;
+                return itemIn instanceof ArmorItem && ((ArmorItem) itemIn).getEquipmentSlot() == EquipmentSlot.FEET;
             }
             @Override
             public String getName() {

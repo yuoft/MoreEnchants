@@ -21,7 +21,7 @@ public class UnLuck extends ModEnchantBase{
 
     @Override
     protected boolean checkCompatibility(Enchantment ench) {
-        return this != ench && ench != Enchantments.BLOCK_FORTUNE && ench != EnchantRegistry.strengthLuck.get();
+        return this != ench && ench != Enchantments.BLOCK_FORTUNE && ench != YEEnchants.strengthLuck.get();
     }
 
     @Override

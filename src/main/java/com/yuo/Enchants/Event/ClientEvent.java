@@ -3,7 +3,7 @@ package com.yuo.Enchants.Event;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Enchants.DoubleJump;
-import com.yuo.Enchants.Enchants.EnchantRegistry;
+import com.yuo.Enchants.Enchants.YEEnchants;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -22,11 +22,11 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvent {
 
     @SubscribeEvent
-    public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
+    public static void onKeyboardInput(InputEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.level.isClientSide){
+        if (player != null && player.level().isClientSide){
             ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
-            int doubleJump = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.doubleJump.get(), feet);
+            int doubleJump = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.doubleJump.get(), feet);
             boolean keyDown = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_SPACE);
             //按下空格 有附魔
             if (keyDown && doubleJump > 0 && Config.SERVER.isDoubleJump.get()){

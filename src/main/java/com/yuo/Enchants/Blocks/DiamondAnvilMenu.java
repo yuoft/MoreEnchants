@@ -10,6 +10,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -151,7 +152,7 @@ public class DiamondAnvilMenu extends ItemCombinerMenu {
                         }
                     }
 
-                    Map<Enchantment, Integer> map1 = EnchantmentHelper.getEnchantments(itemstack2);
+                    Map<Enchantment, Integer> map1 = EnchantmentHelper.deserializeEnchantments(EnchantedBookItem.getEnchantments(itemstack2));
                     boolean flag2 = false;
                     boolean flag3 = false;
 

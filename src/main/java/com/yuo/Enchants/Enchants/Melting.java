@@ -3,6 +3,7 @@ package com.yuo.Enchants.Enchants;
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Event.EventHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,10 +19,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class Melting extends ModEnchantBase {
@@ -41,10 +42,10 @@ public class Melting extends ModEnchantBase {
     }
 
     //熔炼方块掉落
-    public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BlockEvent.BreakEvent event){
+    public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BreakEvent event){
         if (!block.canHarvestBlock(state, world, pos, player) || block instanceof CropBlock) return;
         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
-        int unLuck = EnchantmentHelper.getItemEnchantmentLevel(EnchantRegistry.unLuck.get(), tool);
+        int unLuck = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.unLuck.get(), tool);
         //霉运影响
         boolean flag = unLuck > 0 && Config.SERVER.isUnLuck.get() &&  world.random.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
         if (drops.size() <= 0 || flag) return;
@@ -66,10 +67,14 @@ public class Melting extends ModEnchantBase {
      * @return 烧炼产物
      */
     public static ItemStack getMeltingItem(Level world,ItemStack itemStack, ItemStack tool){
-        ItemStack dropStack = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(itemStack), world)
-                .map(SmeltingRecipe::getResultItem).filter(e -> !e.isEmpty())
-                .map(e -> ItemHandlerHelper.copyStackWithSize(e, itemStack.getCount()))
-                .orElse(itemStack);
+        ItemStack dropStack = ItemStack.EMPTY;
+        Optional<SmeltingRecipe> recipeFor = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(itemStack), world);
+        if (recipeFor.isPresent()){
+            SmeltingRecipe recipe = recipeFor.get();
+            ItemStack resultItem = recipe.getResultItem(RegistryAccess.EMPTY);
+            resultItem.setCount(itemStack.getCount());
+            dropStack = resultItem;
+        }
         int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
         if (fortune > 0){ //时运影响产物数量
             Random random = new Random();

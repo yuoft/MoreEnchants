@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 public class YEJei implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(YuoEnchants.MOD_ID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID, "jei_plugin");
     }
 
     //注册物品不同nbt  使用nbt来在jei中显示

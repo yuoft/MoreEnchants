@@ -4,7 +4,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
 
 import java.util.Random;
 
@@ -25,7 +25,7 @@ public class Insight extends ModEnchantBase {
     }
 
     //额外经验掉落
-    public static void addDropExp(BlockEvent.BreakEvent event, int insight){
+    public static void addDropExp(BreakEvent event, int insight){
         //额外获取 原本经验值 * （1 + insight * 30%）经验值
         double exp = (100 + insight * 30) / 100.0 * event.getExpToDrop();
         event.setExpToDrop((int) Math.ceil(exp));

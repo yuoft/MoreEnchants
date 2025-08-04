@@ -13,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
 import java.util.Iterator;
@@ -41,15 +40,15 @@ public class LavaWalker extends ModEnchantBase {
 
     //凝固岩浆
     public static void freezingNearby(LivingEntity living, Level worldIn, BlockPos pos, int level) {
-        if (living.isOnGround()) {
+        if (living.onGround()) {
             BlockState blockstate = YEBlocks.coolingLava.get().defaultBlockState().setValue(CoolingLava.AGE, Math.max(7 - level * 3, 0));
-            float f = (float)Math.min(16, 2 + level);
+            int f = Math.min(16, 2 + level);
 
             for (BlockPos next : BlockPos.betweenClosed(pos.offset(-f, 0, -f), pos.offset(f, 0, f))) {
                 if (next.closerToCenterThan(living.position(), f) && !worldIn.getBlockState(next).isAir()) { //距离小于f  不是空气
                     BlockState blockstate2 = worldIn.getBlockState(next);
                     boolean isFull = blockstate2.getBlock() == Blocks.LAVA && blockstate2.getValue(LiquidBlock.LEVEL) == 0; //是源头的岩浆方块
-                    if (blockstate2.getMaterial() == Material.LAVA && isFull && blockstate.canSurvive(worldIn, next)
+                    if (isFull && blockstate.canSurvive(worldIn, next)
                             && worldIn.isUnobstructed(blockstate, next, CollisionContext.empty())
                             && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(living,
                             net.minecraftforge.common.util.BlockSnapshot.create(worldIn.dimension(), worldIn, next),

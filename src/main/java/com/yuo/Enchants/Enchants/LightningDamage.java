@@ -30,10 +30,10 @@ public class LightningDamage extends ModEnchantBase {
 
     //雷击范围内随机生物
     public static void lighting(Player player, ItemStack stackLegs){
-        Level world = player.level;
+        Level world = player.level();
         if (!world.isRaining() && !world.isThundering()) return;
         AABB axisAlignedBB = player.getBoundingBox().deflate(16); //范围
-        List<Entity> toAttack = player.getLevel().getEntities(player, axisAlignedBB);//生物列表
+        List<Entity> toAttack = player.level().getEntities(player, axisAlignedBB);//生物列表
         if (toAttack.isEmpty()) return;
         long dayTime = world.getDayTime();
         if (dayTime % 60 == 0){ //每3秒触发一次

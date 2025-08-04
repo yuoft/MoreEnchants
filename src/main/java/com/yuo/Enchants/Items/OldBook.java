@@ -3,10 +3,10 @@ package com.yuo.Enchants.Items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +29,7 @@ import java.util.Optional;
 public class OldBook extends Item {
 
     public OldBook() {
-        super(new Properties().tab(ModTab.youEnchants).stacksTo(1).rarity(Rarity.EPIC));
+        super(new Properties().stacksTo(1).rarity(Rarity.EPIC));
     }
 
     //附魔光效
@@ -48,7 +48,7 @@ public class OldBook extends Item {
         ItemStack mainhand = pPlayer.getMainHandItem();
         ItemStack offhand = pPlayer.getOffhandItem();
         if (offhand.isEmpty() || pUsedHand == InteractionHand.OFF_HAND){
-            pPlayer.displayClientMessage(new TranslatableComponent("yuoenchants.message.old_book.fail"),true);
+            pPlayer.displayClientMessage(Component.translatable("yuoenchants.message.old_book.fail"),true);
             return InteractionResultHolder.consume(mainhand);
         }
         OldBookEnchant ench = getEnch(mainhand);
@@ -65,7 +65,7 @@ public class OldBook extends Item {
                     //摆臂 消耗物品 提示 音效
                     pPlayer.swing(InteractionHand.MAIN_HAND);
                     mainhand.shrink(1);
-                    pPlayer.displayClientMessage(new TranslatableComponent("yuoenchants.message.old_book.success"), true);
+                    pPlayer.displayClientMessage(Component.translatable("yuoenchants.message.old_book.success"), true);
                     if (pLevel.isClientSide)
                         pPlayer.playSound(SoundEvents.PLAYER_LEVELUP, 1.0f, 3.0f);
                     return InteractionResultHolder.consume(mainhand);
@@ -73,7 +73,7 @@ public class OldBook extends Item {
             }
         }
         //客户端消息
-        pPlayer.displayClientMessage(new TranslatableComponent("yuoenchants.message.old_book.fail"),true);
+        pPlayer.displayClientMessage(Component.translatable("yuoenchants.message.old_book.fail"),true);
         return InteractionResultHolder.consume(mainhand);
     }
 
@@ -82,7 +82,7 @@ public class OldBook extends Item {
         ListTag listNBT = EnchantedBookItem.getEnchantments(mainhand);
         for(int i = 0; i < listNBT.size(); ++i) {
             CompoundTag compoundnbt = listNBT.getCompound(i);
-            Optional<Enchantment> optional = Registry.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id")));
+            Optional<Enchantment> optional = BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id")));
             if (optional.isPresent()){
                 return new OldBookEnchant(optional.get(), compoundnbt.getInt("lvl"));
             }
@@ -116,16 +116,6 @@ public class OldBook extends Item {
         }
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-        if (tab == ModTab.youEnchants) {
-            for(Enchantment enchantment : Registry.ENCHANTMENT) {
-                if (enchantment.getMaxLevel() != 1 && enchantment.category != null)
-                    items.add(getStack(new EnchantmentInstance(enchantment, enchantment.getMaxLevel())));
-            }
-        }
-    }
-
     public static ItemStack getStack(EnchantmentInstance enchantData) {
         ItemStack itemstack = new ItemStack(YEItems.oldBook.get());
         EnchantedBookItem.addEnchantment(itemstack, enchantData);
@@ -141,9 +131,9 @@ public class OldBook extends Item {
     public static void addEnchantmentTooltips(List<Component> components, ListTag tag) {
         for(int i = 0; i < tag.size(); ++i) {
             CompoundTag compoundnbt = tag.getCompound(i);
-            Registry.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
-                TranslatableComponent textComponent = new TranslatableComponent(enchantment.getFullname(compoundnbt.getInt("lvl")).getString());
-                components.add(textComponent.withStyle(ChatFormatting.BLUE));
+            BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
+                Component textComponent = Component.translatable(enchantment.getFullname(compoundnbt.getInt("lvl")).getString()).withStyle(ChatFormatting.BLUE);
+                components.add(textComponent);
             });
         }
     }

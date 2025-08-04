@@ -2,7 +2,8 @@ package com.yuo.Enchants;
 
 import com.yuo.Enchants.Blocks.MenuRegister;
 import com.yuo.Enchants.Blocks.YEBlocks;
-import com.yuo.Enchants.Enchants.EnchantRegistry;
+import com.yuo.Enchants.Enchants.YEEnchants;
+import com.yuo.Enchants.Event.DataGenEvent;
 import com.yuo.Enchants.Items.YEItems;
 import com.yuo.Enchants.Proxy.ClientProxy;
 import com.yuo.Enchants.Proxy.CommonProxy;
@@ -31,8 +32,9 @@ public class YuoEnchants
         YEItems.ITEMS.register(bus);
         YEBlocks.BLOCKS.register(bus);
         YETabs.TABS.register(bus);
-        EnchantRegistry.ENCHANTMENTS.register(bus);
+        YEEnchants.ENCHANTMENTS.register(bus);
         MenuRegister.CONTAINER_TYPES.register(bus);
+        DataGenEvent.CODEC_DEFERRED_REGISTERS.register(bus);
         proxy.registerHandlers();
     }
 

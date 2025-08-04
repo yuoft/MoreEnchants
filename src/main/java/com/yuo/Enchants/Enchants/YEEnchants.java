@@ -7,7 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class EnchantRegistry {
+public class YEEnchants {
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, YuoEnchants.MOD_ID);
     //火焰免疫
     public static RegistryObject<Enchantment> fireImmune = ENCHANTMENTS.register("fire_immune",
