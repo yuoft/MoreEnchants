@@ -24,7 +24,7 @@ public class YuoEnchants
     public static final IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public YuoEnchants() {
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SERVER_CONFIG); //配置文件
+        ModLoadingContext   .get().registerConfig(ModConfig.Type.COMMON, Config.SERVER_CONFIG); //配置文件
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(this::commonSetup);

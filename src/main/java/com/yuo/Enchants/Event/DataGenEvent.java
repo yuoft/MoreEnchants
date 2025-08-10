@@ -28,33 +28,6 @@ public class DataGenEvent {
     public static final RegistryObject<Codec<OldBookModifier>> oldBookModifier = CODEC_DEFERRED_REGISTERS.register("chest_oldbook", OldBookModifier.CODEC);
     public static final RegistryObject<Codec<SuperBookModifier>> superBookModifier = CODEC_DEFERRED_REGISTERS.register("chest_superbook", SuperBookModifier.CODEC);
 
-//    @SubscribeEvent
-//    public static void registerAddItemModifier(RegisterEvent event) {
-//        event.getForgeRegistry().register();
-//        event.getRegistry().registerAll(
-////                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_abandoned_mineshaft")), //废弃矿井中的运输矿车
-//                new OldBookModifier.setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_bastion_treasure")), //堡垒遗迹宝藏室中的箱子
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_buried_treasure")), //埋藏的宝藏
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_desert_pyramid")), //沙漠神殿的宝藏室里的箱子
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_end_city_treasure")), //末地城里的箱子
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_igloo_chest")), //雪屋地下室里的箱子
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_jungle_temple")), //丛林神庙里的箱子
-////                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_nether_bridge")), //下界要塞里的箱子
-////                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_shipwreck_treasure")), //沉船的宝箱
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_stronghold_library")), //要塞图书馆里的箱子
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_woodland_mansion")), //林地府邸的箱子
-//                new OldBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "old_book_from_fish_treasure")), //钓鱼附魔书
-//
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_abandoned_mineshaft")),
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_bastion_treasure")),
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_desert_pyramid")),
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_nether_bridge")),
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_end_city_treasure")),
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_fish_treasure")),
-//                new SuperBookModifier.Serializer().setRegistryName(new ResourceLocation(YuoEnchants.MOD_ID, "super_book_from_stronghold_library"))
-//        );
-//    }
-
     @SubscribeEvent
     public static void addLoot(GatherDataEvent event){
         boolean b = event.includeServer();
