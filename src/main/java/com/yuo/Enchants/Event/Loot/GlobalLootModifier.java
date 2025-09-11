@@ -13,6 +13,6 @@ public class GlobalLootModifier extends GlobalLootModifierProvider {
     @Override
     protected void start() {
         add("chest_oldbook", new OldBookModifier(new LootItemCondition[]{}, YEItems.oldBook.get()));
-        add("end_city_treasure", new SuperBookModifier(new LootItemCondition[]{}, YEItems.modEnchantBook.get()));
+        add("chest_superbook", new SuperBookModifier(new LootItemCondition[]{}, YEItems.modEnchantBook.get()));
     }
 }

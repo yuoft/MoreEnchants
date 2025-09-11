@@ -1,5 +1,6 @@
 package com.yuo.Enchants.Blocks;
 
+import com.yuo.Enchants.Enchants.ModEnchantBase;
 import com.yuo.Enchants.Items.ModEnchantBook;
 import com.yuo.Enchants.Items.YEItems;
 import com.yuo.Enchants.Items.YETags;
@@ -178,8 +179,14 @@ public class DiamondAnvilMenu extends ItemCombinerMenu {
                                 flag3 = true;
                             } else {
                                 flag2 = true;
-                                if (j2 > enchantment1.getMaxLevel()) {
-                                    j2 = enchantment1.getMaxLevel();
+                                if (!(enchantment1 instanceof ModEnchantBase)){ //对本模组附魔不生效
+                                    if (j2 > 10) { //修改原版附魔合成上限
+                                        j2 = 10;
+                                    }
+                                }else {
+                                    if (j2 > enchantment1.getMaxLevel()) {
+                                        j2 = enchantment1.getMaxLevel();
+                                    }
                                 }
 
                                 map.put(enchantment1, j2);
