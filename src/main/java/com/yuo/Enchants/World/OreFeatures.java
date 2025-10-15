@@ -1,6 +1,7 @@
 package com.yuo.Enchants.World;
 
 import com.yuo.Enchants.Blocks.YEBlocks;
+import com.yuo.Enchants.RlUtils;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -58,6 +59,6 @@ public class OreFeatures {
     }
     // 创建ResourceKey的方法
     public static ResourceKey<ConfiguredFeature<?, ?>> createKey(String pName) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID,pName));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, RlUtils.fa(pName));
     }
 }

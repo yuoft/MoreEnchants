@@ -2,6 +2,7 @@ package com.yuo.Enchants.Items;
 
 import com.google.common.collect.Maps;
 import com.yuo.Enchants.Enchants.ModEnchantBase;
+import com.yuo.Enchants.RlUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -47,7 +48,7 @@ public class ModEnchantBook extends Item {
         ListTag listNBT = EnchantedBookItem.getEnchantments(pStack);
         for(int i = 0; i < listNBT.size(); ++i) {
             CompoundTag compoundnbt = listNBT.getCompound(i);
-            Optional<Enchantment> optional = BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id")));
+            Optional<Enchantment> optional = BuiltInRegistries.ENCHANTMENT.getOptional(RlUtils.tryParse(compoundnbt.getString("id")));
             if (optional.isPresent()){
                 if (optional.get().isCurse()){
                     return Component.translatable("item.yuoenchants.mod_enchant_book").withStyle(ChatFormatting.GREEN);
@@ -63,7 +64,7 @@ public class ModEnchantBook extends Item {
         ListTag listNBT = EnchantedBookItem.getEnchantments(pStack);
         for(int i = 0; i < listNBT.size(); ++i) {
             CompoundTag compoundnbt = listNBT.getCompound(i);
-            BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
+            BuiltInRegistries.ENCHANTMENT.getOptional(RlUtils.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
                 pTooltipComponents.add(enchantment.getFullname(compoundnbt.getInt("lvl")));
                 if (enchantment instanceof ModEnchantBase){
                     if (Screen.hasShiftDown()){
@@ -103,7 +104,7 @@ public class ModEnchantBook extends Item {
 
         for(int i = 0; i < serialized.size(); ++i) {
             CompoundTag compoundnbt = serialized.getCompound(i);
-            BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
+            BuiltInRegistries.ENCHANTMENT.getOptional(RlUtils.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
                 map.put(enchantment, compoundnbt.getInt("lvl"));
             });
         }

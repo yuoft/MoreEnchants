@@ -149,7 +149,7 @@ public class Config {
     }
 
     private static ForgeConfigSpec.ConfigValue<List<? extends String>> buildConfig(ForgeConfigSpec.Builder builder, String name, String comment){
-        return builder.comment(comment).translation(name).defineList(name, Collections.emptyList(), s -> s instanceof String && ResourceLocation.tryParse((String) s) != null);
+        return builder.comment(comment).translation(name).defineList(name, Collections.emptyList(), s -> s instanceof String && RlUtils.tryParse((String) s) != null);
     }
 
 }

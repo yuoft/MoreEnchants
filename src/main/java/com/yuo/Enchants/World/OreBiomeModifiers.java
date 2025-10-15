@@ -1,5 +1,6 @@
 package com.yuo.Enchants.World;
 
+import com.yuo.Enchants.RlUtils;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -49,6 +50,6 @@ public class OreBiomeModifiers {
     }
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
-        return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID, name));
+        return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, RlUtils.fa(name));
     }
 }

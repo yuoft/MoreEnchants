@@ -1,5 +1,6 @@
 package com.yuo.Enchants.Items;
 
+import com.yuo.Enchants.RlUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
@@ -82,7 +83,7 @@ public class OldBook extends Item {
         ListTag listNBT = EnchantedBookItem.getEnchantments(mainhand);
         for(int i = 0; i < listNBT.size(); ++i) {
             CompoundTag compoundnbt = listNBT.getCompound(i);
-            Optional<Enchantment> optional = BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id")));
+            Optional<Enchantment> optional = BuiltInRegistries.ENCHANTMENT.getOptional(RlUtils.tryParse(compoundnbt.getString("id")));
             if (optional.isPresent()){
                 return new OldBookEnchant(optional.get(), compoundnbt.getInt("lvl"));
             }
@@ -131,7 +132,7 @@ public class OldBook extends Item {
     public static void addEnchantmentTooltips(List<Component> components, ListTag tag) {
         for(int i = 0; i < tag.size(); ++i) {
             CompoundTag compoundnbt = tag.getCompound(i);
-            BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
+            BuiltInRegistries.ENCHANTMENT.getOptional(RlUtils.tryParse(compoundnbt.getString("id"))).ifPresent((enchantment) -> {
                 Component textComponent = Component.translatable(enchantment.getFullname(compoundnbt.getInt("lvl")).getString()).withStyle(ChatFormatting.BLUE);
                 components.add(textComponent);
             });

@@ -3,6 +3,7 @@ package com.yuo.Enchants.Jei;
 import com.yuo.Enchants.Items.ModEnchantBook;
 import com.yuo.Enchants.Items.OldBook;
 import com.yuo.Enchants.Items.YEItems;
+import com.yuo.Enchants.RlUtils;
 import com.yuo.Enchants.YuoEnchants;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -16,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 public class YEJei implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID, "jei_plugin");
+        return RlUtils.fa("jei_plugin");
     }
 
     //注册物品不同nbt  使用nbt来在jei中显示
