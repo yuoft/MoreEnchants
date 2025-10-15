@@ -3,6 +3,7 @@ package com.yuo.Enchants.Blocks;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yuo.Enchants.NetWorkHandler;
+import com.yuo.Enchants.RlUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -22,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class DiamondAnvilScreen extends ItemCombinerScreen<DiamondAnvilMenu> {
-    private static final ResourceLocation ANVIL_RESOURCE = ResourceLocation.withDefaultNamespace("textures/gui/container/anvil.png");
+    private static final ResourceLocation ANVIL_RESOURCE = RlUtils.wdn("textures/gui/container/anvil.png");
     private static final Component TOO_EXPENSIVE_TEXT = Component.translatable("container.repair.expensive");
     private EditBox name;
     private final Player player;

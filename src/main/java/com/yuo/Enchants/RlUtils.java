@@ -8,6 +8,10 @@ public class RlUtils {
         return ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID, path);
     }
 
+    public static ResourceLocation wdn(String path){
+        return ResourceLocation.withDefaultNamespace(path);
+    }
+
     public static ResourceLocation tryParse(String path){
         return ResourceLocation.tryParse(path);
     }
