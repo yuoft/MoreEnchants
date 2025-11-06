@@ -22,12 +22,12 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvent {
 
     @SubscribeEvent
-    public static void onKeyboardInput(InputEvent event) {
+    public static void onKeyboardInput(InputEvent.Key event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.level().isClientSide){
             ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
             int doubleJump = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.doubleJump.get(), feet);
-            boolean keyDown = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_SPACE);
+            boolean keyDown = event.getKey() == 32;//InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), InputConstants.KEY_SPACE);
             //按下空格 有附魔
             if (keyDown && doubleJump > 0 && Config.SERVER.isDoubleJump.get()){
                 DoubleJump.jump(player);

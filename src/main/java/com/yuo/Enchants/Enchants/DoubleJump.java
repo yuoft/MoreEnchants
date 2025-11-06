@@ -35,13 +35,13 @@ public class DoubleJump extends ModEnchantBase {
      */
     public static void jump(Player player) {
         ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
-        resetJump(player, feet);
         if (isJumping(player) && num > 0) {
             jumping(player);
             num--;
         }
         if (num <= 0){ //冷却
             player.getCooldowns().addCooldown(feet.getItem(), 40);
+            resetJump(player, feet);
         }
     }
 
@@ -78,6 +78,7 @@ public class DoubleJump extends ModEnchantBase {
     public static void resetJump(Player player, ItemStack feet){
         BlockPos pos = player.getOnPos();
         BlockState state = player.level().getBlockState(pos);
+        if (state.isAir()) return;
         if (!isJumping(player) || state.liquid()) //不满足跳跃条件时 重置次数
             num = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.doubleJump.get(), feet);
     }
