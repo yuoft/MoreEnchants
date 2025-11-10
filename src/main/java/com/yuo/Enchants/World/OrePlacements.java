@@ -38,14 +38,14 @@ public class OrePlacements {
         // 这里我们用的一个是HeightRangePlacement，是指设置生成的最低高度和最高的高度。
         // 对于commonOrePlacement方法中用的CountPlacement则是设置一个数值
         // HeightRangePlacement的uniform方法是指从低到高平均生成，还有一个三角的，是指中间生成多，两边生成少。
-        PlacementUtils.register(pContext, ORE_IRON, oreIronHolder, commonOrePlacement(12,
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(128))));
-        PlacementUtils.register(pContext, ORE_IRON_NETHER, oreIronNetherHolder, commonOrePlacement(16,
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(96))));
-        PlacementUtils.register(pContext, ORE_GOLD, oreGoldHolder, commonOrePlacement(16,
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
-        PlacementUtils.register(pContext, ORE_GOLD_NETHER, oreGoldNetherHolder, commonOrePlacement(16,
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(32), VerticalAnchor.absolute(128))));
+        PlacementUtils.register(pContext, ORE_IRON, oreIronHolder, commonOrePlacement(6,
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(64))));
+        PlacementUtils.register(pContext, ORE_IRON_NETHER, oreIronNetherHolder, commonOrePlacement(8,
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(32), VerticalAnchor.absolute(64))));
+        PlacementUtils.register(pContext, ORE_GOLD, oreGoldHolder, commonOrePlacement(6,
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(32))));
+        PlacementUtils.register(pContext, ORE_GOLD_NETHER, oreGoldNetherHolder, commonOrePlacement(8,
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(64), VerticalAnchor.absolute(96))));
     }
 
 

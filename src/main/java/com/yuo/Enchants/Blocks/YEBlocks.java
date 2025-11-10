@@ -13,17 +13,17 @@ public class YEBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YuoEnchants.MOD_ID);
 
     public static RegistryObject<Block> overworldIron = BLOCKS.register("overworld_iron",
-            () -> new ModOre(MapColor.STONE, UniformInt.of(0, 0), 3.5f, 7));
+            () -> new ModOre(MapColor.STONE, SoundType.STONE, UniformInt.of(0, 0), 3.5f, 7));
     public static RegistryObject<Block> deepOverworldIron = BLOCKS.register("deep_overworld_iron",
-            () -> new DeepModOre(MapColor.DEEPSLATE, SoundType.DEEPSLATE, UniformInt.of(0, 0), 5.0f, 8));
+            () -> new ModOre(MapColor.DEEPSLATE, SoundType.DEEPSLATE, UniformInt.of(0, 0), 5.0f, 8));
     public static RegistryObject<Block> overworldGold = BLOCKS.register("overworld_gold",
-            () -> new ModOre(MapColor.STONE, UniformInt.of(0, 0), 3.5f, 7));
+            () -> new ModOre(MapColor.STONE, SoundType.STONE, UniformInt.of(0, 0), 3.5f, 7));
     public static RegistryObject<Block> deepOverworldGold = BLOCKS.register("deep_overworld_gold",
-            () -> new DeepModOre(MapColor.DEEPSLATE, SoundType.DEEPSLATE, UniformInt.of(0, 1), 5.0f, 8));
+            () -> new ModOre(MapColor.DEEPSLATE, SoundType.DEEPSLATE, UniformInt.of(0, 1), 5.0f, 8));
     public static RegistryObject<Block> netherIron = BLOCKS.register("nether_iron",
-            () -> new ModOre(MapColor.STONE, UniformInt.of(0, 0), 3, 6));
+            () -> new ModOre(MapColor.STONE, SoundType.NETHER_ORE, UniformInt.of(0, 0), 3, 6));
     public static RegistryObject<Block> netherGold = BLOCKS.register("nether_gold",
-            () -> new ModOre(MapColor.STONE, UniformInt.of(0, 2),3, 6));
+            () -> new ModOre(MapColor.STONE, SoundType.NETHER_ORE, UniformInt.of(0, 2),3, 6));
     public static RegistryObject<Block> diamondAnvil = BLOCKS.register("diamond_anvil", DiamondAnvil::new);
     public static RegistryObject<Block> chippedDiamondAnvil = BLOCKS.register("chipped_diamond_anvil", DiamondAnvil::new);
     public static RegistryObject<Block> damagedDiamondAnvil = BLOCKS.register("damaged_diamond_anvil", DiamondAnvil::new);
