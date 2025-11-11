@@ -122,10 +122,10 @@ public class EventHelper {
         }
         //生成掉落物和经验
         if (drops.isEmpty()) return;
-        int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
-        int silkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
-        int melting = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.melting.get(), tool);
-        int diamondDrop = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.diamondDrop.get(), tool);
+        int fortune = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+        int silkTouch = tool.getEnchantmentLevel(Enchantments.SILK_TOUCH);
+        int melting = tool.getEnchantmentLevel(YEEnchants.melting.get());
+        int diamondDrop = tool.getEnchantmentLevel(YEEnchants.diamondDrop.get());
         List<ItemStack> stackList = getDrops(drops);
         stackList.forEach(e -> {
             ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), ItemStack.EMPTY);
@@ -242,7 +242,7 @@ public class EventHelper {
      * @param player 玩家
      */
     public static void changeMaxHealth(Player player){
-        int health = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.health.get(), player.getItemBySlot(EquipmentSlot.CHEST));
+        int health = player.getItemBySlot(EquipmentSlot.CHEST).getEnchantmentLevel(YEEnchants.health.get());
         AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealth != null  && Config.SERVER.isHealth.get()){
             if (health <= 0){
@@ -254,7 +254,7 @@ public class EventHelper {
     }
 
     public static void changeHandRange(Player player){
-        int handRange = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.handRange.get(), player.getMainHandItem());
+        int handRange = player.getMainHandItem().getEnchantmentLevel(YEEnchants.handRange.get());
         AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
         if (reachDistance != null  && Config.SERVER.isHandRange.get()){
             if (handRange <= 0){
@@ -266,7 +266,7 @@ public class EventHelper {
     }
 
     public static void changeSwimSpeed(Player player){
-        int deepFear = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.deepFear.get(), player.getItemBySlot(EquipmentSlot.FEET));
+        int deepFear = player.getItemBySlot(EquipmentSlot.FEET).getEnchantmentLevel(YEEnchants.deepFear.get());
         AttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
         if (swimSpeed != null && Config.SERVER.isDeepFear.get()){
             if (deepFear <= 0){

@@ -48,49 +48,20 @@ public class StrengthLuck extends ModEnchantBase {
      */
     public static void strengthLuck(Block block, BlockState state, Level world, BlockPos pos, int strengthLuck, Player player) {
         if (player.isCreative()) return;
-        //矿物类方块 树叶 草类 海草 花
-        if (block instanceof DropExperienceBlock || block instanceof CropBlock || block instanceof LeavesBlock || block instanceof SweetBerryBushBlock
-                || block == Blocks.GLOWSTONE || block == Blocks.MELON || block == Blocks.SNOW || block == Blocks.CLAY || block == Blocks.BOOKSHELF) {
-            if (world.random.nextDouble() < 0.15 +  + 0.075 * strengthLuck){
-                List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
-                if (!drops.isEmpty())
-                    drops.forEach(drop -> {
-                        int max = strengthLuck * 2 - 1;
-                        if (world.random.nextGaussian() < 0.05f)
-                            max += 3;
-                        drop.setCount(Mth.nextInt(world.random, 1, max));
-                        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
-                    });
-            }
-        } else if (block instanceof GlassBlock || block instanceof StainedGlassPaneBlock || block instanceof IceBlock) { //玻璃
-            world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(block)));
-        } else {
-            if (world.random.nextDouble() < 0.05 + 0.05 * strengthLuck) {
-                List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
-                if (!drops.isEmpty())
-                    drops.forEach(drop -> world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop)));
-            }
-        }
-    }
-
-    public static void strengthLuck(Block block, BlockState state, Level world, BlockPos pos, int strengthLuck, Player player, int i) {
-        if (player.isCreative()) return;
         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
 
         if (drops.isEmpty()) world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(block)));
         else {
-            if (world.random.nextDouble() < 0.05 + 0.05 * strengthLuck) {
-                if (!drops.isEmpty())
-                    drops.forEach(drop -> {
-                        if (drop.getCount() > 1){
-                            int max = strengthLuck * 2 - 1;
-                            if (world.random.nextGaussian() < 0.05f)
-                                max += 3;
-                            drop.setCount(Mth.nextInt(world.random, 1, max));
-                            world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
-                        } else world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
-                    });
-            }
+            drops.forEach(drop -> {
+                if (drop.getCount() > 1 && world.random.nextDouble() < 0.15 + 0.075 * strengthLuck){
+                    int max = strengthLuck * 2 - 1;
+                    if (world.random.nextGaussian() < 0.05f)
+                        max += 3;
+                    drop.setCount(Mth.nextInt(world.random, 1, max));
+                    world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
+                } else if (world.random.nextDouble() < 0.05 + 0.05 * strengthLuck)
+                    world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
+            });
         }
     }
 }
