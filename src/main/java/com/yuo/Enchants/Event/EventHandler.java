@@ -170,9 +170,7 @@ public class EventHandler {
         int strengthLuck = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.strengthLuck.get(), tool);
         int unLuck = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.unLuck.get(), tool);
         if (strengthLuck > 0 && Config.SERVER.isStrengthLuck.get()) {
-            StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, player);
-            event.setCanceled(true);
-            return;
+            StrengthLuck.strengthLuck(block, state, world, pos, strengthLuck, player,0);
         }
         if (unLuck > 0 && Config.SERVER.isUnLuck.get() &&  RANDOM.nextDouble() < unLuck * 0.2){
             if (event.getExpToDrop() > 0){

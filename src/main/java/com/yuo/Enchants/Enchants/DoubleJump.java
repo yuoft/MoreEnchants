@@ -68,7 +68,7 @@ public class DoubleJump extends ModEnchantBase {
      * @param player 玩家
      */
     public static void jumping(Player player){
-        player.resetFallDistance();
+        player.fallDistance = 0;
         jumpFromGround(player);
         player.awardStat(Stats.JUMP);
         if (player.isSprinting()) {
@@ -83,7 +83,7 @@ public class DoubleJump extends ModEnchantBase {
 
     protected static void jumpFromGround(Player player) {
         Vec3 vec3 = player.getDeltaMovement();
-        player.setDeltaMovement(vec3.x, getJumpPower(player) * 1.25d, vec3.z);
+        player.setDeltaMovement(vec3.x, getJumpPower(player) * 1.5d, vec3.z);
         if (player.isSprinting()) {
             float f = player.getYRot() * 0.017453292F;
             player.setDeltaMovement(player.getDeltaMovement().add((double)(-Mth.sin(f) * 0.2F), 0.0, (double)(Mth.cos(f) * 0.2F)));

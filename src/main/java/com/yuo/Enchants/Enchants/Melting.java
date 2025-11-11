@@ -46,16 +46,16 @@ public class Melting extends ModEnchantBase {
     public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BreakEvent event){
         if (!block.canHarvestBlock(state, world, pos, player) || block instanceof CropBlock) return;
         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
-        int unLuck = EnchantmentHelper.getItemEnchantmentLevel(YEEnchants.unLuck.get(), tool);
+        int unLuck = tool.getEnchantmentLevel(YEEnchants.unLuck.get());
         //霉运影响
         boolean flag = unLuck > 0 && Config.SERVER.isUnLuck.get() &&  world.random.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
-        if (drops.size() <= 0 || flag) return;
+        if (drops.isEmpty() || flag) return;
         drops.forEach(itemStack -> {
             ItemStack dropStack = Melting.getMeltingItem(world, itemStack, tool);
-            if (!dropStack.equals(itemStack)){
+            if (!dropStack.isEmpty() && !dropStack.equals(itemStack)){
                 EventHelper.meltingAchieve(world, player, pos, event);
                 world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dropStack));
-//                    event.setCanceled(true);
+                event.setCanceled(true);
             }
         });
     }
@@ -76,7 +76,10 @@ public class Melting extends ModEnchantBase {
             resultItem.setCount(itemStack.getCount());
             dropStack = resultItem;
         }
-        int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
+
+        if (dropStack.isEmpty()) return ItemStack.EMPTY;
+
+        int fortune = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
         if (fortune > 0){ //时运影响产物数量
             Random random = new Random();
             int count = dropStack.getCount();
