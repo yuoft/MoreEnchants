@@ -1,18 +1,23 @@
 package com.yuo.Enchants;
 
+import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 
 public class RlUtils {
 
     public static ResourceLocation fa(String path){
-        return ResourceLocation.fromNamespaceAndPath(YuoEnchants.MOD_ID, path);
+        return new ResourceLocation(YuoEnchants.MOD_ID, path);
     }
 
     public static ResourceLocation wdn(String path){
-        return ResourceLocation.withDefaultNamespace(path);
+        return new ResourceLocation(path);
     }
 
     public static ResourceLocation tryParse(String path){
-        return ResourceLocation.tryParse(path);
+        try {
+            return new ResourceLocation(path);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
     }
 }
