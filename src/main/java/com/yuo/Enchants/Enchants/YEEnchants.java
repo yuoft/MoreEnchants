@@ -1,5 +1,10 @@
 package com.yuo.Enchants.Enchants;
 
+import com.yuo.Enchants.Enchants.Armor.*;
+import com.yuo.Enchants.Enchants.Bad.*;
+import com.yuo.Enchants.Enchants.Mc.*;
+import com.yuo.Enchants.Enchants.Tool.*;
+import com.yuo.Enchants.Enchants.Weapon.*;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -62,7 +67,7 @@ public class YEEnchants {
             () -> new Slow(Rarity.VERY_RARE, EnchantmentCategory.DIGGER, EquipmentSlot.values()));
     //斩首
     public static RegistryObject<Enchantment> beHead = ENCHANTMENTS.register("behead",
-            () -> new BeHead(Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.values()));
+            () -> new BeHead(Rarity.RARE, ModEnchantBase.AXE, EquipmentSlot.values()));
     //范围挖掘
     public static RegistryObject<Enchantment> rangBreak = ENCHANTMENTS.register("rang_break",
             () -> new RangBreak(Rarity.VERY_RARE, EnchantmentCategory.DIGGER, EquipmentSlot.values()));
@@ -71,7 +76,7 @@ public class YEEnchants {
             () -> new Health(Rarity.VERY_RARE, EnchantmentCategory.ARMOR_CHEST, EquipmentSlot.values()));
     //距离提升
     public static RegistryObject<Enchantment> handRange = ENCHANTMENTS.register("hand_range",
-            () -> new HandRange(Rarity.RARE, ModEnchantBase.HAND_RANGE, EquipmentSlot.values()));
+            () -> new HandRange(Rarity.RARE, ModEnchantBase.WEAPON, EquipmentSlot.values()));
     //二段跳 纵云梯
     public static RegistryObject<Enchantment> doubleJump = ENCHANTMENTS.register("double_jump",
             () -> new DoubleJump(Rarity.VERY_RARE, EnchantmentCategory.ARMOR_FEET, EquipmentSlot.values()));
@@ -157,4 +162,10 @@ public class YEEnchants {
     //抢夺不到
     public static RegistryObject<Enchantment> unLooting = ENCHANTMENTS.register("un_looting",
             () -> new UnLooting(Rarity.VERY_RARE, EnchantmentCategory.WEAPON, EquipmentSlot.values()));
+    //轻巧
+    public static RegistryObject<Enchantment> attackSpeed = ENCHANTMENTS.register("attack_speed",
+            () -> new AttackSpeed(Rarity.COMMON, ModEnchantBase.WEAPON, EquipmentSlot.values()));
+    //牛顿下
+    public static RegistryObject<Enchantment> criticalHit = ENCHANTMENTS.register("critical_hit",
+            () -> new CriticalHit(Rarity.RARE, ModEnchantBase.WEAPON, EquipmentSlot.values()));
 }

@@ -11,14 +11,15 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 public class ModEnchantBase extends Enchantment {
     public static final EnchantmentCategory BOW_ALL = EnchantmentCategory.create("bow_all", e -> e instanceof ProjectileWeaponItem);
     public static final EnchantmentCategory TOOLS = EnchantmentCategory.create("tools", e -> e instanceof DiggerItem || e instanceof FishingRodItem);
-    public static final EnchantmentCategory HAND_RANGE = EnchantmentCategory.create("hand_range", e -> e instanceof TieredItem || e instanceof TridentItem);
+    public static final EnchantmentCategory WEAPON = EnchantmentCategory.create("weapon", e -> e instanceof TieredItem || e instanceof TridentItem);
     public static final EnchantmentCategory FARMER = EnchantmentCategory.create("farmer", e -> e instanceof HoeItem);
     public static final EnchantmentCategory SHIELD = EnchantmentCategory.create("shield", e -> e instanceof ShieldItem);
     public static final EnchantmentCategory PICKAXE = EnchantmentCategory.create("pickaxe", e -> e instanceof PickaxeItem);
+    public static final EnchantmentCategory AXE = EnchantmentCategory.create("axe", e -> e instanceof AxeItem);
     public static final EnchantmentCategory HAND = EnchantmentCategory.create("hand", e -> e instanceof TieredItem || e instanceof FishingRodItem || e instanceof TridentItem || e instanceof ProjectileWeaponItem || e instanceof ShieldItem);
     protected final EnchantmentCategory type;
 
-    protected ModEnchantBase(Enchantment.Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
+    public ModEnchantBase(Enchantment.Rarity rarityIn, EnchantmentCategory type, EquipmentSlot[] slots) {
         super(rarityIn, type, slots);
         this.type = type;
     }

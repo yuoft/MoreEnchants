@@ -94,6 +94,8 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_ver}")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_ver}")
     runtimeOnly fg.deobf("curse.maven:curios-309927:${curios_id}")
+    runtimeOnly fg.deobf("curse.maven:blueprint-382216:5201927")
+    runtimeOnly fg.deobf("curse.maven:unusual-end-617757:6415102") //不同寻常的末地
 }
 
 tasks.named('processResources', ProcessResources).configure {

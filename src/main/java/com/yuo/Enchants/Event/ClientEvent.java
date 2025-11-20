@@ -1,8 +1,7 @@
 package com.yuo.Enchants.Event;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.yuo.Enchants.Config;
-import com.yuo.Enchants.Enchants.DoubleJump;
+import com.yuo.Enchants.Enchants.Armor.DoubleJump;
 import com.yuo.Enchants.Enchants.YEEnchants;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.client.Minecraft;

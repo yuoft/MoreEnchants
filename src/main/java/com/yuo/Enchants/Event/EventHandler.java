@@ -2,6 +2,14 @@ package com.yuo.Enchants.Event;
 
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Enchants.*;
+import com.yuo.Enchants.Enchants.Armor.*;
+import com.yuo.Enchants.Enchants.Bad.BadLuckOfTheSea;
+import com.yuo.Enchants.Enchants.Bad.LightningDamage;
+import com.yuo.Enchants.Enchants.Mc.SuperProtect;
+import com.yuo.Enchants.Enchants.Bad.Thorns;
+import com.yuo.Enchants.Enchants.Bad.UnDurable;
+import com.yuo.Enchants.Enchants.Tool.*;
+import com.yuo.Enchants.Enchants.Weapon.*;
 import com.yuo.Enchants.YuoEnchants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
@@ -16,6 +24,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -28,15 +40,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PotatoBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent.Stop;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent.Tick;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
@@ -49,8 +60,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 事件处理类 附魔实现
@@ -58,6 +71,25 @@ import java.util.Random;
 @EventBusSubscriber(modid = YuoEnchants.MOD_ID, bus = Bus.FORGE)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
+
+    @SubscribeEvent
+    public static void onItemAttr(ItemAttributeModifierEvent event) {
+        ItemStack stack = event.getItemStack();
+        int attackSpeed = stack.getEnchantmentLevel(YEEnchants.attackSpeed.get());
+        if (attackSpeed > 0){
+            EquipmentSlot type = event.getSlotType();
+            if (type == EquipmentSlot.MAINHAND){
+                double oldSpeed = 4.0;
+                Collection<AttributeModifier> modifiers = event.getModifiers().get(Attributes.ATTACK_SPEED);
+                for (AttributeModifier modifier : modifiers) {
+                    oldSpeed += modifier.getAmount();
+                }
+
+                event.removeAttribute(Attributes.ATTACK_SPEED);
+                event.addModifier(Attributes.ATTACK_SPEED, new AttributeModifier(UUID.randomUUID(), YuoEnchants.MOD_ID + "attack_speed", oldSpeed + oldSpeed * attackSpeed * 0.2d, Operation.ADDITION));
+            }
+        }
+    }
 
     //附魔，火焰免疫 屹立不倒 受到伤害
     @SubscribeEvent
@@ -82,6 +114,7 @@ public class EventHandler {
             if (superArrow > 0 && event.getSource().is(DamageTypeTags.IS_PROJECTILE) && Config.SERVER.isSuperArrow.get()) {
                 event.setAmount(SuperProtect.getDamage(event.getAmount(), superArrow));
             }
+
         }
         Entity trueSource = event.getSource().getDirectEntity();
         if (trueSource instanceof Player player) {
@@ -89,6 +122,11 @@ public class EventHandler {
             int beHead = mainHand.getEnchantmentLevel(YEEnchants.beHead.get());
             if (beHead > 0  && Config.SERVER.isBehead.get()) {
                 BeHead.addDamage(beHead, event, player, entityLiving);
+            }
+            int criticalHit = player.getMainHandItem().getEnchantmentLevel(YEEnchants.criticalHit.get());
+            if (criticalHit > 0){
+                float amount = event.getAmount();
+                event.setAmount(CriticalHit.getDamage(amount, criticalHit, player, player.level(), event.getEntity()));
             }
         }
     }

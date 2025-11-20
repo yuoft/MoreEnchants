@@ -2,7 +2,7 @@ package com.yuo.Enchants.Event;
 
 import com.yuo.Enchants.Config;
 import com.yuo.Enchants.Enchants.YEEnchants;
-import com.yuo.Enchants.Enchants.Melting;
+import com.yuo.Enchants.Enchants.Tool.Melting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,7 +22,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
