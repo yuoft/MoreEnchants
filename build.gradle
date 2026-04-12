@@ -89,6 +89,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:curios-309927:${curios_id}")
     compileOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    implementation fg.deobf("curse.maven:l2library-620203:${l2l_id}")
 
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_ver}")

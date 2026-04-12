@@ -71,6 +71,7 @@ import java.util.UUID;
 @EventBusSubscriber(modid = YuoEnchants.MOD_ID, bus = Bus.FORGE)
 public class EventHandler {
     private static final Random RANDOM = new Random(); //随机数
+    private static final UUID ATTACK_SPEED_ID = UUID.fromString("93f2f4d0-4122-b7f4-2e48-d576550b8424");
 
     @SubscribeEvent
     public static void onItemAttr(ItemAttributeModifierEvent event) {
@@ -78,15 +79,21 @@ public class EventHandler {
         int attackSpeed = stack.getEnchantmentLevel(YEEnchants.attackSpeed.get());
         if (attackSpeed > 0){
             EquipmentSlot type = event.getSlotType();
+            Collection<AttributeModifier> modifiers = event.getModifiers().get(Attributes.ATTACK_SPEED);
             if (type == EquipmentSlot.MAINHAND){
                 double oldSpeed = 4.0;
-                Collection<AttributeModifier> modifiers = event.getModifiers().get(Attributes.ATTACK_SPEED);
-                for (AttributeModifier modifier : modifiers) {
+                for (AttributeModifier modifier : modifiers) { //计算其他修饰器
                     oldSpeed += modifier.getAmount();
                 }
 
-                event.removeAttribute(Attributes.ATTACK_SPEED);
-                event.addModifier(Attributes.ATTACK_SPEED, new AttributeModifier(UUID.randomUUID(), YuoEnchants.MOD_ID + "attack_speed", oldSpeed + oldSpeed * attackSpeed * 0.2d, Operation.ADDITION));
+                AttributeModifier modifier = new AttributeModifier(ATTACK_SPEED_ID, YuoEnchants.MOD_ID + "attack_speed", Math.max(0, oldSpeed * attackSpeed * 0.2d), Operation.ADDITION);
+
+                if (modifiers.contains(modifier)){ //已有低等级修饰 先移除在添加
+                    event.removeModifier(Attributes.ATTACK_SPEED, modifier);
+                    event.addModifier(Attributes.ATTACK_SPEED, modifier);
+                }else {
+                    event.addModifier(Attributes.ATTACK_SPEED, modifier);
+                }
             }
         }
     }
